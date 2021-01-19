@@ -134,11 +134,8 @@ The following attributes are exported in addition to the arguments listed above:
 * `id` - The ARN of the Lightsail instance (matches `arn`).
 * `arn` - The ARN of the Lightsail instance (matches `id`).
 * `created_at` - The timestamp when the instance was created.
-* `availability_zone`
-* `blueprint_id`
-* `bundle_id`
-* `key_pair_name`
-* `user_data`
+* `ipv6_address` - (**Deprecated**) The first IPv6 address of the Lightsail instance. Use `ipv6_addresses` attribute instead.
+* `ipv6_addresses` - List of IPv6 addresses for the Lightsail instance.
 
 ## Import
 
