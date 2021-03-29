@@ -502,6 +502,99 @@ func (c *Transfer) DeleteUserWithContext(ctx aws.Context, input *DeleteUserInput
 	return out, req.Send()
 }
 
+const opDescribeSecurityPolicy = "DescribeSecurityPolicy"
+
+// DescribeSecurityPolicyRequest generates a "aws/request.Request" representing the
+// client's request for the DescribeSecurityPolicy operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See DescribeSecurityPolicy for more information on using the DescribeSecurityPolicy
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the DescribeSecurityPolicyRequest method.
+//    req, resp := client.DescribeSecurityPolicyRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/transfer-2018-11-05/DescribeSecurityPolicy
+func (c *Transfer) DescribeSecurityPolicyRequest(input *DescribeSecurityPolicyInput) (req *request.Request, output *DescribeSecurityPolicyOutput) {
+	op := &request.Operation{
+		Name:       opDescribeSecurityPolicy,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &DescribeSecurityPolicyInput{}
+	}
+
+	output = &DescribeSecurityPolicyOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// DescribeSecurityPolicy API operation for AWS Transfer Family.
+//
+// Describes the security policy that is attached to your file transfer protocol-enabled
+// server. The response contains a description of the security policy's properties.
+// For more information about security policies, see Working with security policies
+// (https://docs.aws.amazon.com/transfer/latest/userguide/security-policies.html).
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for AWS Transfer Family's
+// API operation DescribeSecurityPolicy for usage and error information.
+//
+// Returned Error Types:
+//   * ServiceUnavailableException
+//   The request has failed because the AWS Transfer Family service is not available.
+//
+//   * InternalServiceError
+//   This exception is thrown when an error occurs in the AWS Transfer Family
+//   service.
+//
+//   * InvalidRequestException
+//   This exception is thrown when the client submits a malformed request.
+//
+//   * ResourceNotFoundException
+//   This exception is thrown when a resource is not found by the AWS Transfer
+//   Family service.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/transfer-2018-11-05/DescribeSecurityPolicy
+func (c *Transfer) DescribeSecurityPolicy(input *DescribeSecurityPolicyInput) (*DescribeSecurityPolicyOutput, error) {
+	req, out := c.DescribeSecurityPolicyRequest(input)
+	return out, req.Send()
+}
+
+// DescribeSecurityPolicyWithContext is the same as DescribeSecurityPolicy with the addition of
+// the ability to pass a context and additional request options.
+//
+// See DescribeSecurityPolicy for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *Transfer) DescribeSecurityPolicyWithContext(ctx aws.Context, input *DescribeSecurityPolicyInput, opts ...request.Option) (*DescribeSecurityPolicyOutput, error) {
+	req, out := c.DescribeSecurityPolicyRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
 const opDescribeServer = "DescribeServer"
 
 // DescribeServerRequest generates a "aws/request.Request" representing the
@@ -791,6 +884,154 @@ func (c *Transfer) ImportSshPublicKeyWithContext(ctx aws.Context, input *ImportS
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
+}
+
+const opListSecurityPolicies = "ListSecurityPolicies"
+
+// ListSecurityPoliciesRequest generates a "aws/request.Request" representing the
+// client's request for the ListSecurityPolicies operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See ListSecurityPolicies for more information on using the ListSecurityPolicies
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the ListSecurityPoliciesRequest method.
+//    req, resp := client.ListSecurityPoliciesRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/transfer-2018-11-05/ListSecurityPolicies
+func (c *Transfer) ListSecurityPoliciesRequest(input *ListSecurityPoliciesInput) (req *request.Request, output *ListSecurityPoliciesOutput) {
+	op := &request.Operation{
+		Name:       opListSecurityPolicies,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+		Paginator: &request.Paginator{
+			InputTokens:     []string{"NextToken"},
+			OutputTokens:    []string{"NextToken"},
+			LimitToken:      "MaxResults",
+			TruncationToken: "",
+		},
+	}
+
+	if input == nil {
+		input = &ListSecurityPoliciesInput{}
+	}
+
+	output = &ListSecurityPoliciesOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// ListSecurityPolicies API operation for AWS Transfer Family.
+//
+// Lists the security policies that are attached to your file transfer protocol-enabled
+// servers.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for AWS Transfer Family's
+// API operation ListSecurityPolicies for usage and error information.
+//
+// Returned Error Types:
+//   * ServiceUnavailableException
+//   The request has failed because the AWS Transfer Family service is not available.
+//
+//   * InternalServiceError
+//   This exception is thrown when an error occurs in the AWS Transfer Family
+//   service.
+//
+//   * InvalidNextTokenException
+//   The NextToken parameter that was passed is invalid.
+//
+//   * InvalidRequestException
+//   This exception is thrown when the client submits a malformed request.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/transfer-2018-11-05/ListSecurityPolicies
+func (c *Transfer) ListSecurityPolicies(input *ListSecurityPoliciesInput) (*ListSecurityPoliciesOutput, error) {
+	req, out := c.ListSecurityPoliciesRequest(input)
+	return out, req.Send()
+}
+
+// ListSecurityPoliciesWithContext is the same as ListSecurityPolicies with the addition of
+// the ability to pass a context and additional request options.
+//
+// See ListSecurityPolicies for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *Transfer) ListSecurityPoliciesWithContext(ctx aws.Context, input *ListSecurityPoliciesInput, opts ...request.Option) (*ListSecurityPoliciesOutput, error) {
+	req, out := c.ListSecurityPoliciesRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+// ListSecurityPoliciesPages iterates over the pages of a ListSecurityPolicies operation,
+// calling the "fn" function with the response data for each page. To stop
+// iterating, return false from the fn function.
+//
+// See ListSecurityPolicies method for more information on how to use this operation.
+//
+// Note: This operation can generate multiple requests to a service.
+//
+//    // Example iterating over at most 3 pages of a ListSecurityPolicies operation.
+//    pageNum := 0
+//    err := client.ListSecurityPoliciesPages(params,
+//        func(page *transfer.ListSecurityPoliciesOutput, lastPage bool) bool {
+//            pageNum++
+//            fmt.Println(page)
+//            return pageNum <= 3
+//        })
+//
+func (c *Transfer) ListSecurityPoliciesPages(input *ListSecurityPoliciesInput, fn func(*ListSecurityPoliciesOutput, bool) bool) error {
+	return c.ListSecurityPoliciesPagesWithContext(aws.BackgroundContext(), input, fn)
+}
+
+// ListSecurityPoliciesPagesWithContext same as ListSecurityPoliciesPages except
+// it takes a Context and allows setting request options on the pages.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *Transfer) ListSecurityPoliciesPagesWithContext(ctx aws.Context, input *ListSecurityPoliciesInput, fn func(*ListSecurityPoliciesOutput, bool) bool, opts ...request.Option) error {
+	p := request.Pagination{
+		NewRequest: func() (*request.Request, error) {
+			var inCpy *ListSecurityPoliciesInput
+			if input != nil {
+				tmp := *input
+				inCpy = &tmp
+			}
+			req, _ := c.ListSecurityPoliciesRequest(inCpy)
+			req.SetContext(ctx)
+			req.ApplyOptions(opts...)
+			return req, nil
+		},
+	}
+
+	for p.Next() {
+		if !fn(p.Page().(*ListSecurityPoliciesOutput), !p.HasNextPage()) {
+			break
+		}
+	}
+
+	return p.Err()
 }
 
 const opListServers = "ListServers"
@@ -1393,8 +1634,10 @@ func (c *Transfer) StopServerRequest(input *StopServerInput) (req *request.Reque
 // Changes the state of a file transfer protocol-enabled server from ONLINE
 // to OFFLINE. An OFFLINE server cannot accept and process file transfer jobs.
 // Information tied to your server, such as server and user properties, are
-// not affected by stopping your server. Stopping the server will not reduce
-// or impact your file transfer protocol endpoint billing.
+// not affected by stopping your server.
+//
+// Stopping the server will not reduce or impact your file transfer protocol
+// endpoint billing; you must delete the server to stop being billed.
 //
 // The state of STOPPING indicates that the server is in an intermediate state,
 // either not fully able to respond, or not fully offline. The values of STOP_FAILED
@@ -2061,30 +2304,64 @@ type CreateServerInput struct {
 
 	// The Amazon Resource Name (ARN) of the AWS Certificate Manager (ACM) certificate.
 	// Required when Protocols is set to FTPS.
+	//
+	// To request a new public certificate, see Request a public certificate (https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html)
+	// in the AWS Certificate Manager User Guide.
+	//
+	// To import an existing certificate into ACM, see Importing certificates into
+	// ACM (https://docs.aws.amazon.com/acm/latest/userguide/import-certificate.html)
+	// in the AWS Certificate Manager User Guide.
+	//
+	// To request a private certificate to use FTPS through private IP addresses,
+	// see Request a private certificate (https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-private.html)
+	// in the AWS Certificate Manager User Guide.
+	//
+	// Certificates with the following cryptographic algorithms and key sizes are
+	// supported:
+	//
+	//    * 2048-bit RSA (RSA_2048)
+	//
+	//    * 4096-bit RSA (RSA_4096)
+	//
+	//    * Elliptic Prime Curve 256 bit (EC_prime256v1)
+	//
+	//    * Elliptic Prime Curve 384 bit (EC_secp384r1)
+	//
+	//    * Elliptic Prime Curve 521 bit (EC_secp521r1)
+	//
+	// The certificate must be a valid SSL/TLS X.509 version 3 certificate with
+	// FQDN or IP address specified and information about the issuer.
 	Certificate *string `type:"string"`
 
+	Domain *string `type:"string" enum:"Domain"`
+
 	// The virtual private cloud (VPC) endpoint settings that are configured for
-	// your file transfer protocol-enabled server. When you host your endpoint within
-	// your VPC, you can make it accessible only to resources within your VPC, or
-	// you can attach Elastic IPs and make it accessible to clients over the internet.
-	// Your VPC's default security groups are automatically assigned to your endpoint.
+	// your server. When you host your endpoint within your VPC, you can make it
+	// accessible only to resources within your VPC, or you can attach Elastic IPs
+	// and make it accessible to clients over the internet. Your VPC's default security
+	// groups are automatically assigned to your endpoint.
 	EndpointDetails *EndpointDetails `type:"structure"`
 
-	// The type of VPC endpoint that you want your file transfer protocol-enabled
-	// server to connect to. You can choose to connect to the public internet or
-	// a virtual private cloud (VPC) endpoint. With a VPC endpoint, you can restrict
-	// access to your server and resources only within your VPC.
+	// The type of VPC endpoint that you want your server to connect to. You can
+	// choose to connect to the public internet or a VPC endpoint. With a VPC endpoint,
+	// you can restrict access to your server and resources only within your VPC.
+	//
+	// It is recommended that you use VPC as the EndpointType. With this endpoint
+	// type, you have the option to directly associate up to three Elastic IPv4
+	// addresses (BYO IP included) with your server's endpoint and use VPC security
+	// groups to restrict traffic by the client's public IP address. This is not
+	// possible with EndpointType set to VPC_ENDPOINT.
 	EndpointType *string `type:"string" enum:"EndpointType"`
 
-	// The RSA private key as generated by the ssh-keygen -N "" -f my-new-server-key
+	// The RSA private key as generated by the ssh-keygen -N "" -m PEM -f my-new-server-key
 	// command.
 	//
 	// If you aren't planning to migrate existing users from an existing SFTP-enabled
 	// server to a new server, don't update the host key. Accidentally changing
 	// a server's host key can be disruptive.
 	//
-	// For more information, see Changing the Host Key for Your AWS Transfer Family
-	// Server (https://docs.aws.amazon.com/transfer/latest/userguide/configuring-servers.html#change-host-key)
+	// For more information, see Change the host key for your SFTP-enabled server
+	// (https://docs.aws.amazon.com/transfer/latest/userguide/edit-server-config.html#configuring-servers-change-host-key)
 	// in the AWS Transfer Family User Guide.
 	HostKey *string `type:"string" sensitive:"true"`
 
@@ -2094,12 +2371,12 @@ type CreateServerInput struct {
 	// is set to SERVICE_MANAGED.
 	IdentityProviderDetails *IdentityProviderDetails `type:"structure"`
 
-	// Specifies the mode of authentication for a file transfer protocol-enabled
-	// server. The default value is SERVICE_MANAGED, which allows you to store and
-	// access user credentials within the AWS Transfer Family service. Use the API_GATEWAY
-	// value to integrate with an identity provider of your choosing. The API_GATEWAY
-	// setting requires you to provide an API Gateway endpoint URL to call for authentication
-	// using the IdentityProviderDetails parameter.
+	// Specifies the mode of authentication for a server. The default value is SERVICE_MANAGED,
+	// which allows you to store and access user credentials within the AWS Transfer
+	// Family service. Use the API_GATEWAY value to integrate with an identity provider
+	// of your choosing. The API_GATEWAY setting requires you to provide an API
+	// Gateway endpoint URL to call for authentication using the IdentityProviderDetails
+	// parameter.
 	IdentityProviderType *string `type:"string" enum:"IdentityProviderType"`
 
 	// Allows the service to write your users' activity to your Amazon CloudWatch
@@ -2110,16 +2387,30 @@ type CreateServerInput struct {
 	// protocol client can connect to your server's endpoint. The available protocols
 	// are:
 	//
-	//    * Secure Shell (SSH) File Transfer Protocol (SFTP): File transfer over
+	//    * SFTP (Secure Shell (SSH) File Transfer Protocol): File transfer over
 	//    SSH
 	//
-	//    * File Transfer Protocol Secure (FTPS): File transfer with TLS encryption
+	//    * FTPS (File Transfer Protocol Secure): File transfer with TLS encryption
 	//
-	//    * File Transfer Protocol (FTP): Unencrypted file transfer
+	//    * FTP (File Transfer Protocol): Unencrypted file transfer
+	//
+	// If you select FTPS, you must choose a certificate stored in AWS Certificate
+	// Manager (ACM) which will be used to identify your server when clients connect
+	// to it over FTPS.
+	//
+	// If Protocol includes either FTP or FTPS, then the EndpointType must be VPC
+	// and the IdentityProviderType must be API_GATEWAY.
+	//
+	// If Protocol includes FTP, then AddressAllocationIds cannot be associated.
+	//
+	// If Protocol is set only to SFTP, the EndpointType can be set to PUBLIC and
+	// the IdentityProviderType can be set to SERVICE_MANAGED.
 	Protocols []*string `min:"1" type:"list"`
 
-	// Key-value pairs that can be used to group and search for file transfer protocol-enabled
-	// servers.
+	// Specifies the name of the security policy that is attached to the server.
+	SecurityPolicyName *string `type:"string"`
+
+	// Key-value pairs that can be used to group and search for servers.
 	Tags []*Tag `min:"1" type:"list"`
 }
 
@@ -2178,6 +2469,12 @@ func (s *CreateServerInput) SetCertificate(v string) *CreateServerInput {
 	return s
 }
 
+// SetDomain sets the Domain field's value.
+func (s *CreateServerInput) SetDomain(v string) *CreateServerInput {
+	s.Domain = &v
+	return s
+}
+
 // SetEndpointDetails sets the EndpointDetails field's value.
 func (s *CreateServerInput) SetEndpointDetails(v *EndpointDetails) *CreateServerInput {
 	s.EndpointDetails = v
@@ -2220,6 +2517,12 @@ func (s *CreateServerInput) SetProtocols(v []*string) *CreateServerInput {
 	return s
 }
 
+// SetSecurityPolicyName sets the SecurityPolicyName field's value.
+func (s *CreateServerInput) SetSecurityPolicyName(v string) *CreateServerInput {
+	s.SecurityPolicyName = &v
+	return s
+}
+
 // SetTags sets the Tags field's value.
 func (s *CreateServerInput) SetTags(v []*Tag) *CreateServerInput {
 	s.Tags = v
@@ -2229,8 +2532,7 @@ func (s *CreateServerInput) SetTags(v []*Tag) *CreateServerInput {
 type CreateServerOutput struct {
 	_ struct{} `type:"structure"`
 
-	// The service-assigned ID of the file transfer protocol-enabled server that
-	// is created.
+	// The service-assigned ID of the server that is created.
 	//
 	// ServerId is a required field
 	ServerId *string `min:"19" type:"string" required:"true"`
@@ -2255,10 +2557,10 @@ func (s *CreateServerOutput) SetServerId(v string) *CreateServerOutput {
 type CreateUserInput struct {
 	_ struct{} `type:"structure"`
 
-	// The landing directory (folder) for a user when they log in to the file transfer
-	// protocol-enabled server using the client.
+	// The landing directory (folder) for a user when they log in to the server
+	// using the client.
 	//
-	// An example is your-Amazon-S3-bucket-name>/home/username.
+	// An example is your-Amazon-S3-bucket-name>/home/username .
 	HomeDirectory *string `type:"string"`
 
 	// Logical directory mappings that specify what Amazon S3 paths and keys should
@@ -2266,8 +2568,7 @@ type CreateUserInput struct {
 	// to specify the "Entry" and "Target" pair, where Entry shows how the path
 	// is made visible and Target is the actual Amazon S3 path. If you only specify
 	// a target, it will be displayed as is. You will need to also make sure that
-	// your AWS IAM Role provides access to paths in Target. The following is an
-	// example.
+	// your IAM role provides access to paths in Target. The following is an example.
 	//
 	// '[ "/bucket2/documentation", { "Entry": "your-personal-report.pdf", "Target":
 	// "/bucket3/customized-reports/${transfer:UserName}.pdf" } ]'
@@ -2277,7 +2578,7 @@ type CreateUserInput struct {
 	// you can set Entry to '/' and set Target to the HomeDirectory parameter value.
 	//
 	// If the target of a logical directory entry does not exist in Amazon S3, the
-	// entry will be ignored. As a workaround, you can use the Amazon S3 api to
+	// entry will be ignored. As a workaround, you can use the Amazon S3 API to
 	// create 0 byte objects as place holders for your directory. If using the CLI,
 	// use the s3api call instead of s3 so you can use the put-object operation.
 	// For example, you use the following: aws s3api put-object --bucket bucketname
@@ -2286,11 +2587,11 @@ type CreateUserInput struct {
 	HomeDirectoryMappings []*HomeDirectoryMapEntry `min:"1" type:"list"`
 
 	// The type of landing directory (folder) you want your users' home directory
-	// to be when they log into the file transfer protocol-enabled server. If you
-	// set it to PATH, the user will see the absolute Amazon S3 bucket paths as
-	// is in their file transfer protocol clients. If you set it LOGICAL, you will
-	// need to provide mappings in the HomeDirectoryMappings for how you want to
-	// make Amazon S3 paths visible to your users.
+	// to be when they log into the server. If you set it to PATH, the user will
+	// see the absolute Amazon S3 bucket paths as is in their file transfer protocol
+	// clients. If you set it LOGICAL, you will need to provide mappings in the
+	// HomeDirectoryMappings for how you want to make Amazon S3 paths visible to
+	// your users.
 	HomeDirectoryType *string `type:"string" enum:"HomeDirectoryType"`
 
 	// A scope-down policy for your user so you can use the same IAM role across
@@ -2302,41 +2603,43 @@ type CreateUserInput struct {
 	// blob, instead of the Amazon Resource Name (ARN) of the policy. You save the
 	// policy as a JSON blob and pass it in the Policy argument.
 	//
-	// For an example of a scope-down policy, see Creating a Scope-Down Policy (https://docs.aws.amazon.com/transfer/latest/userguide/users.html#users-policies-scope-down).
+	// For an example of a scope-down policy, see Creating a scope-down policy (https://docs.aws.amazon.com/transfer/latest/userguide/users.html#users-policies-scope-down).
 	//
 	// For more information, see AssumeRole (https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html)
 	// in the AWS Security Token Service API Reference.
 	Policy *string `type:"string"`
 
+	PosixProfile *PosixProfile `type:"structure"`
+
 	// The IAM role that controls your users' access to your Amazon S3 bucket. The
 	// policies attached to this role will determine the level of access you want
 	// to provide your users when transferring files into and out of your Amazon
 	// S3 bucket or buckets. The IAM role should also contain a trust relationship
-	// that allows the file transfer protocol-enabled server to access your resources
-	// when servicing your users' transfer requests.
+	// that allows the server to access your resources when servicing your users'
+	// transfer requests.
 	//
 	// Role is a required field
 	Role *string `min:"20" type:"string" required:"true"`
 
-	// A system-assigned unique identifier for a file transfer protocol-enabled
-	// server instance. This is the specific server that you added your user to.
+	// A system-assigned unique identifier for a server instance. This is the specific
+	// server that you added your user to.
 	//
 	// ServerId is a required field
 	ServerId *string `min:"19" type:"string" required:"true"`
 
 	// The public portion of the Secure Shell (SSH) key used to authenticate the
-	// user to the file transfer protocol-enabled server.
+	// user to the server.
 	SshPublicKeyBody *string `type:"string"`
 
 	// Key-value pairs that can be used to group and search for users. Tags are
 	// metadata attached to users for any purpose.
 	Tags []*Tag `min:"1" type:"list"`
 
-	// A unique string that identifies a user and is associated with a file transfer
-	// protocol-enabled server as specified by the ServerId. This user name must
-	// be a minimum of 3 and a maximum of 32 characters long. The following are
-	// valid characters: a-z, A-Z, 0-9, underscore, and hyphen. The user name can't
-	// start with a hyphen.
+	// A unique string that identifies a user and is associated with a as specified
+	// by the ServerId. This user name must be a minimum of 3 and a maximum of 100
+	// characters long. The following are valid characters: a-z, A-Z, 0-9, underscore
+	// '_', hyphen '-', period '.', and at sign '@'. The user name can't start with
+	// a hyphen, period, or at sign.
 	//
 	// UserName is a required field
 	UserName *string `min:"3" type:"string" required:"true"`
@@ -2389,6 +2692,11 @@ func (s *CreateUserInput) Validate() error {
 			}
 		}
 	}
+	if s.PosixProfile != nil {
+		if err := s.PosixProfile.Validate(); err != nil {
+			invalidParams.AddNested("PosixProfile", err.(request.ErrInvalidParams))
+		}
+	}
 	if s.Tags != nil {
 		for i, v := range s.Tags {
 			if v == nil {
@@ -2430,6 +2738,12 @@ func (s *CreateUserInput) SetPolicy(v string) *CreateUserInput {
 	return s
 }
 
+// SetPosixProfile sets the PosixProfile field's value.
+func (s *CreateUserInput) SetPosixProfile(v *PosixProfile) *CreateUserInput {
+	s.PosixProfile = v
+	return s
+}
+
 // SetRole sets the Role field's value.
 func (s *CreateUserInput) SetRole(v string) *CreateUserInput {
 	s.Role = &v
@@ -2463,14 +2777,12 @@ func (s *CreateUserInput) SetUserName(v string) *CreateUserInput {
 type CreateUserOutput struct {
 	_ struct{} `type:"structure"`
 
-	// The ID of the file transfer protocol-enabled server that the user is attached
-	// to.
+	// The ID of the server that the user is attached to.
 	//
 	// ServerId is a required field
 	ServerId *string `min:"19" type:"string" required:"true"`
 
-	// A unique string that identifies a user account associated with a file transfer
-	// protocol-enabled server.
+	// A unique string that identifies a user account associated with a server.
 	//
 	// UserName is a required field
 	UserName *string `min:"3" type:"string" required:"true"`
@@ -2501,8 +2813,7 @@ func (s *CreateUserOutput) SetUserName(v string) *CreateUserOutput {
 type DeleteServerInput struct {
 	_ struct{} `type:"structure"`
 
-	// A unique system-assigned identifier for a file transfer protocol-enabled
-	// server instance.
+	// A unique system-assigned identifier for a server instance.
 	//
 	// ServerId is a required field
 	ServerId *string `min:"19" type:"string" required:"true"`
@@ -2647,14 +2958,13 @@ func (s DeleteSshPublicKeyOutput) GoString() string {
 type DeleteUserInput struct {
 	_ struct{} `type:"structure"`
 
-	// A system-assigned unique identifier for a file transfer protocol-enabled
-	// server instance that has the user assigned to it.
+	// A system-assigned unique identifier for a server instance that has the user
+	// assigned to it.
 	//
 	// ServerId is a required field
 	ServerId *string `min:"19" type:"string" required:"true"`
 
-	// A unique string that identifies a user that is being deleted from a file
-	// transfer protocol-enabled server.
+	// A unique string that identifies a user that is being deleted from a server.
 	//
 	// UserName is a required field
 	UserName *string `min:"3" type:"string" required:"true"`
@@ -2718,11 +3028,73 @@ func (s DeleteUserOutput) GoString() string {
 	return s.String()
 }
 
+type DescribeSecurityPolicyInput struct {
+	_ struct{} `type:"structure"`
+
+	// Specifies the name of the security policy that is attached to the server.
+	//
+	// SecurityPolicyName is a required field
+	SecurityPolicyName *string `type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s DescribeSecurityPolicyInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DescribeSecurityPolicyInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *DescribeSecurityPolicyInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "DescribeSecurityPolicyInput"}
+	if s.SecurityPolicyName == nil {
+		invalidParams.Add(request.NewErrParamRequired("SecurityPolicyName"))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetSecurityPolicyName sets the SecurityPolicyName field's value.
+func (s *DescribeSecurityPolicyInput) SetSecurityPolicyName(v string) *DescribeSecurityPolicyInput {
+	s.SecurityPolicyName = &v
+	return s
+}
+
+type DescribeSecurityPolicyOutput struct {
+	_ struct{} `type:"structure"`
+
+	// An array containing the properties of the security policy.
+	//
+	// SecurityPolicy is a required field
+	SecurityPolicy *DescribedSecurityPolicy `type:"structure" required:"true"`
+}
+
+// String returns the string representation
+func (s DescribeSecurityPolicyOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DescribeSecurityPolicyOutput) GoString() string {
+	return s.String()
+}
+
+// SetSecurityPolicy sets the SecurityPolicy field's value.
+func (s *DescribeSecurityPolicyOutput) SetSecurityPolicy(v *DescribedSecurityPolicy) *DescribeSecurityPolicyOutput {
+	s.SecurityPolicy = v
+	return s
+}
+
 type DescribeServerInput struct {
 	_ struct{} `type:"structure"`
 
-	// A system-assigned unique identifier for a file transfer protocol-enabled
-	// server.
+	// A system-assigned unique identifier for a server.
 	//
 	// ServerId is a required field
 	ServerId *string `min:"19" type:"string" required:"true"`
@@ -2763,8 +3135,7 @@ func (s *DescribeServerInput) SetServerId(v string) *DescribeServerInput {
 type DescribeServerOutput struct {
 	_ struct{} `type:"structure"`
 
-	// An array containing the properties of a file transfer protocol-enabled server
-	// with the ServerID you specified.
+	// An array containing the properties of a server with the ServerID you specified.
 	//
 	// Server is a required field
 	Server *DescribedServer `type:"structure" required:"true"`
@@ -2789,15 +3160,14 @@ func (s *DescribeServerOutput) SetServer(v *DescribedServer) *DescribeServerOutp
 type DescribeUserInput struct {
 	_ struct{} `type:"structure"`
 
-	// A system-assigned unique identifier for a file transfer protocol-enabled
-	// server that has this user assigned.
+	// A system-assigned unique identifier for a server that has this user assigned.
 	//
 	// ServerId is a required field
 	ServerId *string `min:"19" type:"string" required:"true"`
 
-	// The name of the user assigned to one or more file transfer protocol-enabled
-	// servers. User names are part of the sign-in credentials to use the AWS Transfer
-	// Family service and perform file transfer tasks.
+	// The name of the user assigned to one or more servers. User names are part
+	// of the sign-in credentials to use the AWS Transfer Family service and perform
+	// file transfer tasks.
 	//
 	// UserName is a required field
 	UserName *string `min:"3" type:"string" required:"true"`
@@ -2850,8 +3220,7 @@ func (s *DescribeUserInput) SetUserName(v string) *DescribeUserInput {
 type DescribeUserOutput struct {
 	_ struct{} `type:"structure"`
 
-	// A system-assigned unique identifier for a file transfer protocol-enabled
-	// server that has this user assigned.
+	// A system-assigned unique identifier for a server that has this user assigned.
 	//
 	// ServerId is a required field
 	ServerId *string `min:"19" type:"string" required:"true"`
@@ -2885,87 +3254,163 @@ func (s *DescribeUserOutput) SetUser(v *DescribedUser) *DescribeUserOutput {
 	return s
 }
 
+// Describes the properties of a security policy that was specified. For more
+// information about security policies, see Working with security policies (https://docs.aws.amazon.com/transfer/latest/userguide/security-policies.html).
+type DescribedSecurityPolicy struct {
+	_ struct{} `type:"structure"`
+
+	// Specifies whether this policy enables Federal Information Processing Standards
+	// (FIPS).
+	Fips *bool `type:"boolean"`
+
+	// Specifies the name of the security policy that is attached to the server.
+	//
+	// SecurityPolicyName is a required field
+	SecurityPolicyName *string `type:"string" required:"true"`
+
+	// Specifies the enabled Secure Shell (SSH) cipher encryption algorithms in
+	// the security policy that is attached to the server.
+	SshCiphers []*string `type:"list"`
+
+	// Specifies the enabled SSH key exchange (KEX) encryption algorithms in the
+	// security policy that is attached to the server.
+	SshKexs []*string `type:"list"`
+
+	// Specifies the enabled SSH message authentication code (MAC) encryption algorithms
+	// in the security policy that is attached to the server.
+	SshMacs []*string `type:"list"`
+
+	// Specifies the enabled Transport Layer Security (TLS) cipher encryption algorithms
+	// in the security policy that is attached to the server.
+	TlsCiphers []*string `type:"list"`
+}
+
+// String returns the string representation
+func (s DescribedSecurityPolicy) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DescribedSecurityPolicy) GoString() string {
+	return s.String()
+}
+
+// SetFips sets the Fips field's value.
+func (s *DescribedSecurityPolicy) SetFips(v bool) *DescribedSecurityPolicy {
+	s.Fips = &v
+	return s
+}
+
+// SetSecurityPolicyName sets the SecurityPolicyName field's value.
+func (s *DescribedSecurityPolicy) SetSecurityPolicyName(v string) *DescribedSecurityPolicy {
+	s.SecurityPolicyName = &v
+	return s
+}
+
+// SetSshCiphers sets the SshCiphers field's value.
+func (s *DescribedSecurityPolicy) SetSshCiphers(v []*string) *DescribedSecurityPolicy {
+	s.SshCiphers = v
+	return s
+}
+
+// SetSshKexs sets the SshKexs field's value.
+func (s *DescribedSecurityPolicy) SetSshKexs(v []*string) *DescribedSecurityPolicy {
+	s.SshKexs = v
+	return s
+}
+
+// SetSshMacs sets the SshMacs field's value.
+func (s *DescribedSecurityPolicy) SetSshMacs(v []*string) *DescribedSecurityPolicy {
+	s.SshMacs = v
+	return s
+}
+
+// SetTlsCiphers sets the TlsCiphers field's value.
+func (s *DescribedSecurityPolicy) SetTlsCiphers(v []*string) *DescribedSecurityPolicy {
+	s.TlsCiphers = v
+	return s
+}
+
 // Describes the properties of a file transfer protocol-enabled server that
-// was specified. Information returned includes the following: the server Amazon
-// Resource Name (ARN), the authentication configuration and type, the logging
-// role, the server ID and state, and assigned tags or metadata.
+// was specified.
 type DescribedServer struct {
 	_ struct{} `type:"structure"`
 
-	// Specifies the unique Amazon Resource Name (ARN) for a file transfer protocol-enabled
-	// server to be described.
+	// Specifies the unique Amazon Resource Name (ARN) of the server.
 	//
 	// Arn is a required field
 	Arn *string `min:"20" type:"string" required:"true"`
 
-	// The Amazon Resource Name (ARN) of the AWS Certificate Manager (ACM) certificate.
-	// Required when Protocols is set to FTPS.
+	// Specifies the ARN of the AWS Certificate Manager (ACM) certificate. Required
+	// when Protocols is set to FTPS.
 	Certificate *string `type:"string"`
 
-	// The virtual private cloud (VPC) endpoint settings that you configured for
-	// your file transfer protocol-enabled server.
+	Domain *string `type:"string" enum:"Domain"`
+
+	// Specifies the virtual private cloud (VPC) endpoint settings that you configured
+	// for your server.
 	EndpointDetails *EndpointDetails `type:"structure"`
 
-	// The type of endpoint that your file transfer protocol-enabled server is connected
-	// to. If your server is connected to a VPC endpoint, your server isn't accessible
-	// over the public internet.
+	// Defines the type of endpoint that your server is connected to. If your server
+	// is connected to a VPC endpoint, your server isn't accessible over the public
+	// internet.
 	EndpointType *string `type:"string" enum:"EndpointType"`
 
-	// Contains the message-digest algorithm (MD5) hash of a file transfer protocol-enabled
-	// server's host key. This value is equivalent to the output of the ssh-keygen
-	// -l -E md5 -f my-new-server-key command.
+	// Specifies the Base64-encoded SHA256 fingerprint of the server's host key.
+	// This value is equivalent to the output of the ssh-keygen -l -f my-new-server-key
+	// command.
 	HostKeyFingerprint *string `type:"string"`
 
 	// Specifies information to call a customer-supplied authentication API. This
-	// field is not populated when the IdentityProviderType of a file transfer protocol-enabled
-	// server is SERVICE_MANAGED.
+	// field is not populated when the IdentityProviderType of a server is SERVICE_MANAGED.
 	IdentityProviderDetails *IdentityProviderDetails `type:"structure"`
 
-	// Defines the mode of authentication method enabled for this service. A value
-	// of SERVICE_MANAGED means that you are using this file transfer protocol-enabled
-	// server to store and access user credentials within the service. A value of
-	// API_GATEWAY indicates that you have integrated an API Gateway endpoint that
-	// will be invoked for authenticating your user into the service.
+	// Specifies the mode of authentication method enabled for this service. A value
+	// of SERVICE_MANAGED means that you are using this server to store and access
+	// user credentials within the service. A value of API_GATEWAY indicates that
+	// you have integrated an API Gateway endpoint that will be invoked for authenticating
+	// your user into the service.
 	IdentityProviderType *string `type:"string" enum:"IdentityProviderType"`
 
-	// An AWS Identity and Access Management (IAM) entity that allows a file transfer
-	// protocol-enabled server to turn on Amazon CloudWatch logging for Amazon S3
-	// events. When set, user activity can be viewed in your CloudWatch logs.
+	// Specifies the AWS Identity and Access Management (IAM) role that allows a
+	// server to turn on Amazon CloudWatch logging for Amazon S3 events. When set,
+	// user activity can be viewed in your CloudWatch logs.
 	LoggingRole *string `min:"20" type:"string"`
 
 	// Specifies the file transfer protocol or protocols over which your file transfer
 	// protocol client can connect to your server's endpoint. The available protocols
 	// are:
 	//
-	//    * Secure Shell (SSH) File Transfer Protocol (SFTP): File transfer over
+	//    * SFTP (Secure Shell (SSH) File Transfer Protocol): File transfer over
 	//    SSH
 	//
-	//    * File Transfer Protocol Secure (FTPS): File transfer with TLS encryption
+	//    * FTPS (File Transfer Protocol Secure): File transfer with TLS encryption
 	//
-	//    * File Transfer Protocol (FTP): Unencrypted file transfer
+	//    * FTP (File Transfer Protocol): Unencrypted file transfer
 	Protocols []*string `min:"1" type:"list"`
 
-	// Unique system-assigned identifier for a file transfer protocol-enabled server
-	// that you instantiate.
+	// Specifies the name of the security policy that is attached to the server.
+	SecurityPolicyName *string `type:"string"`
+
+	// Specifies the unique system-assigned identifier for a server that you instantiate.
 	ServerId *string `min:"19" type:"string"`
 
-	// The condition of a file transfer protocol-enabled server for the server that
-	// was described. A value of ONLINE indicates that the server can accept jobs
-	// and transfer files. A State value of OFFLINE means that the server cannot
-	// perform file transfer operations.
+	// Specifies the condition of a server for the server that was described. A
+	// value of ONLINE indicates that the server can accept jobs and transfer files.
+	// A State value of OFFLINE means that the server cannot perform file transfer
+	// operations.
 	//
 	// The states of STARTING and STOPPING indicate that the server is in an intermediate
 	// state, either not fully able to respond, or not fully offline. The values
 	// of START_FAILED or STOP_FAILED can indicate an error condition.
 	State *string `type:"string" enum:"State"`
 
-	// Contains the key-value pairs that you can use to search for and group file
-	// transfer protocol-enabled servers that were assigned to the server that was
-	// described.
+	// Specifies the key-value pairs that you can use to search for and group servers
+	// that were assigned to the server that was described.
 	Tags []*Tag `min:"1" type:"list"`
 
-	// The number of users that are assigned to a file transfer protocol-enabled
-	// server you specified with the ServerId.
+	// Specifies the number of users that are assigned to a server you specified
+	// with the ServerId.
 	UserCount *int64 `type:"integer"`
 }
 
@@ -2988,6 +3433,12 @@ func (s *DescribedServer) SetArn(v string) *DescribedServer {
 // SetCertificate sets the Certificate field's value.
 func (s *DescribedServer) SetCertificate(v string) *DescribedServer {
 	s.Certificate = &v
+	return s
+}
+
+// SetDomain sets the Domain field's value.
+func (s *DescribedServer) SetDomain(v string) *DescribedServer {
+	s.Domain = &v
 	return s
 }
 
@@ -3033,6 +3484,12 @@ func (s *DescribedServer) SetProtocols(v []*string) *DescribedServer {
 	return s
 }
 
+// SetSecurityPolicyName sets the SecurityPolicyName field's value.
+func (s *DescribedServer) SetSecurityPolicyName(v string) *DescribedServer {
+	s.SecurityPolicyName = &v
+	return s
+}
+
 // SetServerId sets the ServerId field's value.
 func (s *DescribedServer) SetServerId(v string) *DescribedServer {
 	s.ServerId = &v
@@ -3057,63 +3514,66 @@ func (s *DescribedServer) SetUserCount(v int64) *DescribedServer {
 	return s
 }
 
-// Returns properties of the user that you want to describe.
+// Describes the properties of a user that was specified.
 type DescribedUser struct {
 	_ struct{} `type:"structure"`
 
-	// Contains the unique Amazon Resource Name (ARN) for the user that was requested
+	// Specifies the unique Amazon Resource Name (ARN) for the user that was requested
 	// to be described.
 	//
 	// Arn is a required field
 	Arn *string `min:"20" type:"string" required:"true"`
 
 	// Specifies the landing directory (or folder), which is the location that files
-	// are written to or read from in an Amazon S3 bucket for the described user.
-	// An example is /your s3 bucket name/home/username .
+	// are written to or read from in an Amazon S3 bucket, for the described user.
+	// An example is your-Amazon-S3-bucket-name>/home/username .
 	HomeDirectory *string `type:"string"`
 
-	// Logical directory mappings that you specified for what Amazon S3 paths and
-	// keys should be visible to your user and how you want to make them visible.
+	// Specifies the logical directory mappings that specify what Amazon S3 paths
+	// and keys should be visible to your user and how you want to make them visible.
 	// You will need to specify the "Entry" and "Target" pair, where Entry shows
 	// how the path is made visible and Target is the actual Amazon S3 path. If
 	// you only specify a target, it will be displayed as is. You will need to also
-	// make sure that your AWS IAM Role provides access to paths in Target.
+	// make sure that your AWS Identity and Access Management (IAM) role provides
+	// access to paths in Target.
 	//
 	// In most cases, you can use this value instead of the scope-down policy to
 	// lock your user down to the designated home directory ("chroot"). To do this,
 	// you can set Entry to '/' and set Target to the HomeDirectory parameter value.
 	HomeDirectoryMappings []*HomeDirectoryMapEntry `min:"1" type:"list"`
 
-	// The type of landing directory (folder) you mapped for your users to see when
-	// they log into the file transfer protocol-enabled server. If you set it to
-	// PATH, the user will see the absolute Amazon S3 bucket paths as is in their
-	// file transfer protocol clients. If you set it LOGICAL, you will need to provide
-	// mappings in the HomeDirectoryMappings for how you want to make Amazon S3
-	// paths visible to your users.
+	// Specifies the type of landing directory (folder) you mapped for your users
+	// to see when they log into the file transfer protocol-enabled server. If you
+	// set it to PATH, the user will see the absolute Amazon S3 bucket paths as
+	// is in their file transfer protocol clients. If you set it LOGICAL, you will
+	// need to provide mappings in the HomeDirectoryMappings for how you want to
+	// make Amazon S3 paths visible to your users.
 	HomeDirectoryType *string `type:"string" enum:"HomeDirectoryType"`
 
 	// Specifies the name of the policy in use for the described user.
 	Policy *string `type:"string"`
 
+	PosixProfile *PosixProfile `type:"structure"`
+
 	// Specifies the IAM role that controls your users' access to your Amazon S3
 	// bucket. The policies attached to this role will determine the level of access
 	// you want to provide your users when transferring files into and out of your
 	// Amazon S3 bucket or buckets. The IAM role should also contain a trust relationship
-	// that allows a file transfer protocol-enabled server to access your resources
-	// when servicing your users' transfer requests.
+	// that allows a server to access your resources when servicing your users'
+	// transfer requests.
 	Role *string `min:"20" type:"string"`
 
-	// Contains the public key portion of the Secure Shell (SSH) keys stored for
+	// Specifies the public key portion of the Secure Shell (SSH) keys stored for
 	// the described user.
 	SshPublicKeys []*SshPublicKey `type:"list"`
 
-	// Contains the key-value pairs for the user requested. Tag can be used to search
-	// for and group users for a variety of purposes.
+	// Specifies the key-value pairs for the user requested. Tag can be used to
+	// search for and group users for a variety of purposes.
 	Tags []*Tag `min:"1" type:"list"`
 
-	// The name of the user that was requested to be described. User names are used
-	// for authentication purposes. This is the string that will be used by your
-	// user when they log in to your file transfer protocol-enabled server.
+	// Specifies the name of the user that was requested to be described. User names
+	// are used for authentication purposes. This is the string that will be used
+	// by your user when they log in to your server.
 	UserName *string `min:"3" type:"string"`
 }
 
@@ -3157,6 +3617,12 @@ func (s *DescribedUser) SetPolicy(v string) *DescribedUser {
 	return s
 }
 
+// SetPosixProfile sets the PosixProfile field's value.
+func (s *DescribedUser) SetPosixProfile(v *PosixProfile) *DescribedUser {
+	s.PosixProfile = v
+	return s
+}
+
 // SetRole sets the Role field's value.
 func (s *DescribedUser) SetRole(v string) *DescribedUser {
 	s.Role = &v
@@ -3190,21 +3656,36 @@ type EndpointDetails struct {
 	_ struct{} `type:"structure"`
 
 	// A list of address allocation IDs that are required to attach an Elastic IP
-	// address to your file transfer protocol-enabled server's endpoint. This is
-	// only valid in the UpdateServer API.
+	// address to your server's endpoint.
 	//
-	// This property can only be use when EndpointType is set to VPC.
+	// This property can only be set when EndpointType is set to VPC and it is only
+	// valid in the UpdateServer API.
 	AddressAllocationIds []*string `type:"list"`
 
-	// A list of subnet IDs that are required to host your file transfer protocol-enabled
-	// server endpoint in your VPC.
+	// A list of security groups IDs that are available to attach to your server's
+	// endpoint.
+	//
+	// This property can only be set when EndpointType is set to VPC.
+	//
+	// You can only edit the SecurityGroupIds property in the UpdateServer API and
+	// only if you are changing the EndpointType from PUBLIC or VPC_ENDPOINT to
+	// VPC.
+	SecurityGroupIds []*string `type:"list"`
+
+	// A list of subnet IDs that are required to host your server endpoint in your
+	// VPC.
+	//
+	// This property can only be set when EndpointType is set to VPC.
 	SubnetIds []*string `type:"list"`
 
 	// The ID of the VPC endpoint.
+	//
+	// This property can only be set when EndpointType is set to VPC_ENDPOINT.
 	VpcEndpointId *string `min:"22" type:"string"`
 
-	// The VPC ID of the VPC in which a file transfer protocol-enabled server's
-	// endpoint will be hosted.
+	// The VPC ID of the VPC in which a server's endpoint will be hosted.
+	//
+	// This property can only be set when EndpointType is set to VPC.
 	VpcId *string `type:"string"`
 }
 
@@ -3237,6 +3718,12 @@ func (s *EndpointDetails) SetAddressAllocationIds(v []*string) *EndpointDetails 
 	return s
 }
 
+// SetSecurityGroupIds sets the SecurityGroupIds field's value.
+func (s *EndpointDetails) SetSecurityGroupIds(v []*string) *EndpointDetails {
+	s.SecurityGroupIds = v
+	return s
+}
+
 // SetSubnetIds sets the SubnetIds field's value.
 func (s *EndpointDetails) SetSubnetIds(v []*string) *EndpointDetails {
 	s.SubnetIds = v
@@ -3255,7 +3742,7 @@ func (s *EndpointDetails) SetVpcId(v string) *EndpointDetails {
 	return s
 }
 
-// Represents an object that contains entries and a targets for HomeDirectoryMappings.
+// Represents an object that contains entries and targets for HomeDirectoryMappings.
 type HomeDirectoryMapEntry struct {
 	_ struct{} `type:"structure"`
 
@@ -3317,7 +3804,7 @@ type IdentityProviderDetails struct {
 	// Provides the type of InvocationRole used to authenticate the user account.
 	InvocationRole *string `min:"20" type:"string"`
 
-	// Contains the location of the service endpoint used to authenticate users.
+	// Provides the location of the service endpoint used to authenticate users.
 	Url *string `type:"string"`
 }
 
@@ -3359,8 +3846,7 @@ func (s *IdentityProviderDetails) SetUrl(v string) *IdentityProviderDetails {
 type ImportSshPublicKeyInput struct {
 	_ struct{} `type:"structure"`
 
-	// A system-assigned unique identifier for a file transfer protocol-enabled
-	// server.
+	// A system-assigned unique identifier for a server.
 	//
 	// ServerId is a required field
 	ServerId *string `min:"19" type:"string" required:"true"`
@@ -3370,8 +3856,7 @@ type ImportSshPublicKeyInput struct {
 	// SshPublicKeyBody is a required field
 	SshPublicKeyBody *string `type:"string" required:"true"`
 
-	// The name of the user account that is assigned to one or more file transfer
-	// protocol-enabled servers.
+	// The name of the user account that is assigned to one or more servers.
 	//
 	// UserName is a required field
 	UserName *string `min:"3" type:"string" required:"true"`
@@ -3430,14 +3915,13 @@ func (s *ImportSshPublicKeyInput) SetUserName(v string) *ImportSshPublicKeyInput
 	return s
 }
 
-// Identifies the user, the file transfer protocol-enabled server they belong
-// to, and the identifier of the SSH public key associated with that user. A
-// user can have more than one key on each server that they are associated with.
+// Identifies the user, the server they belong to, and the identifier of the
+// SSH public key associated with that user. A user can have more than one key
+// on each server that they are associated with.
 type ImportSshPublicKeyOutput struct {
 	_ struct{} `type:"structure"`
 
-	// A system-assigned unique identifier for a file transfer protocol-enabled
-	// server.
+	// A system-assigned unique identifier for a server.
 	//
 	// ServerId is a required field
 	ServerId *string `min:"19" type:"string" required:"true"`
@@ -3650,17 +4134,104 @@ func (s *InvalidRequestException) RequestID() string {
 	return s.RespMetadata.RequestID
 }
 
+type ListSecurityPoliciesInput struct {
+	_ struct{} `type:"structure"`
+
+	// Specifies the number of security policies to return as a response to the
+	// ListSecurityPolicies query.
+	MaxResults *int64 `min:"1" type:"integer"`
+
+	// When additional results are obtained from the ListSecurityPolicies command,
+	// a NextToken parameter is returned in the output. You can then pass the NextToken
+	// parameter in a subsequent command to continue listing additional security
+	// policies.
+	NextToken *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s ListSecurityPoliciesInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ListSecurityPoliciesInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *ListSecurityPoliciesInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "ListSecurityPoliciesInput"}
+	if s.MaxResults != nil && *s.MaxResults < 1 {
+		invalidParams.Add(request.NewErrParamMinValue("MaxResults", 1))
+	}
+	if s.NextToken != nil && len(*s.NextToken) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("NextToken", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetMaxResults sets the MaxResults field's value.
+func (s *ListSecurityPoliciesInput) SetMaxResults(v int64) *ListSecurityPoliciesInput {
+	s.MaxResults = &v
+	return s
+}
+
+// SetNextToken sets the NextToken field's value.
+func (s *ListSecurityPoliciesInput) SetNextToken(v string) *ListSecurityPoliciesInput {
+	s.NextToken = &v
+	return s
+}
+
+type ListSecurityPoliciesOutput struct {
+	_ struct{} `type:"structure"`
+
+	// When you can get additional results from the ListSecurityPolicies operation,
+	// a NextToken parameter is returned in the output. In a following command,
+	// you can pass in the NextToken parameter to continue listing security policies.
+	NextToken *string `min:"1" type:"string"`
+
+	// An array of security policies that were listed.
+	//
+	// SecurityPolicyNames is a required field
+	SecurityPolicyNames []*string `type:"list" required:"true"`
+}
+
+// String returns the string representation
+func (s ListSecurityPoliciesOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ListSecurityPoliciesOutput) GoString() string {
+	return s.String()
+}
+
+// SetNextToken sets the NextToken field's value.
+func (s *ListSecurityPoliciesOutput) SetNextToken(v string) *ListSecurityPoliciesOutput {
+	s.NextToken = &v
+	return s
+}
+
+// SetSecurityPolicyNames sets the SecurityPolicyNames field's value.
+func (s *ListSecurityPoliciesOutput) SetSecurityPolicyNames(v []*string) *ListSecurityPoliciesOutput {
+	s.SecurityPolicyNames = v
+	return s
+}
+
 type ListServersInput struct {
 	_ struct{} `type:"structure"`
 
-	// Specifies the number of file transfer protocol-enabled servers to return
-	// as a response to the ListServers query.
+	// Specifies the number of servers to return as a response to the ListServers
+	// query.
 	MaxResults *int64 `min:"1" type:"integer"`
 
-	// When additional results are obtained from theListServers command, a NextToken
+	// When additional results are obtained from the ListServers command, a NextToken
 	// parameter is returned in the output. You can then pass the NextToken parameter
-	// in a subsequent command to continue listing additional file transfer protocol-enabled
-	// servers.
+	// in a subsequent command to continue listing additional servers.
 	NextToken *string `min:"1" type:"string"`
 }
 
@@ -3707,11 +4278,10 @@ type ListServersOutput struct {
 
 	// When you can get additional results from the ListServers operation, a NextToken
 	// parameter is returned in the output. In a following command, you can pass
-	// in the NextToken parameter to continue listing additional file transfer protocol-enabled
-	// servers.
+	// in the NextToken parameter to continue listing additional servers.
 	NextToken *string `min:"1" type:"string"`
 
-	// An array of file transfer protocol-enabled servers that were listed.
+	// An array of servers that were listed.
 	//
 	// Servers is a required field
 	Servers []*ListedServer `type:"list" required:"true"`
@@ -3864,8 +4434,8 @@ type ListUsersInput struct {
 	// to the NextToken parameter to continue listing additional users.
 	NextToken *string `min:"1" type:"string"`
 
-	// A system-assigned unique identifier for a file transfer protocol-enabled
-	// server that has users assigned to it.
+	// A system-assigned unique identifier for a server that has users assigned
+	// to it.
 	//
 	// ServerId is a required field
 	ServerId *string `min:"19" type:"string" required:"true"`
@@ -3929,8 +4499,8 @@ type ListUsersOutput struct {
 	// to the NextToken parameter to continue listing additional users.
 	NextToken *string `min:"1" type:"string"`
 
-	// A system-assigned unique identifier for a file transfer protocol-enabled
-	// server that the users are assigned to.
+	// A system-assigned unique identifier for a server that the users are assigned
+	// to.
 	//
 	// ServerId is a required field
 	ServerId *string `min:"19" type:"string" required:"true"`
@@ -3974,43 +4544,44 @@ func (s *ListUsersOutput) SetUsers(v []*ListedUser) *ListUsersOutput {
 type ListedServer struct {
 	_ struct{} `type:"structure"`
 
-	// The unique Amazon Resource Name (ARN) for a file transfer protocol-enabled
-	// server to be listed.
+	// Specifies the unique Amazon Resource Name (ARN) for a server to be listed.
 	//
 	// Arn is a required field
 	Arn *string `min:"20" type:"string" required:"true"`
 
-	// The type of VPC endpoint that your file transfer protocol-enabled server
-	// is connected to. If your server is connected to a VPC endpoint, your server
-	// isn't accessible over the public internet.
+	Domain *string `type:"string" enum:"Domain"`
+
+	// Specifies the type of VPC endpoint that your server is connected to. If your
+	// server is connected to a VPC endpoint, your server isn't accessible over
+	// the public internet.
 	EndpointType *string `type:"string" enum:"EndpointType"`
 
-	// The authentication method used to validate a user for a file transfer protocol-enabled
-	// server that was specified. This can include Secure Shell (SSH), user name
-	// and password combinations, or your own custom authentication method. Valid
-	// values include SERVICE_MANAGED or API_GATEWAY.
+	// Specifies the authentication method used to validate a user for a server
+	// that was specified. This can include Secure Shell (SSH), user name and password
+	// combinations, or your own custom authentication method. Valid values include
+	// SERVICE_MANAGED or API_GATEWAY.
 	IdentityProviderType *string `type:"string" enum:"IdentityProviderType"`
 
-	// The AWS Identity and Access Management (IAM) entity that allows a file transfer
-	// protocol-enabled server to turn on Amazon CloudWatch logging.
+	// Specifies the AWS Identity and Access Management (IAM) role that allows a
+	// server to turn on Amazon CloudWatch logging.
 	LoggingRole *string `min:"20" type:"string"`
 
-	// The unique system assigned identifier for a file transfer protocol-enabled
-	// servers that were listed.
+	// Specifies the unique system assigned identifier for the servers that were
+	// listed.
 	ServerId *string `min:"19" type:"string"`
 
-	// Describes the condition of a file transfer protocol-enabled server for the
-	// server that was described. A value of ONLINE indicates that the server can
-	// accept jobs and transfer files. A State value of OFFLINE means that the server
-	// cannot perform file transfer operations.
+	// Specifies the condition of a server for the server that was described. A
+	// value of ONLINE indicates that the server can accept jobs and transfer files.
+	// A State value of OFFLINE means that the server cannot perform file transfer
+	// operations.
 	//
 	// The states of STARTING and STOPPING indicate that the server is in an intermediate
 	// state, either not fully able to respond, or not fully offline. The values
 	// of START_FAILED or STOP_FAILED can indicate an error condition.
 	State *string `type:"string" enum:"State"`
 
-	// A numeric value that indicates the number of users that are assigned to a
-	// file transfer protocol-enabled server you specified with the ServerId.
+	// Specifies the number of users that are assigned to a server you specified
+	// with the ServerId.
 	UserCount *int64 `type:"integer"`
 }
 
@@ -4027,6 +4598,12 @@ func (s ListedServer) GoString() string {
 // SetArn sets the Arn field's value.
 func (s *ListedServer) SetArn(v string) *ListedServer {
 	s.Arn = &v
+	return s
+}
+
+// SetDomain sets the Domain field's value.
+func (s *ListedServer) SetDomain(v string) *ListedServer {
+	s.Domain = &v
 	return s
 }
 
@@ -4070,8 +4647,8 @@ func (s *ListedServer) SetUserCount(v int64) *ListedServer {
 type ListedUser struct {
 	_ struct{} `type:"structure"`
 
-	// The unique Amazon Resource Name (ARN) for the user that you want to learn
-	// about.
+	// Provides the unique Amazon Resource Name (ARN) for the user that you want
+	// to learn about.
 	//
 	// Arn is a required field
 	Arn *string `min:"20" type:"string" required:"true"`
@@ -4080,25 +4657,25 @@ type ListedUser struct {
 	// bucket for the user you specify by their ARN.
 	HomeDirectory *string `type:"string"`
 
-	// The type of landing directory (folder) you mapped for your users' home directory.
-	// If you set it to PATH, the user will see the absolute Amazon S3 bucket paths
-	// as is in their file transfer protocol clients. If you set it LOGICAL, you
-	// will need to provide mappings in the HomeDirectoryMappings for how you want
-	// to make Amazon S3 paths visible to your users.
+	// Specifies the type of landing directory (folder) you mapped for your users'
+	// home directory. If you set it to PATH, the user will see the absolute Amazon
+	// S3 bucket paths as is in their file transfer protocol clients. If you set
+	// it LOGICAL, you will need to provide mappings in the HomeDirectoryMappings
+	// for how you want to make Amazon S3 paths visible to your users.
 	HomeDirectoryType *string `type:"string" enum:"HomeDirectoryType"`
 
-	// The role in use by this user. A role is an AWS Identity and Access Management
-	// (IAM) entity that, in this case, allows a file transfer protocol-enabled
-	// server to act on a user's behalf. It allows the server to inherit the trust
-	// relationship that enables that user to perform file operations to their Amazon
-	// S3 bucket.
+	// Specifies the role that is in use by this user. A role is an AWS Identity
+	// and Access Management (IAM) entity that, in this case, allows a file transfer
+	// protocol-enabled server to act on a user's behalf. It allows the server to
+	// inherit the trust relationship that enables that user to perform file operations
+	// to their Amazon S3 bucket.
 	Role *string `min:"20" type:"string"`
 
-	// The number of SSH public keys stored for the user you specified.
+	// Specifies the number of SSH public keys stored for the user you specified.
 	SshPublicKeyCount *int64 `type:"integer"`
 
-	// The name of the user whose ARN was specified. User names are used for authentication
-	// purposes.
+	// Specifies the name of the user whose ARN was specified. User names are used
+	// for authentication purposes.
 	UserName *string `min:"3" type:"string"`
 }
 
@@ -4145,6 +4722,62 @@ func (s *ListedUser) SetSshPublicKeyCount(v int64) *ListedUser {
 // SetUserName sets the UserName field's value.
 func (s *ListedUser) SetUserName(v string) *ListedUser {
 	s.UserName = &v
+	return s
+}
+
+type PosixProfile struct {
+	_ struct{} `type:"structure"`
+
+	// Gid is a required field
+	Gid *int64 `type:"long" required:"true"`
+
+	SecondaryGids []*int64 `type:"list"`
+
+	// Uid is a required field
+	Uid *int64 `type:"long" required:"true"`
+}
+
+// String returns the string representation
+func (s PosixProfile) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s PosixProfile) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *PosixProfile) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "PosixProfile"}
+	if s.Gid == nil {
+		invalidParams.Add(request.NewErrParamRequired("Gid"))
+	}
+	if s.Uid == nil {
+		invalidParams.Add(request.NewErrParamRequired("Uid"))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetGid sets the Gid field's value.
+func (s *PosixProfile) SetGid(v int64) *PosixProfile {
+	s.Gid = &v
+	return s
+}
+
+// SetSecondaryGids sets the SecondaryGids field's value.
+func (s *PosixProfile) SetSecondaryGids(v []*int64) *PosixProfile {
+	s.SecondaryGids = v
+	return s
+}
+
+// SetUid sets the Uid field's value.
+func (s *PosixProfile) SetUid(v int64) *PosixProfile {
+	s.Uid = &v
 	return s
 }
 
@@ -4338,17 +4971,18 @@ func (s *ServiceUnavailableException) RequestID() string {
 type SshPublicKey struct {
 	_ struct{} `type:"structure"`
 
-	// The date that the public key was added to the user account.
+	// Specifies the date that the public key was added to the user account.
 	//
 	// DateImported is a required field
 	DateImported *time.Time `type:"timestamp" required:"true"`
 
-	// The content of the SSH public key as specified by the PublicKeyId.
+	// Specifies the content of the SSH public key as specified by the PublicKeyId.
 	//
 	// SshPublicKeyBody is a required field
 	SshPublicKeyBody *string `type:"string" required:"true"`
 
-	// The SshPublicKeyId parameter contains the identifier of the public key.
+	// Specifies the SshPublicKeyId parameter contains the identifier of the public
+	// key.
 	//
 	// SshPublicKeyId is a required field
 	SshPublicKeyId *string `min:"21" type:"string" required:"true"`
@@ -4385,8 +5019,7 @@ func (s *SshPublicKey) SetSshPublicKeyId(v string) *SshPublicKey {
 type StartServerInput struct {
 	_ struct{} `type:"structure"`
 
-	// A system-assigned unique identifier for a file transfer protocol-enabled
-	// server that you start.
+	// A system-assigned unique identifier for a server that you start.
 	//
 	// ServerId is a required field
 	ServerId *string `min:"19" type:"string" required:"true"`
@@ -4441,8 +5074,7 @@ func (s StartServerOutput) GoString() string {
 type StopServerInput struct {
 	_ struct{} `type:"structure"`
 
-	// A system-assigned unique identifier for a file transfer protocol-enabled
-	// server that you stopped.
+	// A system-assigned unique identifier for a server that you stopped.
 	//
 	// ServerId is a required field
 	ServerId *string `min:"19" type:"string" required:"true"`
@@ -4640,9 +5272,8 @@ func (s TagResourceOutput) GoString() string {
 type TestIdentityProviderInput struct {
 	_ struct{} `type:"structure"`
 
-	// A system-assigned identifier for a specific file transfer protocol-enabled
-	// server. That server's user authentication method is tested with a user name
-	// and password.
+	// A system-assigned identifier for a specific server. That server's user authentication
+	// method is tested with a user name and password.
 	//
 	// ServerId is a required field
 	ServerId *string `min:"19" type:"string" required:"true"`
@@ -4657,6 +5288,9 @@ type TestIdentityProviderInput struct {
 	//
 	//    * File Transfer Protocol (FTP)
 	ServerProtocol *string `type:"string" enum:"Protocol"`
+
+	// The source IP address of the user account to be tested.
+	SourceIp *string `type:"string"`
 
 	// The name of the user account to be tested.
 	//
@@ -4708,6 +5342,12 @@ func (s *TestIdentityProviderInput) SetServerId(v string) *TestIdentityProviderI
 // SetServerProtocol sets the ServerProtocol field's value.
 func (s *TestIdentityProviderInput) SetServerProtocol(v string) *TestIdentityProviderInput {
 	s.ServerProtocol = &v
+	return s
+}
+
+// SetSourceIp sets the SourceIp field's value.
+func (s *TestIdentityProviderInput) SetSourceIp(v string) *TestIdentityProviderInput {
+	s.SourceIp = &v
 	return s
 }
 
@@ -4918,29 +5558,61 @@ type UpdateServerInput struct {
 
 	// The Amazon Resource Name (ARN) of the AWS Certificate Manager (ACM) certificate.
 	// Required when Protocols is set to FTPS.
+	//
+	// To request a new public certificate, see Request a public certificate (https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html)
+	// in the AWS Certificate Manager User Guide.
+	//
+	// To import an existing certificate into ACM, see Importing certificates into
+	// ACM (https://docs.aws.amazon.com/acm/latest/userguide/import-certificate.html)
+	// in the AWS Certificate Manager User Guide.
+	//
+	// To request a private certificate to use FTPS through private IP addresses,
+	// see Request a private certificate (https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-private.html)
+	// in the AWS Certificate Manager User Guide.
+	//
+	// Certificates with the following cryptographic algorithms and key sizes are
+	// supported:
+	//
+	//    * 2048-bit RSA (RSA_2048)
+	//
+	//    * 4096-bit RSA (RSA_4096)
+	//
+	//    * Elliptic Prime Curve 256 bit (EC_prime256v1)
+	//
+	//    * Elliptic Prime Curve 384 bit (EC_secp384r1)
+	//
+	//    * Elliptic Prime Curve 521 bit (EC_secp521r1)
+	//
+	// The certificate must be a valid SSL/TLS X.509 version 3 certificate with
+	// FQDN or IP address specified and information about the issuer.
 	Certificate *string `type:"string"`
 
 	// The virtual private cloud (VPC) endpoint settings that are configured for
-	// your file transfer protocol-enabled server. With a VPC endpoint, you can
-	// restrict access to your server to resources only within your VPC. To control
-	// incoming internet traffic, you will need to associate one or more Elastic
-	// IP addresses with your server's endpoint.
+	// your server. With a VPC endpoint, you can restrict access to your server
+	// to resources only within your VPC. To control incoming internet traffic,
+	// you will need to associate one or more Elastic IP addresses with your server's
+	// endpoint.
 	EndpointDetails *EndpointDetails `type:"structure"`
 
-	// The type of endpoint that you want your file transfer protocol-enabled server
-	// to connect to. You can choose to connect to the public internet or a VPC
-	// endpoint. With a VPC endpoint, your server isn't accessible over the public
-	// internet.
+	// The type of endpoint that you want your server to connect to. You can choose
+	// to connect to the public internet or a VPC endpoint. With a VPC endpoint,
+	// you can restrict access to your server and resources only within your VPC.
+	//
+	// It is recommended that you use VPC as the EndpointType. With this endpoint
+	// type, you have the option to directly associate up to three Elastic IPv4
+	// addresses (BYO IP included) with your server's endpoint and use VPC security
+	// groups to restrict traffic by the client's public IP address. This is not
+	// possible with EndpointType set to VPC_ENDPOINT.
 	EndpointType *string `type:"string" enum:"EndpointType"`
 
-	// The RSA private key as generated by ssh-keygen -N "" -f my-new-server-key.
+	// The RSA private key as generated by ssh-keygen -N "" -m PEM -f my-new-server-key.
 	//
-	// If you aren't planning to migrate existing users from an existing file transfer
-	// protocol-enabled server to a new server, don't update the host key. Accidentally
-	// changing a server's host key can be disruptive.
+	// If you aren't planning to migrate existing users from an existing server
+	// to a new server, don't update the host key. Accidentally changing a server's
+	// host key can be disruptive.
 	//
-	// For more information, see Changing the Host Key for Your AWS Transfer Family
-	// Server (https://docs.aws.amazon.com/transfer/latest/userguide/configuring-servers.html#change-host-key)
+	// For more information, see Change the host key for your SFTP-enabled server
+	// (https://docs.aws.amazon.com/transfer/latest/userguide/edit-server-config.html#configuring-servers-change-host-key)
 	// in the AWS Transfer Family User Guide.
 	HostKey *string `type:"string" sensitive:"true"`
 
@@ -4962,10 +5634,25 @@ type UpdateServerInput struct {
 	//    * File Transfer Protocol Secure (FTPS): File transfer with TLS encryption
 	//
 	//    * File Transfer Protocol (FTP): Unencrypted file transfer
+	//
+	// If you select FTPS, you must choose a certificate stored in AWS Certificate
+	// Manager (ACM) which will be used to identify your server when clients connect
+	// to it over FTPS.
+	//
+	// If Protocol includes either FTP or FTPS, then the EndpointType must be VPC
+	// and the IdentityProviderType must be API_GATEWAY.
+	//
+	// If Protocol includes FTP, then AddressAllocationIds cannot be associated.
+	//
+	// If Protocol is set only to SFTP, the EndpointType can be set to PUBLIC and
+	// the IdentityProviderType can be set to SERVICE_MANAGED.
 	Protocols []*string `min:"1" type:"list"`
 
-	// A system-assigned unique identifier for a file transfer protocol-enabled
-	// server instance that the user account is assigned to.
+	// Specifies the name of the security policy that is attached to the server.
+	SecurityPolicyName *string `type:"string"`
+
+	// A system-assigned unique identifier for a server instance that the user account
+	// is assigned to.
 	//
 	// ServerId is a required field
 	ServerId *string `min:"19" type:"string" required:"true"`
@@ -5052,6 +5739,12 @@ func (s *UpdateServerInput) SetProtocols(v []*string) *UpdateServerInput {
 	return s
 }
 
+// SetSecurityPolicyName sets the SecurityPolicyName field's value.
+func (s *UpdateServerInput) SetSecurityPolicyName(v string) *UpdateServerInput {
+	s.SecurityPolicyName = &v
+	return s
+}
+
 // SetServerId sets the ServerId field's value.
 func (s *UpdateServerInput) SetServerId(v string) *UpdateServerInput {
 	s.ServerId = &v
@@ -5061,8 +5754,8 @@ func (s *UpdateServerInput) SetServerId(v string) *UpdateServerInput {
 type UpdateServerOutput struct {
 	_ struct{} `type:"structure"`
 
-	// A system-assigned unique identifier for a file transfer protocol-enabled
-	// server that the user account is assigned to.
+	// A system-assigned unique identifier for a server that the user account is
+	// assigned to.
 	//
 	// ServerId is a required field
 	ServerId *string `min:"19" type:"string" required:"true"`
@@ -5088,8 +5781,7 @@ type UpdateUserInput struct {
 	_ struct{} `type:"structure"`
 
 	// Specifies the landing directory (folder) for a user when they log in to the
-	// file transfer protocol-enabled server using their file transfer protocol
-	// client.
+	// server using their file transfer protocol client.
 	//
 	// An example is your-Amazon-S3-bucket-name>/home/username.
 	HomeDirectory *string `type:"string"`
@@ -5099,8 +5791,7 @@ type UpdateUserInput struct {
 	// to specify the "Entry" and "Target" pair, where Entry shows how the path
 	// is made visible and Target is the actual Amazon S3 path. If you only specify
 	// a target, it will be displayed as is. You will need to also make sure that
-	// your AWS IAM Role provides access to paths in Target. The following is an
-	// example.
+	// your IAM role provides access to paths in Target. The following is an example.
 	//
 	// '[ "/bucket2/documentation", { "Entry": "your-personal-report.pdf", "Target":
 	// "/bucket3/customized-reports/${transfer:UserName}.pdf" } ]'
@@ -5110,7 +5801,7 @@ type UpdateUserInput struct {
 	// you can set Entry to '/' and set Target to the HomeDirectory parameter value.
 	//
 	// If the target of a logical directory entry does not exist in Amazon S3, the
-	// entry will be ignored. As a workaround, you can use the Amazon S3 api to
+	// entry will be ignored. As a workaround, you can use the Amazon S3 API to
 	// create 0 byte objects as place holders for your directory. If using the CLI,
 	// use the s3api call instead of s3 so you can use the put-object operation.
 	// For example, you use the following: aws s3api put-object --bucket bucketname
@@ -5119,49 +5810,49 @@ type UpdateUserInput struct {
 	HomeDirectoryMappings []*HomeDirectoryMapEntry `min:"1" type:"list"`
 
 	// The type of landing directory (folder) you want your users' home directory
-	// to be when they log into the file transfer protocol-enabled server. If you
-	// set it to PATH, the user will see the absolute Amazon S3 bucket paths as
-	// is in their file transfer protocol clients. If you set it LOGICAL, you will
-	// need to provide mappings in the HomeDirectoryMappings for how you want to
-	// make Amazon S3 paths visible to your users.
+	// to be when they log into the server. If you set it to PATH, the user will
+	// see the absolute Amazon S3 bucket paths as is in their file transfer protocol
+	// clients. If you set it LOGICAL, you will need to provide mappings in the
+	// HomeDirectoryMappings for how you want to make Amazon S3 paths visible to
+	// your users.
 	HomeDirectoryType *string `type:"string" enum:"HomeDirectoryType"`
 
 	// Allows you to supply a scope-down policy for your user so you can use the
-	// same AWS Identity and Access Management (IAM) role across multiple users.
-	// The policy scopes down user access to portions of your Amazon S3 bucket.
-	// Variables you can use inside this policy include ${Transfer:UserName}, ${Transfer:HomeDirectory},
-	// and ${Transfer:HomeBucket}.
+	// same IAM role across multiple users. The policy scopes down user access to
+	// portions of your Amazon S3 bucket. Variables you can use inside this policy
+	// include ${Transfer:UserName}, ${Transfer:HomeDirectory}, and ${Transfer:HomeBucket}.
 	//
 	// For scope-down policies, AWS Transfer Family stores the policy as a JSON
 	// blob, instead of the Amazon Resource Name (ARN) of the policy. You save the
 	// policy as a JSON blob and pass it in the Policy argument.
 	//
-	// For an example of a scope-down policy, see Creating a Scope-Down Policy (https://docs.aws.amazon.com/transfer/latest/userguide/users.html#users-policies-scope-down).
+	// For an example of a scope-down policy, see Creating a scope-down policy (https://docs.aws.amazon.com/transfer/latest/userguide/users.html#users-policies-scope-down).
 	//
 	// For more information, see AssumeRole (https://docs.aws.amazon.com/STS/latest/APIReference/API_AssumeRole.html)
 	// in the AWS Security Token Service API Reference.
 	Policy *string `type:"string"`
 
+	PosixProfile *PosixProfile `type:"structure"`
+
 	// The IAM role that controls your users' access to your Amazon S3 bucket. The
 	// policies attached to this role will determine the level of access you want
 	// to provide your users when transferring files into and out of your Amazon
 	// S3 bucket or buckets. The IAM role should also contain a trust relationship
-	// that allows the file transfer protocol-enabled server to access your resources
-	// when servicing your users' transfer requests.
+	// that allows the server to access your resources when servicing your users'
+	// transfer requests.
 	Role *string `min:"20" type:"string"`
 
-	// A system-assigned unique identifier for a file transfer protocol-enabled
-	// server instance that the user account is assigned to.
+	// A system-assigned unique identifier for a server instance that the user account
+	// is assigned to.
 	//
 	// ServerId is a required field
 	ServerId *string `min:"19" type:"string" required:"true"`
 
-	// A unique string that identifies a user and is associated with a file transfer
-	// protocol-enabled server as specified by the ServerId. This is the string
-	// that will be used by your user when they log in to your server. This user
-	// name is a minimum of 3 and a maximum of 32 characters long. The following
-	// are valid characters: a-z, A-Z, 0-9, underscore, and hyphen. The user name
-	// can't start with a hyphen.
+	// A unique string that identifies a user and is associated with a server as
+	// specified by the ServerId. This user name must be a minimum of 3 and a maximum
+	// of 100 characters long. The following are valid characters: a-z, A-Z, 0-9,
+	// underscore '_', hyphen '-', period '.', and at sign '@'. The user name can't
+	// start with a hyphen, period, or at sign.
 	//
 	// UserName is a required field
 	UserName *string `min:"3" type:"string" required:"true"`
@@ -5208,6 +5899,11 @@ func (s *UpdateUserInput) Validate() error {
 			}
 		}
 	}
+	if s.PosixProfile != nil {
+		if err := s.PosixProfile.Validate(); err != nil {
+			invalidParams.AddNested("PosixProfile", err.(request.ErrInvalidParams))
+		}
+	}
 
 	if invalidParams.Len() > 0 {
 		return invalidParams
@@ -5239,6 +5935,12 @@ func (s *UpdateUserInput) SetPolicy(v string) *UpdateUserInput {
 	return s
 }
 
+// SetPosixProfile sets the PosixProfile field's value.
+func (s *UpdateUserInput) SetPosixProfile(v *PosixProfile) *UpdateUserInput {
+	s.PosixProfile = v
+	return s
+}
+
 // SetRole sets the Role field's value.
 func (s *UpdateUserInput) SetRole(v string) *UpdateUserInput {
 	s.Role = &v
@@ -5257,19 +5959,19 @@ func (s *UpdateUserInput) SetUserName(v string) *UpdateUserInput {
 	return s
 }
 
-// UpdateUserResponse returns the user name and file transfer protocol-enabled
-// server identifier for the request to update a user's properties.
+// UpdateUserResponse returns the user name and identifier for the request to
+// update a user's properties.
 type UpdateUserOutput struct {
 	_ struct{} `type:"structure"`
 
-	// A system-assigned unique identifier for a file transfer protocol-enabled
-	// server instance that the user account is assigned to.
+	// A system-assigned unique identifier for a server instance that the user account
+	// is assigned to.
 	//
 	// ServerId is a required field
 	ServerId *string `min:"19" type:"string" required:"true"`
 
-	// The unique identifier for a user that is assigned to a file transfer protocol-enabled
-	// server instance that was specified in the request.
+	// The unique identifier for a user that is assigned to a server instance that
+	// was specified in the request.
 	//
 	// UserName is a required field
 	UserName *string `min:"3" type:"string" required:"true"`
@@ -5298,6 +6000,22 @@ func (s *UpdateUserOutput) SetUserName(v string) *UpdateUserOutput {
 }
 
 const (
+	// DomainS3 is a Domain enum value
+	DomainS3 = "S3"
+
+	// DomainEfs is a Domain enum value
+	DomainEfs = "EFS"
+)
+
+// Domain_Values returns all elements of the Domain enum
+func Domain_Values() []string {
+	return []string{
+		DomainS3,
+		DomainEfs,
+	}
+}
+
+const (
 	// EndpointTypePublic is a EndpointType enum value
 	EndpointTypePublic = "PUBLIC"
 
@@ -5308,6 +6026,15 @@ const (
 	EndpointTypeVpcEndpoint = "VPC_ENDPOINT"
 )
 
+// EndpointType_Values returns all elements of the EndpointType enum
+func EndpointType_Values() []string {
+	return []string{
+		EndpointTypePublic,
+		EndpointTypeVpc,
+		EndpointTypeVpcEndpoint,
+	}
+}
+
 const (
 	// HomeDirectoryTypePath is a HomeDirectoryType enum value
 	HomeDirectoryTypePath = "PATH"
@@ -5315,6 +6042,14 @@ const (
 	// HomeDirectoryTypeLogical is a HomeDirectoryType enum value
 	HomeDirectoryTypeLogical = "LOGICAL"
 )
+
+// HomeDirectoryType_Values returns all elements of the HomeDirectoryType enum
+func HomeDirectoryType_Values() []string {
+	return []string{
+		HomeDirectoryTypePath,
+		HomeDirectoryTypeLogical,
+	}
+}
 
 // Returns information related to the type of user authentication that is in
 // use for a file transfer protocol-enabled server's users. For SERVICE_MANAGED
@@ -5330,6 +6065,14 @@ const (
 	IdentityProviderTypeApiGateway = "API_GATEWAY"
 )
 
+// IdentityProviderType_Values returns all elements of the IdentityProviderType enum
+func IdentityProviderType_Values() []string {
+	return []string{
+		IdentityProviderTypeServiceManaged,
+		IdentityProviderTypeApiGateway,
+	}
+}
+
 const (
 	// ProtocolSftp is a Protocol enum value
 	ProtocolSftp = "SFTP"
@@ -5340,6 +6083,15 @@ const (
 	// ProtocolFtps is a Protocol enum value
 	ProtocolFtps = "FTPS"
 )
+
+// Protocol_Values returns all elements of the Protocol enum
+func Protocol_Values() []string {
+	return []string{
+		ProtocolSftp,
+		ProtocolFtp,
+		ProtocolFtps,
+	}
+}
 
 // Describes the condition of a file transfer protocol-enabled server with respect
 // to its ability to perform file operations. There are six possible states:
@@ -5370,3 +6122,15 @@ const (
 	// StateStopFailed is a State enum value
 	StateStopFailed = "STOP_FAILED"
 )
+
+// State_Values returns all elements of the State enum
+func State_Values() []string {
+	return []string{
+		StateOffline,
+		StateOnline,
+		StateStarting,
+		StateStopping,
+		StateStartFailed,
+		StateStopFailed,
+	}
+}

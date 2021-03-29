@@ -638,7 +638,17 @@ func (c *MarketplaceCatalog) StartChangeSetRequest(input *StartChangeSetInput) (
 
 // StartChangeSet API operation for AWS Marketplace Catalog Service.
 //
-// This operation allows you to request changes in your entities.
+// This operation allows you to request changes for your entities. Within a
+// single ChangeSet, you cannot start the same change type against the same
+// entity multiple times. Additionally, when a ChangeSet is running, all the
+// entities targeted by the different changes are locked until the ChangeSet
+// has completed (either succeeded, cancelled, or failed). If you try to start
+// a ChangeSet containing a change against an entity that is already locked,
+// you will receive a ResourceInUseException.
+//
+// For example, you cannot start the ChangeSet described in the example (https://docs.aws.amazon.com/marketplace-catalog/latest/api-reference/API_StartChangeSet.html#API_StartChangeSet_Examples)
+// below because it contains two changes to execute the same change type (AddRevisions)
+// against the same entity (entity-id@1).
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -943,6 +953,12 @@ type ChangeSetSummaryListItem struct {
 	// one entity.
 	EntityIdList []*string `type:"list"`
 
+	// Returned if the change set is in FAILED status. Can be either CLIENT_ERROR,
+	// which means that there are issues with the request (see the ErrorDetailList
+	// of DescribeChangeSet), or SERVER_FAULT, which means that there is a problem
+	// in the system, and you should retry your request.
+	FailureCode *string `type:"string" enum:"FailureCode"`
+
 	// The time, in ISO 8601 format (2018-02-27T13:45:22Z), when the change set
 	// was started.
 	StartTime *string `min:"20" type:"string"`
@@ -991,6 +1007,12 @@ func (s *ChangeSetSummaryListItem) SetEntityIdList(v []*string) *ChangeSetSummar
 	return s
 }
 
+// SetFailureCode sets the FailureCode field's value.
+func (s *ChangeSetSummaryListItem) SetFailureCode(v string) *ChangeSetSummaryListItem {
+	s.FailureCode = &v
+	return s
+}
+
 // SetStartTime sets the StartTime field's value.
 func (s *ChangeSetSummaryListItem) SetStartTime(v string) *ChangeSetSummaryListItem {
 	s.StartTime = &v
@@ -1010,6 +1032,10 @@ type ChangeSummary struct {
 
 	// The type of the change.
 	ChangeType *string `min:"1" type:"string"`
+
+	// This object contains details specific to the change type of the requested
+	// change.
+	Details *string `min:"2" type:"string"`
 
 	// The entity to be changed.
 	Entity *Entity `type:"structure"`
@@ -1031,6 +1057,12 @@ func (s ChangeSummary) GoString() string {
 // SetChangeType sets the ChangeType field's value.
 func (s *ChangeSummary) SetChangeType(v string) *ChangeSummary {
 	s.ChangeType = &v
+	return s
+}
+
+// SetDetails sets the Details field's value.
+func (s *ChangeSummary) SetDetails(v string) *ChangeSummary {
+	s.Details = &v
 	return s
 }
 
@@ -1127,6 +1159,12 @@ type DescribeChangeSetOutput struct {
 	// state. Null if the request is not in a terminal state.
 	EndTime *string `min:"20" type:"string"`
 
+	// Returned if the change set is in FAILED status. Can be either CLIENT_ERROR,
+	// which means that there are issues with the request (see the ErrorDetailList),
+	// or SERVER_FAULT, which means that there is a problem in the system, and you
+	// should retry your request.
+	FailureCode *string `type:"string" enum:"FailureCode"`
+
 	// Returned if there is a failure on the change set, but that failure is not
 	// related to any of the changes in the request.
 	FailureDescription *string `type:"string"`
@@ -1176,6 +1214,12 @@ func (s *DescribeChangeSetOutput) SetChangeSetName(v string) *DescribeChangeSetO
 // SetEndTime sets the EndTime field's value.
 func (s *DescribeChangeSetOutput) SetEndTime(v string) *DescribeChangeSetOutput {
 	s.EndTime = &v
+	return s
+}
+
+// SetFailureCode sets the FailureCode field's value.
+func (s *DescribeChangeSetOutput) SetFailureCode(v string) *DescribeChangeSetOutput {
+	s.FailureCode = &v
 	return s
 }
 
@@ -1388,13 +1432,13 @@ type EntitySummary struct {
 	// The last time the entity was published, using ISO 8601 format (2018-02-27T13:45:22Z).
 	LastModifiedDate *string `type:"string"`
 
-	// The name for the entity. This value is not unique. It is defined by the provider.
+	// The name for the entity. This value is not unique. It is defined by the seller.
 	Name *string `type:"string"`
 
-	// The visibility status of the entity to subscribers. This value can be Public
-	// (everyone can view the entity), Limited (the entity is visible to limited
-	// accounts only), or Restricted (the entity was published and then unpublished
-	// and only existing subscribers can view it).
+	// The visibility status of the entity to buyers. This value can be Public (everyone
+	// can view the entity), Limited (the entity is visible to limited accounts
+	// only), or Restricted (the entity was published and then unpublished and only
+	// existing buyers can view it).
 	Visibility *string `type:"string"`
 }
 
@@ -1628,7 +1672,7 @@ type ListChangeSetsInput struct {
 	// results.
 	NextToken *string `min:"1" type:"string"`
 
-	// An object that contains two attributes, sortBy and sortOrder.
+	// An object that contains two attributes, SortBy and SortOrder.
 	Sort *Sort `type:"structure"`
 }
 
@@ -1768,7 +1812,7 @@ type ListEntitiesInput struct {
 	// The value of the next token, if it exists. Null if there are no more results.
 	NextToken *string `min:"1" type:"string"`
 
-	// An object that contains two attributes, sortBy and sortOrder.
+	// An object that contains two attributes, SortBy and SortOrder.
 	Sort *Sort `type:"structure"`
 }
 
@@ -2120,7 +2164,7 @@ func (s *ServiceQuotaExceededException) RequestID() string {
 	return s.RespMetadata.RequestID
 }
 
-// An object that contains two attributes, sortBy and sortOrder.
+// An object that contains two attributes, SortBy and SortOrder.
 type Sort struct {
 	_ struct{} `type:"structure"`
 
@@ -2423,6 +2467,33 @@ const (
 	ChangeStatusFailed = "FAILED"
 )
 
+// ChangeStatus_Values returns all elements of the ChangeStatus enum
+func ChangeStatus_Values() []string {
+	return []string{
+		ChangeStatusPreparing,
+		ChangeStatusApplying,
+		ChangeStatusSucceeded,
+		ChangeStatusCancelled,
+		ChangeStatusFailed,
+	}
+}
+
+const (
+	// FailureCodeClientError is a FailureCode enum value
+	FailureCodeClientError = "CLIENT_ERROR"
+
+	// FailureCodeServerFault is a FailureCode enum value
+	FailureCodeServerFault = "SERVER_FAULT"
+)
+
+// FailureCode_Values returns all elements of the FailureCode enum
+func FailureCode_Values() []string {
+	return []string{
+		FailureCodeClientError,
+		FailureCodeServerFault,
+	}
+}
+
 const (
 	// SortOrderAscending is a SortOrder enum value
 	SortOrderAscending = "ASCENDING"
@@ -2430,3 +2501,11 @@ const (
 	// SortOrderDescending is a SortOrder enum value
 	SortOrderDescending = "DESCENDING"
 )
+
+// SortOrder_Values returns all elements of the SortOrder enum
+func SortOrder_Values() []string {
+	return []string{
+		SortOrderAscending,
+		SortOrderDescending,
+	}
+}
