@@ -2851,8 +2851,8 @@ func (s *CreateDataSetOutput) SetUpdatedAt(v time.Time) *CreateDataSetOutput {
 
 // The CreateJob request. AWS Data Exchange Jobs are asynchronous import or
 // export operations used to create or copy assets. A data set owner can both
-// import and export as they see fit. Someone with an entitlement to a data
-// set can only export. Jobs are deleted 90 days after they are created. Created
+// import and export assets. A subscriber with an entitlement to a data set
+// can only export. Jobs are deleted 90 days after they are created. Created
 // jobs must be started with the StartJob operation.
 type CreateJobInput struct {
 	_ struct{} `type:"structure"`
@@ -3789,6 +3789,129 @@ func (s *ExportAssetsToS3ResponseDetails) SetEncryption(v *ExportServerSideEncry
 // SetRevisionId sets the RevisionId field's value.
 func (s *ExportAssetsToS3ResponseDetails) SetRevisionId(v string) *ExportAssetsToS3ResponseDetails {
 	s.RevisionId = &v
+	return s
+}
+
+// Details of the operation to be performed by the job.
+type ExportRevisionsToS3RequestDetails struct {
+	_ struct{} `type:"structure"`
+
+	// The unique identifier for the data set associated with this export job.
+	//
+	// DataSetId is a required field
+	DataSetId *string `type:"string" required:"true"`
+
+	// Encryption configuration for the export job.
+	Encryption *ExportServerSideEncryption `type:"structure"`
+
+	// The destination for the revision.
+	//
+	// RevisionDestinations is a required field
+	RevisionDestinations []*RevisionDestinationEntry `type:"list" required:"true"`
+}
+
+// String returns the string representation
+func (s ExportRevisionsToS3RequestDetails) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ExportRevisionsToS3RequestDetails) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *ExportRevisionsToS3RequestDetails) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "ExportRevisionsToS3RequestDetails"}
+	if s.DataSetId == nil {
+		invalidParams.Add(request.NewErrParamRequired("DataSetId"))
+	}
+	if s.RevisionDestinations == nil {
+		invalidParams.Add(request.NewErrParamRequired("RevisionDestinations"))
+	}
+	if s.Encryption != nil {
+		if err := s.Encryption.Validate(); err != nil {
+			invalidParams.AddNested("Encryption", err.(request.ErrInvalidParams))
+		}
+	}
+	if s.RevisionDestinations != nil {
+		for i, v := range s.RevisionDestinations {
+			if v == nil {
+				continue
+			}
+			if err := v.Validate(); err != nil {
+				invalidParams.AddNested(fmt.Sprintf("%s[%v]", "RevisionDestinations", i), err.(request.ErrInvalidParams))
+			}
+		}
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetDataSetId sets the DataSetId field's value.
+func (s *ExportRevisionsToS3RequestDetails) SetDataSetId(v string) *ExportRevisionsToS3RequestDetails {
+	s.DataSetId = &v
+	return s
+}
+
+// SetEncryption sets the Encryption field's value.
+func (s *ExportRevisionsToS3RequestDetails) SetEncryption(v *ExportServerSideEncryption) *ExportRevisionsToS3RequestDetails {
+	s.Encryption = v
+	return s
+}
+
+// SetRevisionDestinations sets the RevisionDestinations field's value.
+func (s *ExportRevisionsToS3RequestDetails) SetRevisionDestinations(v []*RevisionDestinationEntry) *ExportRevisionsToS3RequestDetails {
+	s.RevisionDestinations = v
+	return s
+}
+
+// Details about the export revisions to Amazon S3 response.
+type ExportRevisionsToS3ResponseDetails struct {
+	_ struct{} `type:"structure"`
+
+	// The unique identifier for the data set associated with this export job.
+	//
+	// DataSetId is a required field
+	DataSetId *string `type:"string" required:"true"`
+
+	// Encryption configuration of the export job.
+	Encryption *ExportServerSideEncryption `type:"structure"`
+
+	// The destination in Amazon S3 where the revision is exported.
+	//
+	// RevisionDestinations is a required field
+	RevisionDestinations []*RevisionDestinationEntry `type:"list" required:"true"`
+}
+
+// String returns the string representation
+func (s ExportRevisionsToS3ResponseDetails) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ExportRevisionsToS3ResponseDetails) GoString() string {
+	return s.String()
+}
+
+// SetDataSetId sets the DataSetId field's value.
+func (s *ExportRevisionsToS3ResponseDetails) SetDataSetId(v string) *ExportRevisionsToS3ResponseDetails {
+	s.DataSetId = &v
+	return s
+}
+
+// SetEncryption sets the Encryption field's value.
+func (s *ExportRevisionsToS3ResponseDetails) SetEncryption(v *ExportServerSideEncryption) *ExportRevisionsToS3ResponseDetails {
+	s.Encryption = v
+	return s
+}
+
+// SetRevisionDestinations sets the RevisionDestinations field's value.
+func (s *ExportRevisionsToS3ResponseDetails) SetRevisionDestinations(v []*RevisionDestinationEntry) *ExportRevisionsToS3ResponseDetails {
+	s.RevisionDestinations = v
 	return s
 }
 
@@ -5463,6 +5586,9 @@ type RequestDetails struct {
 	// Details about the export to Amazon S3 request.
 	ExportAssetsToS3 *ExportAssetsToS3RequestDetails `type:"structure"`
 
+	// Details about the export to Amazon S3 request.
+	ExportRevisionsToS3 *ExportRevisionsToS3RequestDetails `type:"structure"`
+
 	// Details about the import from signed URL request.
 	ImportAssetFromSignedUrl *ImportAssetFromSignedUrlRequestDetails `type:"structure"`
 
@@ -5493,6 +5619,11 @@ func (s *RequestDetails) Validate() error {
 			invalidParams.AddNested("ExportAssetsToS3", err.(request.ErrInvalidParams))
 		}
 	}
+	if s.ExportRevisionsToS3 != nil {
+		if err := s.ExportRevisionsToS3.Validate(); err != nil {
+			invalidParams.AddNested("ExportRevisionsToS3", err.(request.ErrInvalidParams))
+		}
+	}
 	if s.ImportAssetFromSignedUrl != nil {
 		if err := s.ImportAssetFromSignedUrl.Validate(); err != nil {
 			invalidParams.AddNested("ImportAssetFromSignedUrl", err.(request.ErrInvalidParams))
@@ -5519,6 +5650,12 @@ func (s *RequestDetails) SetExportAssetToSignedUrl(v *ExportAssetToSignedUrlRequ
 // SetExportAssetsToS3 sets the ExportAssetsToS3 field's value.
 func (s *RequestDetails) SetExportAssetsToS3(v *ExportAssetsToS3RequestDetails) *RequestDetails {
 	s.ExportAssetsToS3 = v
+	return s
+}
+
+// SetExportRevisionsToS3 sets the ExportRevisionsToS3 field's value.
+func (s *RequestDetails) SetExportRevisionsToS3(v *ExportRevisionsToS3RequestDetails) *RequestDetails {
+	s.ExportRevisionsToS3 = v
 	return s
 }
 
@@ -5607,6 +5744,9 @@ type ResponseDetails struct {
 	// Details for the export to Amazon S3 response.
 	ExportAssetsToS3 *ExportAssetsToS3ResponseDetails `type:"structure"`
 
+	// Details for the export revisions to Amazon S3 response.
+	ExportRevisionsToS3 *ExportRevisionsToS3ResponseDetails `type:"structure"`
+
 	// Details for the import from signed URL response.
 	ImportAssetFromSignedUrl *ImportAssetFromSignedUrlResponseDetails `type:"structure"`
 
@@ -5636,6 +5776,12 @@ func (s *ResponseDetails) SetExportAssetsToS3(v *ExportAssetsToS3ResponseDetails
 	return s
 }
 
+// SetExportRevisionsToS3 sets the ExportRevisionsToS3 field's value.
+func (s *ResponseDetails) SetExportRevisionsToS3(v *ExportRevisionsToS3ResponseDetails) *ResponseDetails {
+	s.ExportRevisionsToS3 = v
+	return s
+}
+
 // SetImportAssetFromSignedUrl sets the ImportAssetFromSignedUrl field's value.
 func (s *ResponseDetails) SetImportAssetFromSignedUrl(v *ImportAssetFromSignedUrlResponseDetails) *ResponseDetails {
 	s.ImportAssetFromSignedUrl = v
@@ -5645,6 +5791,70 @@ func (s *ResponseDetails) SetImportAssetFromSignedUrl(v *ImportAssetFromSignedUr
 // SetImportAssetsFromS3 sets the ImportAssetsFromS3 field's value.
 func (s *ResponseDetails) SetImportAssetsFromS3(v *ImportAssetsFromS3ResponseDetails) *ResponseDetails {
 	s.ImportAssetsFromS3 = v
+	return s
+}
+
+// The destination where the assets in the revision will be exported.
+type RevisionDestinationEntry struct {
+	_ struct{} `type:"structure"`
+
+	// The S3 bucket that is the destination for the assets in the revision.
+	//
+	// Bucket is a required field
+	Bucket *string `type:"string" required:"true"`
+
+	// A string representing the pattern for generated names of the individual assets
+	// in the revision. For more information about key patterns, see Key patterns
+	// when exporting revisions (https://docs.aws.amazon.com/data-exchange/latest/userguide/jobs.html#revision-export-keypatterns).
+	KeyPattern *string `type:"string"`
+
+	// The unique identifier for the revision.
+	//
+	// RevisionId is a required field
+	RevisionId *string `type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s RevisionDestinationEntry) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s RevisionDestinationEntry) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *RevisionDestinationEntry) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "RevisionDestinationEntry"}
+	if s.Bucket == nil {
+		invalidParams.Add(request.NewErrParamRequired("Bucket"))
+	}
+	if s.RevisionId == nil {
+		invalidParams.Add(request.NewErrParamRequired("RevisionId"))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetBucket sets the Bucket field's value.
+func (s *RevisionDestinationEntry) SetBucket(v string) *RevisionDestinationEntry {
+	s.Bucket = &v
+	return s
+}
+
+// SetKeyPattern sets the KeyPattern field's value.
+func (s *RevisionDestinationEntry) SetKeyPattern(v string) *RevisionDestinationEntry {
+	s.KeyPattern = &v
+	return s
+}
+
+// SetRevisionId sets the RevisionId field's value.
+func (s *RevisionDestinationEntry) SetRevisionId(v string) *RevisionDestinationEntry {
+	s.RevisionId = &v
 	return s
 }
 
@@ -6661,6 +6871,13 @@ const (
 	AssetTypeS3Snapshot = "S3_SNAPSHOT"
 )
 
+// AssetType_Values returns all elements of the AssetType enum
+func AssetType_Values() []string {
+	return []string{
+		AssetTypeS3Snapshot,
+	}
+}
+
 const (
 	// CodeAccessDeniedException is a Code enum value
 	CodeAccessDeniedException = "ACCESS_DENIED_EXCEPTION"
@@ -6684,6 +6901,19 @@ const (
 	CodeMalwareScanEncryptedFile = "MALWARE_SCAN_ENCRYPTED_FILE"
 )
 
+// Code_Values returns all elements of the Code enum
+func Code_Values() []string {
+	return []string{
+		CodeAccessDeniedException,
+		CodeInternalServerException,
+		CodeMalwareDetected,
+		CodeResourceNotFoundException,
+		CodeServiceQuotaExceededException,
+		CodeValidationException,
+		CodeMalwareScanEncryptedFile,
+	}
+}
+
 // The name of the limit that was reached.
 const (
 	// JobErrorLimitNameAssetsperrevision is a JobErrorLimitName enum value
@@ -6693,6 +6923,14 @@ const (
 	JobErrorLimitNameAssetsizeinGb = "Asset size in GB"
 )
 
+// JobErrorLimitName_Values returns all elements of the JobErrorLimitName enum
+func JobErrorLimitName_Values() []string {
+	return []string{
+		JobErrorLimitNameAssetsperrevision,
+		JobErrorLimitNameAssetsizeinGb,
+	}
+}
+
 // The types of resource which the job error can apply to.
 const (
 	// JobErrorResourceTypesRevision is a JobErrorResourceTypes enum value
@@ -6701,6 +6939,14 @@ const (
 	// JobErrorResourceTypesAsset is a JobErrorResourceTypes enum value
 	JobErrorResourceTypesAsset = "ASSET"
 )
+
+// JobErrorResourceTypes_Values returns all elements of the JobErrorResourceTypes enum
+func JobErrorResourceTypes_Values() []string {
+	return []string{
+		JobErrorResourceTypesRevision,
+		JobErrorResourceTypesAsset,
+	}
+}
 
 const (
 	// LimitNameProductsperaccount is a LimitName enum value
@@ -6740,6 +6986,24 @@ const (
 	LimitNameConcurrentinprogressjobstoexportassetstoasignedUrl = "Concurrent in progress jobs to export assets to a signed URL"
 )
 
+// LimitName_Values returns all elements of the LimitName enum
+func LimitName_Values() []string {
+	return []string{
+		LimitNameProductsperaccount,
+		LimitNameDatasetsperaccount,
+		LimitNameDatasetsperproduct,
+		LimitNameRevisionsperdataset,
+		LimitNameAssetsperrevision,
+		LimitNameAssetsperimportjobfromAmazonS3,
+		LimitNameAssetperexportjobfromAmazonS3,
+		LimitNameAssetsizeinGb,
+		LimitNameConcurrentinprogressjobstoimportassetsfromAmazonS3,
+		LimitNameConcurrentinprogressjobstoimportassetsfromasignedUrl,
+		LimitNameConcurrentinprogressjobstoexportassetstoAmazonS3,
+		LimitNameConcurrentinprogressjobstoexportassetstoasignedUrl,
+	}
+}
+
 // A property that defines the data set as OWNED by the account (for providers)
 // or ENTITLED to the account (for subscribers). When an owned data set is published
 // in a product, AWS Data Exchange creates a copy of the data set. Subscribers
@@ -6751,6 +7015,14 @@ const (
 	// OriginEntitled is a Origin enum value
 	OriginEntitled = "ENTITLED"
 )
+
+// Origin_Values returns all elements of the Origin enum
+func Origin_Values() []string {
+	return []string{
+		OriginOwned,
+		OriginEntitled,
+	}
+}
 
 const (
 	// ResourceTypeDataSet is a ResourceType enum value
@@ -6766,6 +7038,16 @@ const (
 	ResourceTypeJob = "JOB"
 )
 
+// ResourceType_Values returns all elements of the ResourceType enum
+func ResourceType_Values() []string {
+	return []string{
+		ResourceTypeDataSet,
+		ResourceTypeRevision,
+		ResourceTypeAsset,
+		ResourceTypeJob,
+	}
+}
+
 // The types of encryption supported in export jobs to Amazon S3.
 const (
 	// ServerSideEncryptionTypesAwsKms is a ServerSideEncryptionTypes enum value
@@ -6774,6 +7056,14 @@ const (
 	// ServerSideEncryptionTypesAes256 is a ServerSideEncryptionTypes enum value
 	ServerSideEncryptionTypesAes256 = "AES256"
 )
+
+// ServerSideEncryptionTypes_Values returns all elements of the ServerSideEncryptionTypes enum
+func ServerSideEncryptionTypes_Values() []string {
+	return []string{
+		ServerSideEncryptionTypesAwsKms,
+		ServerSideEncryptionTypesAes256,
+	}
+}
 
 const (
 	// StateWaiting is a State enum value
@@ -6795,6 +7085,18 @@ const (
 	StateTimedOut = "TIMED_OUT"
 )
 
+// State_Values returns all elements of the State enum
+func State_Values() []string {
+	return []string{
+		StateWaiting,
+		StateInProgress,
+		StateError,
+		StateCompleted,
+		StateCancelled,
+		StateTimedOut,
+	}
+}
+
 const (
 	// TypeImportAssetsFromS3 is a Type enum value
 	TypeImportAssetsFromS3 = "IMPORT_ASSETS_FROM_S3"
@@ -6807,4 +7109,18 @@ const (
 
 	// TypeExportAssetToSignedUrl is a Type enum value
 	TypeExportAssetToSignedUrl = "EXPORT_ASSET_TO_SIGNED_URL"
+
+	// TypeExportRevisionsToS3 is a Type enum value
+	TypeExportRevisionsToS3 = "EXPORT_REVISIONS_TO_S3"
 )
+
+// Type_Values returns all elements of the Type enum
+func Type_Values() []string {
+	return []string{
+		TypeImportAssetsFromS3,
+		TypeImportAssetFromSignedUrl,
+		TypeExportAssetsToS3,
+		TypeExportAssetToSignedUrl,
+		TypeExportRevisionsToS3,
+	}
+}
