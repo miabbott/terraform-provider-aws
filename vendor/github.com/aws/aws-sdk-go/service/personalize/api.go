@@ -161,12 +161,18 @@ func (c *Personalize) CreateCampaignRequest(input *CreateCampaignInput) (req *re
 // Transactions per second (TPS) is the throughput and unit of billing for Amazon
 // Personalize. The minimum provisioned TPS (minProvisionedTPS) specifies the
 // baseline throughput provisioned by Amazon Personalize, and thus, the minimum
-// billing charge. If your TPS increases beyond minProvisionedTPS, Amazon Personalize
-// auto-scales the provisioned capacity up and down, but never below minProvisionedTPS,
-// to maintain a 70% utilization. There's a short time delay while the capacity
-// is increased that might cause loss of transactions. It's recommended to start
-// with a low minProvisionedTPS, track your usage using Amazon CloudWatch metrics,
-// and then increase the minProvisionedTPS as necessary.
+// billing charge.
+//
+// If your TPS increases beyond minProvisionedTPS, Amazon Personalize auto-scales
+// the provisioned capacity up and down, but never below minProvisionedTPS.
+// There's a short time delay while the capacity is increased that might cause
+// loss of transactions.
+//
+// The actual TPS used is calculated as the average requests/second within a
+// 5-minute window. You pay for maximum of either the minimum provisioned TPS
+// or the actual TPS. We recommend starting with a low minProvisionedTPS, track
+// your usage using Amazon CloudWatch metrics, and then increase the minProvisionedTPS
+// as necessary.
 //
 // Status
 //
@@ -534,9 +540,12 @@ func (c *Personalize) CreateDatasetImportJobRequest(input *CreateDatasetImportJo
 // Creates a job that imports training data from your data source (an Amazon
 // S3 bucket) to an Amazon Personalize dataset. To allow Amazon Personalize
 // to import the training data, you must specify an AWS Identity and Access
-// Management (IAM) role that has permission to read from the data source.
+// Management (IAM) role that has permission to read from the data source, as
+// Amazon Personalize makes a copy of your data and processes it in an internal
+// AWS system.
 //
-// The dataset import job replaces any previous data in the dataset.
+// The dataset import job replaces any existing data in the dataset that you
+// imported in bulk.
 //
 // Status
 //
@@ -648,21 +657,18 @@ func (c *Personalize) CreateEventTrackerRequest(input *CreateEventTrackerInput) 
 
 // CreateEventTracker API operation for Amazon Personalize.
 //
-// Creates an event tracker that you use when sending event data to the specified
+// Creates an event tracker that you use when adding event data to a specified
 // dataset group using the PutEvents (https://docs.aws.amazon.com/personalize/latest/dg/API_UBS_PutEvents.html)
 // API.
-//
-// When Amazon Personalize creates an event tracker, it also creates an event-interactions
-// dataset in the dataset group associated with the event tracker. The event-interactions
-// dataset stores the event data from the PutEvents call. The contents of this
-// dataset are not available to the user.
 //
 // Only one event tracker can be associated with a dataset group. You will get
 // an error if you call CreateEventTracker using the same dataset group as an
 // existing event tracker.
 //
-// When you send event data you include your tracking ID. The tracking ID identifies
-// the customer and authorizes the customer to send the data.
+// When you create an event tracker, the response includes a tracking ID, which
+// you pass as a parameter when you use the PutEvents (https://docs.aws.amazon.com/personalize/latest/dg/API_UBS_PutEvents.html)
+// operation. Amazon Personalize then appends the event data to the Interactions
+// dataset of the dataset group you specify in your event tracker.
 //
 // The event tracker can be in one of the following states:
 //
@@ -771,8 +777,7 @@ func (c *Personalize) CreateFilterRequest(input *CreateFilterInput) (req *reques
 
 // CreateFilter API operation for Amazon Personalize.
 //
-// Creates a recommendation filter. For more information, see Using Filters
-// with Amazon Personalize.
+// Creates a recommendation filter. For more information, see filter.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -977,6 +982,9 @@ func (c *Personalize) CreateSolutionRequest(input *CreateSolutionInput) (req *re
 // analyze your data and select the optimum USER_PERSONALIZATION recipe for
 // you.
 //
+// Amazon Personalize doesn't support configuring the hpoObjective for solution
+// hyperparameter optimization at this time.
+//
 // Status
 //
 // A solution can be in one of the following states:
@@ -1134,6 +1142,9 @@ func (c *Personalize) CreateSolutionVersionRequest(input *CreateSolutionVersionI
 //
 //   * ResourceNotFoundException
 //   Could not find the specified resource.
+//
+//   * LimitExceededException
+//   The limit on the number of requests per second has been exceeded.
 //
 //   * ResourceInUseException
 //   The specified resource is in use.
@@ -1578,6 +1589,9 @@ func (c *Personalize) DeleteFilterRequest(input *DeleteFilterInput) (req *reques
 //
 //   * ResourceNotFoundException
 //   Could not find the specified resource.
+//
+//   * ResourceInUseException
+//   The specified resource is in use.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/personalize-2018-05-22/DeleteFilter
 func (c *Personalize) DeleteFilter(input *DeleteFilterInput) (*DeleteFilterOutput, error) {
@@ -4767,6 +4781,10 @@ type BatchInferenceJob struct {
 	// The Amazon Resource Name (ARN) of the batch inference job.
 	BatchInferenceJobArn *string `locationName:"batchInferenceJobArn" type:"string"`
 
+	// A string to string map of the configuration details of a batch inference
+	// job.
+	BatchInferenceJobConfig *BatchInferenceJobConfig `locationName:"batchInferenceJobConfig" type:"structure"`
+
 	// The time at which the batch inference job was created.
 	CreationDateTime *time.Time `locationName:"creationDateTime" type:"timestamp"`
 
@@ -4828,6 +4846,12 @@ func (s BatchInferenceJob) GoString() string {
 // SetBatchInferenceJobArn sets the BatchInferenceJobArn field's value.
 func (s *BatchInferenceJob) SetBatchInferenceJobArn(v string) *BatchInferenceJob {
 	s.BatchInferenceJobArn = &v
+	return s
+}
+
+// SetBatchInferenceJobConfig sets the BatchInferenceJobConfig field's value.
+func (s *BatchInferenceJob) SetBatchInferenceJobConfig(v *BatchInferenceJobConfig) *BatchInferenceJob {
+	s.BatchInferenceJobConfig = v
 	return s
 }
 
@@ -4894,6 +4918,33 @@ func (s *BatchInferenceJob) SetSolutionVersionArn(v string) *BatchInferenceJob {
 // SetStatus sets the Status field's value.
 func (s *BatchInferenceJob) SetStatus(v string) *BatchInferenceJob {
 	s.Status = &v
+	return s
+}
+
+// The configuration details of a batch inference job.
+type BatchInferenceJobConfig struct {
+	_ struct{} `type:"structure"`
+
+	// A string to string map specifying the exploration configuration hyperparameters,
+	// including explorationWeight and explorationItemAgeCutOff, you want to use
+	// to configure the amount of item exploration Amazon Personalize uses when
+	// recommending items. See native-recipe-new-item-USER_PERSONALIZATION.
+	ItemExplorationConfig map[string]*string `locationName:"itemExplorationConfig" type:"map"`
+}
+
+// String returns the string representation
+func (s BatchInferenceJobConfig) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s BatchInferenceJobConfig) GoString() string {
+	return s.String()
+}
+
+// SetItemExplorationConfig sets the ItemExplorationConfig field's value.
+func (s *BatchInferenceJobConfig) SetItemExplorationConfig(v map[string]*string) *BatchInferenceJobConfig {
+	s.ItemExplorationConfig = v
 	return s
 }
 
@@ -5083,6 +5134,9 @@ type Campaign struct {
 	// The Amazon Resource Name (ARN) of the campaign.
 	CampaignArn *string `locationName:"campaignArn" type:"string"`
 
+	// The configuration details of a campaign.
+	CampaignConfig *CampaignConfig `locationName:"campaignConfig" type:"structure"`
+
 	// The date and time (in Unix format) that the campaign was created.
 	CreationDateTime *time.Time `locationName:"creationDateTime" type:"timestamp"`
 
@@ -5132,6 +5186,12 @@ func (s *Campaign) SetCampaignArn(v string) *Campaign {
 	return s
 }
 
+// SetCampaignConfig sets the CampaignConfig field's value.
+func (s *Campaign) SetCampaignConfig(v *CampaignConfig) *Campaign {
+	s.CampaignConfig = v
+	return s
+}
+
 // SetCreationDateTime sets the CreationDateTime field's value.
 func (s *Campaign) SetCreationDateTime(v time.Time) *Campaign {
 	s.CreationDateTime = &v
@@ -5177,6 +5237,35 @@ func (s *Campaign) SetSolutionVersionArn(v string) *Campaign {
 // SetStatus sets the Status field's value.
 func (s *Campaign) SetStatus(v string) *Campaign {
 	s.Status = &v
+	return s
+}
+
+// The configuration details of a campaign.
+type CampaignConfig struct {
+	_ struct{} `type:"structure"`
+
+	// A string to string map specifying the exploration configuration hyperparameters,
+	// including explorationWeight and explorationItemAgeCutOff, you want to use
+	// to configure the amount of item exploration Amazon Personalize uses when
+	// recommending items. Provide itemExplorationConfig data only if your solution
+	// uses the User-Personalization (https://docs.aws.amazon.com/personalize/latest/dg/native-recipe-new-item-USER_PERSONALIZATION.html)
+	// recipe.
+	ItemExplorationConfig map[string]*string `locationName:"itemExplorationConfig" type:"map"`
+}
+
+// String returns the string representation
+func (s CampaignConfig) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CampaignConfig) GoString() string {
+	return s.String()
+}
+
+// SetItemExplorationConfig sets the ItemExplorationConfig field's value.
+func (s *CampaignConfig) SetItemExplorationConfig(v map[string]*string) *CampaignConfig {
+	s.ItemExplorationConfig = v
 	return s
 }
 
@@ -5261,6 +5350,9 @@ func (s *CampaignSummary) SetStatus(v string) *CampaignSummary {
 type CampaignUpdateSummary struct {
 	_ struct{} `type:"structure"`
 
+	// The configuration details of a campaign.
+	CampaignConfig *CampaignConfig `locationName:"campaignConfig" type:"structure"`
+
 	// The date and time (in Unix time) that the campaign update was created.
 	CreationDateTime *time.Time `locationName:"creationDateTime" type:"timestamp"`
 
@@ -5295,6 +5387,12 @@ func (s CampaignUpdateSummary) String() string {
 // GoString returns the string representation
 func (s CampaignUpdateSummary) GoString() string {
 	return s.String()
+}
+
+// SetCampaignConfig sets the CampaignConfig field's value.
+func (s *CampaignUpdateSummary) SetCampaignConfig(v *CampaignConfig) *CampaignUpdateSummary {
+	s.CampaignConfig = v
+	return s
 }
 
 // SetCreationDateTime sets the CreationDateTime field's value.
@@ -5427,6 +5525,9 @@ func (s *ContinuousHyperParameterRange) SetName(v string) *ContinuousHyperParame
 type CreateBatchInferenceJobInput struct {
 	_ struct{} `type:"structure"`
 
+	// The configuration details of a batch inference job.
+	BatchInferenceJobConfig *BatchInferenceJobConfig `locationName:"batchInferenceJobConfig" type:"structure"`
+
 	// The ARN of the filter to apply to the batch inference job. For more information
 	// on using filters, see Using Filters with Amazon Personalize.
 	FilterArn *string `locationName:"filterArn" type:"string"`
@@ -5511,6 +5612,12 @@ func (s *CreateBatchInferenceJobInput) Validate() error {
 	return nil
 }
 
+// SetBatchInferenceJobConfig sets the BatchInferenceJobConfig field's value.
+func (s *CreateBatchInferenceJobInput) SetBatchInferenceJobConfig(v *BatchInferenceJobConfig) *CreateBatchInferenceJobInput {
+	s.BatchInferenceJobConfig = v
+	return s
+}
+
 // SetFilterArn sets the FilterArn field's value.
 func (s *CreateBatchInferenceJobInput) SetFilterArn(v string) *CreateBatchInferenceJobInput {
 	s.FilterArn = &v
@@ -5579,6 +5686,9 @@ func (s *CreateBatchInferenceJobOutput) SetBatchInferenceJobArn(v string) *Creat
 type CreateCampaignInput struct {
 	_ struct{} `type:"structure"`
 
+	// The configuration details of a campaign.
+	CampaignConfig *CampaignConfig `locationName:"campaignConfig" type:"structure"`
+
 	// Specifies the requested minimum provisioned transactions (recommendations)
 	// per second that Amazon Personalize will support.
 	//
@@ -5630,6 +5740,12 @@ func (s *CreateCampaignInput) Validate() error {
 		return invalidParams
 	}
 	return nil
+}
+
+// SetCampaignConfig sets the CampaignConfig field's value.
+func (s *CreateCampaignInput) SetCampaignConfig(v *CampaignConfig) *CreateCampaignInput {
+	s.CampaignConfig = v
+	return s
 }
 
 // SetMinProvisionedTPS sets the MinProvisionedTPS field's value.
@@ -6076,14 +6192,9 @@ type CreateFilterInput struct {
 	// DatasetGroupArn is a required field
 	DatasetGroupArn *string `locationName:"datasetGroupArn" type:"string" required:"true"`
 
-	// The filter expression that designates the interaction types that the filter
-	// will filter out. A filter expression must follow the following format:
-	//
-	// EXCLUDE itemId WHERE INTERACTIONS.event_type in ("EVENT_TYPE")
-	//
-	// Where "EVENT_TYPE" is the type of event to filter out. To filter out all
-	// items with any interactions history, set "*" as the EVENT_TYPE. For more
-	// information, see Using Filters with Amazon Personalize.
+	// The filter expression defines which items are included or excluded from recommendations.
+	// Filter expression must follow specific format rules. For information about
+	// filter expression structure and syntax, see filter-expressions.
 	//
 	// FilterExpression is a required field
 	FilterExpression *string `locationName:"filterExpression" min:"1" type:"string" required:"true" sensitive:"true"`
@@ -6260,6 +6371,9 @@ type CreateSolutionInput struct {
 	// When your have multiple event types (using an EVENT_TYPE schema field), this
 	// parameter specifies which event type (for example, 'click' or 'like') is
 	// used for training the model.
+	//
+	// If you do not provide an eventType, Amazon Personalize will use all interactions
+	// for training with equal weight regardless of type.
 	EventType *string `locationName:"eventType" type:"string"`
 
 	// The name for the solution.
@@ -6291,6 +6405,8 @@ type CreateSolutionInput struct {
 	// The configuration to use with the solution. When performAutoML is set to
 	// true, Amazon Personalize only evaluates the autoMLConfig section of the solution
 	// configuration.
+	//
+	// Amazon Personalize doesn't support configuring the hpoObjective at this time.
 	SolutionConfig *SolutionConfig `locationName:"solutionConfig" type:"structure"`
 }
 
@@ -6411,7 +6527,9 @@ type CreateSolutionVersionInput struct {
 	//
 	// The UPDATE option can only be used when you already have an active solution
 	// version created from the input solution using the FULL option and the input
-	// solution was trained with the native-recipe-hrnn-coldstart recipe.
+	// solution was trained with the User-Personalization (https://docs.aws.amazon.com/personalize/latest/dg/native-recipe-new-item-USER_PERSONALIZATION.html)
+	// recipe or the HRNN-Coldstart (https://docs.aws.amazon.com/personalize/latest/dg/native-recipe-hrnn-coldstart.html)
+	// recipe.
 	TrainingMode *string `locationName:"trainingMode" type:"string" enum:"TrainingMode"`
 }
 
@@ -8768,12 +8886,8 @@ type Filter struct {
 	FilterArn *string `locationName:"filterArn" type:"string"`
 
 	// Specifies the type of item interactions to filter out of recommendation results.
-	// The filter expression must follow the following format:
-	//
-	// EXCLUDE itemId WHERE INTERACTIONS.event_type in ("EVENT_TYPE")
-	//
-	// Where "EVENT_TYPE" is the type of event to filter out. For more information,
-	// see Using Filters with Amazon Personalize.
+	// The filter expression must follow specific format rules. For information
+	// about filter expression structure and syntax, see filter-expressions.
 	FilterExpression *string `locationName:"filterExpression" min:"1" type:"string" sensitive:"true"`
 
 	// The time at which the filter was last updated.
@@ -8992,9 +9106,7 @@ func (s *GetSolutionMetricsOutput) SetSolutionVersionArn(v string) *GetSolutionM
 	return s
 }
 
-// Describes the properties for hyperparameter optimization (HPO). For use with
-// the bring-your-own-recipe feature. Do not use for Amazon Personalize native
-// recipes.
+// Describes the properties for hyperparameter optimization (HPO).
 type HPOConfig struct {
 	_ struct{} `type:"structure"`
 
@@ -9002,6 +9114,8 @@ type HPOConfig struct {
 	AlgorithmHyperParameterRanges *HyperParameterRanges `locationName:"algorithmHyperParameterRanges" type:"structure"`
 
 	// The metric to optimize during HPO.
+	//
+	// Amazon Personalize doesn't support configuring the hpoObjective at this time.
 	HpoObjective *HPOObjective `locationName:"hpoObjective" type:"structure"`
 
 	// Describes the resource configuration for HPO.
@@ -9052,6 +9166,8 @@ func (s *HPOConfig) SetHpoResourceConfig(v *HPOResourceConfig) *HPOConfig {
 }
 
 // The metric to optimize during hyperparameter optimization (HPO).
+//
+// Amazon Personalize doesn't support configuring the hpoObjective at this time.
 type HPOObjective struct {
 	_ struct{} `type:"structure"`
 
@@ -10769,7 +10885,8 @@ type Solution struct {
 	DatasetGroupArn *string `locationName:"datasetGroupArn" type:"string"`
 
 	// The event type (for example, 'click' or 'like') that is used for training
-	// the model.
+	// the model. If no eventType is provided, Amazon Personalize uses all interactions
+	// for training with equal weight regardless of type.
 	EventType *string `locationName:"eventType" type:"string"`
 
 	// The date and time (in Unix time) that the solution was last updated.
@@ -11103,15 +11220,18 @@ type SolutionVersion struct {
 	// trains a model.
 	TrainingHours *float64 `locationName:"trainingHours" type:"double"`
 
-	// The scope of training used to create the solution version. The FULL option
-	// trains the solution version based on the entirety of the input solution's
-	// training data, while the UPDATE option processes only the training data that
-	// has changed since the creation of the last solution version. Choose UPDATE
-	// when you want to start recommending items added to the dataset without retraining
-	// the model.
+	// The scope of training to be performed when creating the solution version.
+	// The FULL option trains the solution version based on the entirety of the
+	// input solution's training data, while the UPDATE option processes only the
+	// data that has changed in comparison to the input solution. Choose UPDATE
+	// when you want to incrementally update your solution version instead of creating
+	// an entirely new one.
 	//
-	// The UPDATE option can only be used after you've created a solution version
-	// with the FULL option and the training solution uses the native-recipe-hrnn-coldstart.
+	// The UPDATE option can only be used when you already have an active solution
+	// version created from the input solution using the FULL option and the input
+	// solution was trained with the User-Personalization (https://docs.aws.amazon.com/personalize/latest/dg/native-recipe-new-item-USER_PERSONALIZATION.html)
+	// recipe or the HRNN-Coldstart (https://docs.aws.amazon.com/personalize/latest/dg/native-recipe-hrnn-coldstart.html)
+	// recipe.
 	TrainingMode *string `locationName:"trainingMode" type:"string" enum:"TrainingMode"`
 
 	// If hyperparameter optimization was performed, contains the hyperparameter
@@ -11317,6 +11437,9 @@ type UpdateCampaignInput struct {
 	// CampaignArn is a required field
 	CampaignArn *string `locationName:"campaignArn" type:"string" required:"true"`
 
+	// The configuration details of a campaign.
+	CampaignConfig *CampaignConfig `locationName:"campaignConfig" type:"structure"`
+
 	// Specifies the requested minimum provisioned transactions (recommendations)
 	// per second that Amazon Personalize will support.
 	MinProvisionedTPS *int64 `locationName:"minProvisionedTPS" min:"1" type:"integer"`
@@ -11354,6 +11477,12 @@ func (s *UpdateCampaignInput) Validate() error {
 // SetCampaignArn sets the CampaignArn field's value.
 func (s *UpdateCampaignInput) SetCampaignArn(v string) *UpdateCampaignInput {
 	s.CampaignArn = &v
+	return s
+}
+
+// SetCampaignConfig sets the CampaignConfig field's value.
+func (s *UpdateCampaignInput) SetCampaignConfig(v *CampaignConfig) *UpdateCampaignInput {
+	s.CampaignConfig = v
 	return s
 }
 
@@ -11397,6 +11526,13 @@ const (
 	RecipeProviderService = "SERVICE"
 )
 
+// RecipeProvider_Values returns all elements of the RecipeProvider enum
+func RecipeProvider_Values() []string {
+	return []string{
+		RecipeProviderService,
+	}
+}
+
 const (
 	// TrainingModeFull is a TrainingMode enum value
 	TrainingModeFull = "FULL"
@@ -11404,3 +11540,11 @@ const (
 	// TrainingModeUpdate is a TrainingMode enum value
 	TrainingModeUpdate = "UPDATE"
 )
+
+// TrainingMode_Values returns all elements of the TrainingMode enum
+func TrainingMode_Values() []string {
+	return []string{
+		TrainingModeFull,
+		TrainingModeUpdate,
+	}
+}

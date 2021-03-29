@@ -73,13 +73,16 @@ func (c *CloudWatchEvents) ActivateEventSourceRequest(input *ActivateEventSource
 //   An entity that you specified does not exist.
 //
 //   * ConcurrentModificationException
-//   There is concurrent modification on a rule or target.
+//   There is concurrent modification on a rule, target, archive, or replay.
 //
 //   * InvalidStateException
 //   The specified state is not a valid state for an event source.
 //
 //   * InternalException
 //   This exception occurs due to unexpected causes.
+//
+//   * OperationDisabledException
+//   The operation you are attempting is not available in this region.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/ActivateEventSource
 func (c *CloudWatchEvents) ActivateEventSource(input *ActivateEventSourceInput) (*ActivateEventSourceOutput, error) {
@@ -98,6 +101,372 @@ func (c *CloudWatchEvents) ActivateEventSource(input *ActivateEventSourceInput) 
 // for more information on using Contexts.
 func (c *CloudWatchEvents) ActivateEventSourceWithContext(ctx aws.Context, input *ActivateEventSourceInput, opts ...request.Option) (*ActivateEventSourceOutput, error) {
 	req, out := c.ActivateEventSourceRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opCancelReplay = "CancelReplay"
+
+// CancelReplayRequest generates a "aws/request.Request" representing the
+// client's request for the CancelReplay operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See CancelReplay for more information on using the CancelReplay
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the CancelReplayRequest method.
+//    req, resp := client.CancelReplayRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/CancelReplay
+func (c *CloudWatchEvents) CancelReplayRequest(input *CancelReplayInput) (req *request.Request, output *CancelReplayOutput) {
+	op := &request.Operation{
+		Name:       opCancelReplay,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &CancelReplayInput{}
+	}
+
+	output = &CancelReplayOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// CancelReplay API operation for Amazon CloudWatch Events.
+//
+// Cancels the specified replay.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation CancelReplay for usage and error information.
+//
+// Returned Error Types:
+//   * ResourceNotFoundException
+//   An entity that you specified does not exist.
+//
+//   * ConcurrentModificationException
+//   There is concurrent modification on a rule, target, archive, or replay.
+//
+//   * IllegalStatusException
+//   An error occurred because a replay can be canceled only when the state is
+//   Running or Starting.
+//
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/CancelReplay
+func (c *CloudWatchEvents) CancelReplay(input *CancelReplayInput) (*CancelReplayOutput, error) {
+	req, out := c.CancelReplayRequest(input)
+	return out, req.Send()
+}
+
+// CancelReplayWithContext is the same as CancelReplay with the addition of
+// the ability to pass a context and additional request options.
+//
+// See CancelReplay for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) CancelReplayWithContext(ctx aws.Context, input *CancelReplayInput, opts ...request.Option) (*CancelReplayOutput, error) {
+	req, out := c.CancelReplayRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opCreateApiDestination = "CreateApiDestination"
+
+// CreateApiDestinationRequest generates a "aws/request.Request" representing the
+// client's request for the CreateApiDestination operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See CreateApiDestination for more information on using the CreateApiDestination
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the CreateApiDestinationRequest method.
+//    req, resp := client.CreateApiDestinationRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/CreateApiDestination
+func (c *CloudWatchEvents) CreateApiDestinationRequest(input *CreateApiDestinationInput) (req *request.Request, output *CreateApiDestinationOutput) {
+	op := &request.Operation{
+		Name:       opCreateApiDestination,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &CreateApiDestinationInput{}
+	}
+
+	output = &CreateApiDestinationOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// CreateApiDestination API operation for Amazon CloudWatch Events.
+//
+// Creates an API destination, which is an HTTP invocation endpoint configured
+// as a target for events.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation CreateApiDestination for usage and error information.
+//
+// Returned Error Types:
+//   * ResourceAlreadyExistsException
+//   The resource you are trying to create already exists.
+//
+//   * ResourceNotFoundException
+//   An entity that you specified does not exist.
+//
+//   * LimitExceededException
+//   The request failed because it attempted to create resource beyond the allowed
+//   service quota.
+//
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/CreateApiDestination
+func (c *CloudWatchEvents) CreateApiDestination(input *CreateApiDestinationInput) (*CreateApiDestinationOutput, error) {
+	req, out := c.CreateApiDestinationRequest(input)
+	return out, req.Send()
+}
+
+// CreateApiDestinationWithContext is the same as CreateApiDestination with the addition of
+// the ability to pass a context and additional request options.
+//
+// See CreateApiDestination for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) CreateApiDestinationWithContext(ctx aws.Context, input *CreateApiDestinationInput, opts ...request.Option) (*CreateApiDestinationOutput, error) {
+	req, out := c.CreateApiDestinationRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opCreateArchive = "CreateArchive"
+
+// CreateArchiveRequest generates a "aws/request.Request" representing the
+// client's request for the CreateArchive operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See CreateArchive for more information on using the CreateArchive
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the CreateArchiveRequest method.
+//    req, resp := client.CreateArchiveRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/CreateArchive
+func (c *CloudWatchEvents) CreateArchiveRequest(input *CreateArchiveInput) (req *request.Request, output *CreateArchiveOutput) {
+	op := &request.Operation{
+		Name:       opCreateArchive,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &CreateArchiveInput{}
+	}
+
+	output = &CreateArchiveOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// CreateArchive API operation for Amazon CloudWatch Events.
+//
+// Creates an archive of events with the specified settings. When you create
+// an archive, incoming events might not immediately start being sent to the
+// archive. Allow a short period of time for changes to take effect. If you
+// do not specify a pattern to filter events sent to the archive, all events
+// are sent to the archive except replayed events. Replayed events are not sent
+// to an archive.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation CreateArchive for usage and error information.
+//
+// Returned Error Types:
+//   * ConcurrentModificationException
+//   There is concurrent modification on a rule, target, archive, or replay.
+//
+//   * ResourceAlreadyExistsException
+//   The resource you are trying to create already exists.
+//
+//   * ResourceNotFoundException
+//   An entity that you specified does not exist.
+//
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+//   * LimitExceededException
+//   The request failed because it attempted to create resource beyond the allowed
+//   service quota.
+//
+//   * InvalidEventPatternException
+//   The event pattern is not valid.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/CreateArchive
+func (c *CloudWatchEvents) CreateArchive(input *CreateArchiveInput) (*CreateArchiveOutput, error) {
+	req, out := c.CreateArchiveRequest(input)
+	return out, req.Send()
+}
+
+// CreateArchiveWithContext is the same as CreateArchive with the addition of
+// the ability to pass a context and additional request options.
+//
+// See CreateArchive for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) CreateArchiveWithContext(ctx aws.Context, input *CreateArchiveInput, opts ...request.Option) (*CreateArchiveOutput, error) {
+	req, out := c.CreateArchiveRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opCreateConnection = "CreateConnection"
+
+// CreateConnectionRequest generates a "aws/request.Request" representing the
+// client's request for the CreateConnection operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See CreateConnection for more information on using the CreateConnection
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the CreateConnectionRequest method.
+//    req, resp := client.CreateConnectionRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/CreateConnection
+func (c *CloudWatchEvents) CreateConnectionRequest(input *CreateConnectionInput) (req *request.Request, output *CreateConnectionOutput) {
+	op := &request.Operation{
+		Name:       opCreateConnection,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &CreateConnectionInput{}
+	}
+
+	output = &CreateConnectionOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// CreateConnection API operation for Amazon CloudWatch Events.
+//
+// Creates a connection. A connection defines the authorization type and credentials
+// to use for authorization with an API destination HTTP endpoint.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation CreateConnection for usage and error information.
+//
+// Returned Error Types:
+//   * ResourceAlreadyExistsException
+//   The resource you are trying to create already exists.
+//
+//   * LimitExceededException
+//   The request failed because it attempted to create resource beyond the allowed
+//   service quota.
+//
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/CreateConnection
+func (c *CloudWatchEvents) CreateConnection(input *CreateConnectionInput) (*CreateConnectionOutput, error) {
+	req, out := c.CreateConnectionRequest(input)
+	return out, req.Send()
+}
+
+// CreateConnectionWithContext is the same as CreateConnection with the addition of
+// the ability to pass a context and additional request options.
+//
+// See CreateConnection for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) CreateConnectionWithContext(ctx aws.Context, input *CreateConnectionInput, opts ...request.Option) (*CreateConnectionOutput, error) {
+	req, out := c.CreateConnectionRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -173,10 +542,14 @@ func (c *CloudWatchEvents) CreateEventBusRequest(input *CreateEventBusInput) (re
 //   This exception occurs due to unexpected causes.
 //
 //   * ConcurrentModificationException
-//   There is concurrent modification on a rule or target.
+//   There is concurrent modification on a rule, target, archive, or replay.
 //
 //   * LimitExceededException
-//   You tried to create more rules or add more targets to a rule than is allowed.
+//   The request failed because it attempted to create resource beyond the allowed
+//   service quota.
+//
+//   * OperationDisabledException
+//   The operation you are attempting is not available in this region.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/CreateEventBus
 func (c *CloudWatchEvents) CreateEventBus(input *CreateEventBusInput) (*CreateEventBusOutput, error) {
@@ -285,10 +658,14 @@ func (c *CloudWatchEvents) CreatePartnerEventSourceRequest(input *CreatePartnerE
 //   This exception occurs due to unexpected causes.
 //
 //   * ConcurrentModificationException
-//   There is concurrent modification on a rule or target.
+//   There is concurrent modification on a rule, target, archive, or replay.
 //
 //   * LimitExceededException
-//   You tried to create more rules or add more targets to a rule than is allowed.
+//   The request failed because it attempted to create resource beyond the allowed
+//   service quota.
+//
+//   * OperationDisabledException
+//   The operation you are attempting is not available in this region.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/CreatePartnerEventSource
 func (c *CloudWatchEvents) CreatePartnerEventSource(input *CreatePartnerEventSourceInput) (*CreatePartnerEventSourceOutput, error) {
@@ -377,13 +754,16 @@ func (c *CloudWatchEvents) DeactivateEventSourceRequest(input *DeactivateEventSo
 //   An entity that you specified does not exist.
 //
 //   * ConcurrentModificationException
-//   There is concurrent modification on a rule or target.
+//   There is concurrent modification on a rule, target, archive, or replay.
 //
 //   * InvalidStateException
 //   The specified state is not a valid state for an event source.
 //
 //   * InternalException
 //   This exception occurs due to unexpected causes.
+//
+//   * OperationDisabledException
+//   The operation you are attempting is not available in this region.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DeactivateEventSource
 func (c *CloudWatchEvents) DeactivateEventSource(input *DeactivateEventSourceInput) (*DeactivateEventSourceOutput, error) {
@@ -402,6 +782,350 @@ func (c *CloudWatchEvents) DeactivateEventSource(input *DeactivateEventSourceInp
 // for more information on using Contexts.
 func (c *CloudWatchEvents) DeactivateEventSourceWithContext(ctx aws.Context, input *DeactivateEventSourceInput, opts ...request.Option) (*DeactivateEventSourceOutput, error) {
 	req, out := c.DeactivateEventSourceRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opDeauthorizeConnection = "DeauthorizeConnection"
+
+// DeauthorizeConnectionRequest generates a "aws/request.Request" representing the
+// client's request for the DeauthorizeConnection operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See DeauthorizeConnection for more information on using the DeauthorizeConnection
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the DeauthorizeConnectionRequest method.
+//    req, resp := client.DeauthorizeConnectionRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DeauthorizeConnection
+func (c *CloudWatchEvents) DeauthorizeConnectionRequest(input *DeauthorizeConnectionInput) (req *request.Request, output *DeauthorizeConnectionOutput) {
+	op := &request.Operation{
+		Name:       opDeauthorizeConnection,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &DeauthorizeConnectionInput{}
+	}
+
+	output = &DeauthorizeConnectionOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// DeauthorizeConnection API operation for Amazon CloudWatch Events.
+//
+// Removes all authorization parameters from the connection. This lets you remove
+// the secret from the connection so you can reuse it without having to create
+// a new connection.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation DeauthorizeConnection for usage and error information.
+//
+// Returned Error Types:
+//   * ConcurrentModificationException
+//   There is concurrent modification on a rule, target, archive, or replay.
+//
+//   * ResourceNotFoundException
+//   An entity that you specified does not exist.
+//
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DeauthorizeConnection
+func (c *CloudWatchEvents) DeauthorizeConnection(input *DeauthorizeConnectionInput) (*DeauthorizeConnectionOutput, error) {
+	req, out := c.DeauthorizeConnectionRequest(input)
+	return out, req.Send()
+}
+
+// DeauthorizeConnectionWithContext is the same as DeauthorizeConnection with the addition of
+// the ability to pass a context and additional request options.
+//
+// See DeauthorizeConnection for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) DeauthorizeConnectionWithContext(ctx aws.Context, input *DeauthorizeConnectionInput, opts ...request.Option) (*DeauthorizeConnectionOutput, error) {
+	req, out := c.DeauthorizeConnectionRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opDeleteApiDestination = "DeleteApiDestination"
+
+// DeleteApiDestinationRequest generates a "aws/request.Request" representing the
+// client's request for the DeleteApiDestination operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See DeleteApiDestination for more information on using the DeleteApiDestination
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the DeleteApiDestinationRequest method.
+//    req, resp := client.DeleteApiDestinationRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DeleteApiDestination
+func (c *CloudWatchEvents) DeleteApiDestinationRequest(input *DeleteApiDestinationInput) (req *request.Request, output *DeleteApiDestinationOutput) {
+	op := &request.Operation{
+		Name:       opDeleteApiDestination,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &DeleteApiDestinationInput{}
+	}
+
+	output = &DeleteApiDestinationOutput{}
+	req = c.newRequest(op, input, output)
+	req.Handlers.Unmarshal.Swap(jsonrpc.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
+	return
+}
+
+// DeleteApiDestination API operation for Amazon CloudWatch Events.
+//
+// Deletes the specified API destination.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation DeleteApiDestination for usage and error information.
+//
+// Returned Error Types:
+//   * ConcurrentModificationException
+//   There is concurrent modification on a rule, target, archive, or replay.
+//
+//   * ResourceNotFoundException
+//   An entity that you specified does not exist.
+//
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DeleteApiDestination
+func (c *CloudWatchEvents) DeleteApiDestination(input *DeleteApiDestinationInput) (*DeleteApiDestinationOutput, error) {
+	req, out := c.DeleteApiDestinationRequest(input)
+	return out, req.Send()
+}
+
+// DeleteApiDestinationWithContext is the same as DeleteApiDestination with the addition of
+// the ability to pass a context and additional request options.
+//
+// See DeleteApiDestination for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) DeleteApiDestinationWithContext(ctx aws.Context, input *DeleteApiDestinationInput, opts ...request.Option) (*DeleteApiDestinationOutput, error) {
+	req, out := c.DeleteApiDestinationRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opDeleteArchive = "DeleteArchive"
+
+// DeleteArchiveRequest generates a "aws/request.Request" representing the
+// client's request for the DeleteArchive operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See DeleteArchive for more information on using the DeleteArchive
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the DeleteArchiveRequest method.
+//    req, resp := client.DeleteArchiveRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DeleteArchive
+func (c *CloudWatchEvents) DeleteArchiveRequest(input *DeleteArchiveInput) (req *request.Request, output *DeleteArchiveOutput) {
+	op := &request.Operation{
+		Name:       opDeleteArchive,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &DeleteArchiveInput{}
+	}
+
+	output = &DeleteArchiveOutput{}
+	req = c.newRequest(op, input, output)
+	req.Handlers.Unmarshal.Swap(jsonrpc.UnmarshalHandler.Name, protocol.UnmarshalDiscardBodyHandler)
+	return
+}
+
+// DeleteArchive API operation for Amazon CloudWatch Events.
+//
+// Deletes the specified archive.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation DeleteArchive for usage and error information.
+//
+// Returned Error Types:
+//   * ConcurrentModificationException
+//   There is concurrent modification on a rule, target, archive, or replay.
+//
+//   * ResourceNotFoundException
+//   An entity that you specified does not exist.
+//
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DeleteArchive
+func (c *CloudWatchEvents) DeleteArchive(input *DeleteArchiveInput) (*DeleteArchiveOutput, error) {
+	req, out := c.DeleteArchiveRequest(input)
+	return out, req.Send()
+}
+
+// DeleteArchiveWithContext is the same as DeleteArchive with the addition of
+// the ability to pass a context and additional request options.
+//
+// See DeleteArchive for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) DeleteArchiveWithContext(ctx aws.Context, input *DeleteArchiveInput, opts ...request.Option) (*DeleteArchiveOutput, error) {
+	req, out := c.DeleteArchiveRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opDeleteConnection = "DeleteConnection"
+
+// DeleteConnectionRequest generates a "aws/request.Request" representing the
+// client's request for the DeleteConnection operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See DeleteConnection for more information on using the DeleteConnection
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the DeleteConnectionRequest method.
+//    req, resp := client.DeleteConnectionRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DeleteConnection
+func (c *CloudWatchEvents) DeleteConnectionRequest(input *DeleteConnectionInput) (req *request.Request, output *DeleteConnectionOutput) {
+	op := &request.Operation{
+		Name:       opDeleteConnection,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &DeleteConnectionInput{}
+	}
+
+	output = &DeleteConnectionOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// DeleteConnection API operation for Amazon CloudWatch Events.
+//
+// Deletes a connection.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation DeleteConnection for usage and error information.
+//
+// Returned Error Types:
+//   * ConcurrentModificationException
+//   There is concurrent modification on a rule, target, archive, or replay.
+//
+//   * ResourceNotFoundException
+//   An entity that you specified does not exist.
+//
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DeleteConnection
+func (c *CloudWatchEvents) DeleteConnection(input *DeleteConnectionInput) (*DeleteConnectionOutput, error) {
+	req, out := c.DeleteConnectionRequest(input)
+	return out, req.Send()
+}
+
+// DeleteConnectionWithContext is the same as DeleteConnection with the addition of
+// the ability to pass a context and additional request options.
+//
+// See DeleteConnection for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) DeleteConnectionWithContext(ctx aws.Context, input *DeleteConnectionInput, opts ...request.Option) (*DeleteConnectionOutput, error) {
+	req, out := c.DeleteConnectionRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -468,7 +1192,7 @@ func (c *CloudWatchEvents) DeleteEventBusRequest(input *DeleteEventBusInput) (re
 //   This exception occurs due to unexpected causes.
 //
 //   * ConcurrentModificationException
-//   There is concurrent modification on a rule or target.
+//   There is concurrent modification on a rule, target, archive, or replay.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DeleteEventBus
 func (c *CloudWatchEvents) DeleteEventBus(input *DeleteEventBusInput) (*DeleteEventBusOutput, error) {
@@ -555,7 +1279,10 @@ func (c *CloudWatchEvents) DeletePartnerEventSourceRequest(input *DeletePartnerE
 //   This exception occurs due to unexpected causes.
 //
 //   * ConcurrentModificationException
-//   There is concurrent modification on a rule or target.
+//   There is concurrent modification on a rule, target, archive, or replay.
+//
+//   * OperationDisabledException
+//   The operation you are attempting is not available in this region.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DeletePartnerEventSource
 func (c *CloudWatchEvents) DeletePartnerEventSource(input *DeletePartnerEventSourceInput) (*DeletePartnerEventSourceOutput, error) {
@@ -646,7 +1373,7 @@ func (c *CloudWatchEvents) DeleteRuleRequest(input *DeleteRuleInput) (req *reque
 //
 // Returned Error Types:
 //   * ConcurrentModificationException
-//   There is concurrent modification on a rule or target.
+//   There is concurrent modification on a rule, target, archive, or replay.
 //
 //   * ManagedRuleException
 //   This rule was created by an AWS service on behalf of your account. It is
@@ -679,6 +1406,255 @@ func (c *CloudWatchEvents) DeleteRule(input *DeleteRuleInput) (*DeleteRuleOutput
 // for more information on using Contexts.
 func (c *CloudWatchEvents) DeleteRuleWithContext(ctx aws.Context, input *DeleteRuleInput, opts ...request.Option) (*DeleteRuleOutput, error) {
 	req, out := c.DeleteRuleRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opDescribeApiDestination = "DescribeApiDestination"
+
+// DescribeApiDestinationRequest generates a "aws/request.Request" representing the
+// client's request for the DescribeApiDestination operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See DescribeApiDestination for more information on using the DescribeApiDestination
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the DescribeApiDestinationRequest method.
+//    req, resp := client.DescribeApiDestinationRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DescribeApiDestination
+func (c *CloudWatchEvents) DescribeApiDestinationRequest(input *DescribeApiDestinationInput) (req *request.Request, output *DescribeApiDestinationOutput) {
+	op := &request.Operation{
+		Name:       opDescribeApiDestination,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &DescribeApiDestinationInput{}
+	}
+
+	output = &DescribeApiDestinationOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// DescribeApiDestination API operation for Amazon CloudWatch Events.
+//
+// Retrieves details about an API destination.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation DescribeApiDestination for usage and error information.
+//
+// Returned Error Types:
+//   * ResourceNotFoundException
+//   An entity that you specified does not exist.
+//
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DescribeApiDestination
+func (c *CloudWatchEvents) DescribeApiDestination(input *DescribeApiDestinationInput) (*DescribeApiDestinationOutput, error) {
+	req, out := c.DescribeApiDestinationRequest(input)
+	return out, req.Send()
+}
+
+// DescribeApiDestinationWithContext is the same as DescribeApiDestination with the addition of
+// the ability to pass a context and additional request options.
+//
+// See DescribeApiDestination for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) DescribeApiDestinationWithContext(ctx aws.Context, input *DescribeApiDestinationInput, opts ...request.Option) (*DescribeApiDestinationOutput, error) {
+	req, out := c.DescribeApiDestinationRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opDescribeArchive = "DescribeArchive"
+
+// DescribeArchiveRequest generates a "aws/request.Request" representing the
+// client's request for the DescribeArchive operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See DescribeArchive for more information on using the DescribeArchive
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the DescribeArchiveRequest method.
+//    req, resp := client.DescribeArchiveRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DescribeArchive
+func (c *CloudWatchEvents) DescribeArchiveRequest(input *DescribeArchiveInput) (req *request.Request, output *DescribeArchiveOutput) {
+	op := &request.Operation{
+		Name:       opDescribeArchive,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &DescribeArchiveInput{}
+	}
+
+	output = &DescribeArchiveOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// DescribeArchive API operation for Amazon CloudWatch Events.
+//
+// Retrieves details about an archive.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation DescribeArchive for usage and error information.
+//
+// Returned Error Types:
+//   * ResourceAlreadyExistsException
+//   The resource you are trying to create already exists.
+//
+//   * ResourceNotFoundException
+//   An entity that you specified does not exist.
+//
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DescribeArchive
+func (c *CloudWatchEvents) DescribeArchive(input *DescribeArchiveInput) (*DescribeArchiveOutput, error) {
+	req, out := c.DescribeArchiveRequest(input)
+	return out, req.Send()
+}
+
+// DescribeArchiveWithContext is the same as DescribeArchive with the addition of
+// the ability to pass a context and additional request options.
+//
+// See DescribeArchive for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) DescribeArchiveWithContext(ctx aws.Context, input *DescribeArchiveInput, opts ...request.Option) (*DescribeArchiveOutput, error) {
+	req, out := c.DescribeArchiveRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opDescribeConnection = "DescribeConnection"
+
+// DescribeConnectionRequest generates a "aws/request.Request" representing the
+// client's request for the DescribeConnection operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See DescribeConnection for more information on using the DescribeConnection
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the DescribeConnectionRequest method.
+//    req, resp := client.DescribeConnectionRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DescribeConnection
+func (c *CloudWatchEvents) DescribeConnectionRequest(input *DescribeConnectionInput) (req *request.Request, output *DescribeConnectionOutput) {
+	op := &request.Operation{
+		Name:       opDescribeConnection,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &DescribeConnectionInput{}
+	}
+
+	output = &DescribeConnectionOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// DescribeConnection API operation for Amazon CloudWatch Events.
+//
+// Retrieves details about a connection.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation DescribeConnection for usage and error information.
+//
+// Returned Error Types:
+//   * ResourceNotFoundException
+//   An entity that you specified does not exist.
+//
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DescribeConnection
+func (c *CloudWatchEvents) DescribeConnection(input *DescribeConnectionInput) (*DescribeConnectionOutput, error) {
+	req, out := c.DescribeConnectionRequest(input)
+	return out, req.Send()
+}
+
+// DescribeConnectionWithContext is the same as DescribeConnection with the addition of
+// the ability to pass a context and additional request options.
+//
+// See DescribeConnection for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) DescribeConnectionWithContext(ctx aws.Context, input *DescribeConnectionInput, opts ...request.Option) (*DescribeConnectionOutput, error) {
+	req, out := c.DescribeConnectionRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -835,6 +1811,9 @@ func (c *CloudWatchEvents) DescribeEventSourceRequest(input *DescribeEventSource
 //   * InternalException
 //   This exception occurs due to unexpected causes.
 //
+//   * OperationDisabledException
+//   The operation you are attempting is not available in this region.
+//
 // See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DescribeEventSource
 func (c *CloudWatchEvents) DescribeEventSource(input *DescribeEventSourceInput) (*DescribeEventSourceOutput, error) {
 	req, out := c.DescribeEventSourceRequest(input)
@@ -920,6 +1899,9 @@ func (c *CloudWatchEvents) DescribePartnerEventSourceRequest(input *DescribePart
 //   * InternalException
 //   This exception occurs due to unexpected causes.
 //
+//   * OperationDisabledException
+//   The operation you are attempting is not available in this region.
+//
 // See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DescribePartnerEventSource
 func (c *CloudWatchEvents) DescribePartnerEventSource(input *DescribePartnerEventSourceInput) (*DescribePartnerEventSourceOutput, error) {
 	req, out := c.DescribePartnerEventSourceRequest(input)
@@ -937,6 +1919,96 @@ func (c *CloudWatchEvents) DescribePartnerEventSource(input *DescribePartnerEven
 // for more information on using Contexts.
 func (c *CloudWatchEvents) DescribePartnerEventSourceWithContext(ctx aws.Context, input *DescribePartnerEventSourceInput, opts ...request.Option) (*DescribePartnerEventSourceOutput, error) {
 	req, out := c.DescribePartnerEventSourceRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opDescribeReplay = "DescribeReplay"
+
+// DescribeReplayRequest generates a "aws/request.Request" representing the
+// client's request for the DescribeReplay operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See DescribeReplay for more information on using the DescribeReplay
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the DescribeReplayRequest method.
+//    req, resp := client.DescribeReplayRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DescribeReplay
+func (c *CloudWatchEvents) DescribeReplayRequest(input *DescribeReplayInput) (req *request.Request, output *DescribeReplayOutput) {
+	op := &request.Operation{
+		Name:       opDescribeReplay,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &DescribeReplayInput{}
+	}
+
+	output = &DescribeReplayOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// DescribeReplay API operation for Amazon CloudWatch Events.
+//
+// Retrieves details about a replay. Use DescribeReplay to determine the progress
+// of a running replay. A replay processes events to replay based on the time
+// in the event, and replays them using 1 minute intervals. If you use StartReplay
+// and specify an EventStartTime and an EventEndTime that covers a 20 minute
+// time range, the events are replayed from the first minute of that 20 minute
+// range first. Then the events from the second minute are replayed. You can
+// use DescribeReplay to determine the progress of a replay. The value returned
+// for EventLastReplayedTime indicates the time within the specified time range
+// associated with the last event replayed.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation DescribeReplay for usage and error information.
+//
+// Returned Error Types:
+//   * ResourceNotFoundException
+//   An entity that you specified does not exist.
+//
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/DescribeReplay
+func (c *CloudWatchEvents) DescribeReplay(input *DescribeReplayInput) (*DescribeReplayOutput, error) {
+	req, out := c.DescribeReplayRequest(input)
+	return out, req.Send()
+}
+
+// DescribeReplayWithContext is the same as DescribeReplay with the addition of
+// the ability to pass a context and additional request options.
+//
+// See DescribeReplay for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) DescribeReplayWithContext(ctx aws.Context, input *DescribeReplayInput, opts ...request.Option) (*DescribeReplayOutput, error) {
+	req, out := c.DescribeReplayRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -1090,7 +2162,7 @@ func (c *CloudWatchEvents) DisableRuleRequest(input *DisableRuleInput) (req *req
 //   An entity that you specified does not exist.
 //
 //   * ConcurrentModificationException
-//   There is concurrent modification on a rule or target.
+//   There is concurrent modification on a rule, target, archive, or replay.
 //
 //   * ManagedRuleException
 //   This rule was created by an AWS service on behalf of your account. It is
@@ -1188,7 +2260,7 @@ func (c *CloudWatchEvents) EnableRuleRequest(input *EnableRuleInput) (req *reque
 //   An entity that you specified does not exist.
 //
 //   * ConcurrentModificationException
-//   There is concurrent modification on a rule or target.
+//   There is concurrent modification on a rule, target, archive, or replay.
 //
 //   * ManagedRuleException
 //   This rule was created by an AWS service on behalf of your account. It is
@@ -1218,6 +2290,247 @@ func (c *CloudWatchEvents) EnableRule(input *EnableRuleInput) (*EnableRuleOutput
 // for more information on using Contexts.
 func (c *CloudWatchEvents) EnableRuleWithContext(ctx aws.Context, input *EnableRuleInput, opts ...request.Option) (*EnableRuleOutput, error) {
 	req, out := c.EnableRuleRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opListApiDestinations = "ListApiDestinations"
+
+// ListApiDestinationsRequest generates a "aws/request.Request" representing the
+// client's request for the ListApiDestinations operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See ListApiDestinations for more information on using the ListApiDestinations
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the ListApiDestinationsRequest method.
+//    req, resp := client.ListApiDestinationsRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/ListApiDestinations
+func (c *CloudWatchEvents) ListApiDestinationsRequest(input *ListApiDestinationsInput) (req *request.Request, output *ListApiDestinationsOutput) {
+	op := &request.Operation{
+		Name:       opListApiDestinations,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &ListApiDestinationsInput{}
+	}
+
+	output = &ListApiDestinationsOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// ListApiDestinations API operation for Amazon CloudWatch Events.
+//
+// Retrieves a list of API destination in the account in the current Region.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation ListApiDestinations for usage and error information.
+//
+// Returned Error Types:
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/ListApiDestinations
+func (c *CloudWatchEvents) ListApiDestinations(input *ListApiDestinationsInput) (*ListApiDestinationsOutput, error) {
+	req, out := c.ListApiDestinationsRequest(input)
+	return out, req.Send()
+}
+
+// ListApiDestinationsWithContext is the same as ListApiDestinations with the addition of
+// the ability to pass a context and additional request options.
+//
+// See ListApiDestinations for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) ListApiDestinationsWithContext(ctx aws.Context, input *ListApiDestinationsInput, opts ...request.Option) (*ListApiDestinationsOutput, error) {
+	req, out := c.ListApiDestinationsRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opListArchives = "ListArchives"
+
+// ListArchivesRequest generates a "aws/request.Request" representing the
+// client's request for the ListArchives operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See ListArchives for more information on using the ListArchives
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the ListArchivesRequest method.
+//    req, resp := client.ListArchivesRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/ListArchives
+func (c *CloudWatchEvents) ListArchivesRequest(input *ListArchivesInput) (req *request.Request, output *ListArchivesOutput) {
+	op := &request.Operation{
+		Name:       opListArchives,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &ListArchivesInput{}
+	}
+
+	output = &ListArchivesOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// ListArchives API operation for Amazon CloudWatch Events.
+//
+// Lists your archives. You can either list all the archives or you can provide
+// a prefix to match to the archive names. Filter parameters are exclusive.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation ListArchives for usage and error information.
+//
+// Returned Error Types:
+//   * ResourceNotFoundException
+//   An entity that you specified does not exist.
+//
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/ListArchives
+func (c *CloudWatchEvents) ListArchives(input *ListArchivesInput) (*ListArchivesOutput, error) {
+	req, out := c.ListArchivesRequest(input)
+	return out, req.Send()
+}
+
+// ListArchivesWithContext is the same as ListArchives with the addition of
+// the ability to pass a context and additional request options.
+//
+// See ListArchives for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) ListArchivesWithContext(ctx aws.Context, input *ListArchivesInput, opts ...request.Option) (*ListArchivesOutput, error) {
+	req, out := c.ListArchivesRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opListConnections = "ListConnections"
+
+// ListConnectionsRequest generates a "aws/request.Request" representing the
+// client's request for the ListConnections operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See ListConnections for more information on using the ListConnections
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the ListConnectionsRequest method.
+//    req, resp := client.ListConnectionsRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/ListConnections
+func (c *CloudWatchEvents) ListConnectionsRequest(input *ListConnectionsInput) (req *request.Request, output *ListConnectionsOutput) {
+	op := &request.Operation{
+		Name:       opListConnections,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &ListConnectionsInput{}
+	}
+
+	output = &ListConnectionsOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// ListConnections API operation for Amazon CloudWatch Events.
+//
+// Retrieves a list of connections from the account.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation ListConnections for usage and error information.
+//
+// Returned Error Types:
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/ListConnections
+func (c *CloudWatchEvents) ListConnections(input *ListConnectionsInput) (*ListConnectionsOutput, error) {
+	req, out := c.ListConnectionsRequest(input)
+	return out, req.Send()
+}
+
+// ListConnectionsWithContext is the same as ListConnections with the addition of
+// the ability to pass a context and additional request options.
+//
+// See ListConnections for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) ListConnectionsWithContext(ctx aws.Context, input *ListConnectionsInput, opts ...request.Option) (*ListConnectionsOutput, error) {
+	req, out := c.ListConnectionsRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -1362,6 +2675,9 @@ func (c *CloudWatchEvents) ListEventSourcesRequest(input *ListEventSourcesInput)
 //   * InternalException
 //   This exception occurs due to unexpected causes.
 //
+//   * OperationDisabledException
+//   The operation you are attempting is not available in this region.
+//
 // See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/ListEventSources
 func (c *CloudWatchEvents) ListEventSources(input *ListEventSourcesInput) (*ListEventSourcesOutput, error) {
 	req, out := c.ListEventSourcesRequest(input)
@@ -1446,6 +2762,9 @@ func (c *CloudWatchEvents) ListPartnerEventSourceAccountsRequest(input *ListPart
 //   * InternalException
 //   This exception occurs due to unexpected causes.
 //
+//   * OperationDisabledException
+//   The operation you are attempting is not available in this region.
+//
 // See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/ListPartnerEventSourceAccounts
 func (c *CloudWatchEvents) ListPartnerEventSourceAccounts(input *ListPartnerEventSourceAccountsInput) (*ListPartnerEventSourceAccountsOutput, error) {
 	req, out := c.ListPartnerEventSourceAccountsRequest(input)
@@ -1526,6 +2845,9 @@ func (c *CloudWatchEvents) ListPartnerEventSourcesRequest(input *ListPartnerEven
 //   * InternalException
 //   This exception occurs due to unexpected causes.
 //
+//   * OperationDisabledException
+//   The operation you are attempting is not available in this region.
+//
 // See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/ListPartnerEventSources
 func (c *CloudWatchEvents) ListPartnerEventSources(input *ListPartnerEventSourcesInput) (*ListPartnerEventSourcesOutput, error) {
 	req, out := c.ListPartnerEventSourcesRequest(input)
@@ -1543,6 +2865,86 @@ func (c *CloudWatchEvents) ListPartnerEventSources(input *ListPartnerEventSource
 // for more information on using Contexts.
 func (c *CloudWatchEvents) ListPartnerEventSourcesWithContext(ctx aws.Context, input *ListPartnerEventSourcesInput, opts ...request.Option) (*ListPartnerEventSourcesOutput, error) {
 	req, out := c.ListPartnerEventSourcesRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opListReplays = "ListReplays"
+
+// ListReplaysRequest generates a "aws/request.Request" representing the
+// client's request for the ListReplays operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See ListReplays for more information on using the ListReplays
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the ListReplaysRequest method.
+//    req, resp := client.ListReplaysRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/ListReplays
+func (c *CloudWatchEvents) ListReplaysRequest(input *ListReplaysInput) (req *request.Request, output *ListReplaysOutput) {
+	op := &request.Operation{
+		Name:       opListReplays,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &ListReplaysInput{}
+	}
+
+	output = &ListReplaysOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// ListReplays API operation for Amazon CloudWatch Events.
+//
+// Lists your replays. You can either list all the replays or you can provide
+// a prefix to match to the replay names. Filter parameters are exclusive.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation ListReplays for usage and error information.
+//
+// Returned Error Types:
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/ListReplays
+func (c *CloudWatchEvents) ListReplays(input *ListReplaysInput) (*ListReplaysOutput, error) {
+	req, out := c.ListReplaysRequest(input)
+	return out, req.Send()
+}
+
+// ListReplaysWithContext is the same as ListReplays with the addition of
+// the ability to pass a context and additional request options.
+//
+// See ListReplays for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) ListReplaysWithContext(ctx aws.Context, input *ListReplaysInput, opts ...request.Option) (*ListReplaysOutput, error) {
+	req, out := c.ListReplaysRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -2020,6 +3422,9 @@ func (c *CloudWatchEvents) PutPartnerEventsRequest(input *PutPartnerEventsInput)
 //   * InternalException
 //   This exception occurs due to unexpected causes.
 //
+//   * OperationDisabledException
+//   The operation you are attempting is not available in this region.
+//
 // See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/PutPartnerEvents
 func (c *CloudWatchEvents) PutPartnerEvents(input *PutPartnerEventsInput) (*PutPartnerEventsOutput, error) {
 	req, out := c.PutPartnerEventsRequest(input)
@@ -2088,8 +3493,9 @@ func (c *CloudWatchEvents) PutPermissionRequest(input *PutPermissionInput) (req 
 // PutPermission API operation for Amazon CloudWatch Events.
 //
 // Running PutPermission permits the specified AWS account or AWS organization
-// to put events to the specified event bus. CloudWatch Events rules in your
-// account are triggered by these events arriving to an event bus in your account.
+// to put events to the specified event bus. Amazon EventBridge (CloudWatch
+// Events) rules in your account are triggered by these events arriving to an
+// event bus in your account.
 //
 // For another account to send events to your account, that external account
 // must have an EventBridge rule with your account's event bus as a target.
@@ -2126,7 +3532,10 @@ func (c *CloudWatchEvents) PutPermissionRequest(input *PutPermissionInput) (req 
 //   This exception occurs due to unexpected causes.
 //
 //   * ConcurrentModificationException
-//   There is concurrent modification on a rule or target.
+//   There is concurrent modification on a rule, target, archive, or replay.
+//
+//   * OperationDisabledException
+//   The operation you are attempting is not available in this region.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/PutPermission
 func (c *CloudWatchEvents) PutPermission(input *PutPermissionInput) (*PutPermissionOutput, error) {
@@ -2261,10 +3670,11 @@ func (c *CloudWatchEvents) PutRuleRequest(input *PutRuleInput) (req *request.Req
 //   The event pattern is not valid.
 //
 //   * LimitExceededException
-//   You tried to create more rules or add more targets to a rule than is allowed.
+//   The request failed because it attempted to create resource beyond the allowed
+//   service quota.
 //
 //   * ConcurrentModificationException
-//   There is concurrent modification on a rule or target.
+//   There is concurrent modification on a rule, target, archive, or replay.
 //
 //   * ManagedRuleException
 //   This rule was created by an AWS service on behalf of your account. It is
@@ -2383,6 +3793,12 @@ func (c *CloudWatchEvents) PutTargetsRequest(input *PutTargetsInput) (req *reque
 //
 //    * The default event bus of another AWS account
 //
+//    * Amazon API Gateway REST APIs
+//
+//    * Redshift Clusters to invoke Data API ExecuteStatement on
+//
+//    * Custom/SaaS HTTPS APIs via EventBridge API Destinations
+//
 // Creating rules with built-in targets is supported only in the AWS Management
 // Console. The built-in targets are EC2 CreateSnapshot API call, EC2 RebootInstances
 // API call, EC2 StopInstances API call, and EC2 TerminateInstances API call.
@@ -2393,12 +3809,13 @@ func (c *CloudWatchEvents) PutTargetsRequest(input *PutTargetsInput) (req *reque
 // on multiple EC2 instances with one rule, you can use the RunCommandParameters
 // field.
 //
-// To be able to make API calls against the resources that you own, Amazon CloudWatch
-// Events needs the appropriate permissions. For AWS Lambda and Amazon SNS resources,
-// EventBridge relies on resource-based policies. For EC2 instances, Kinesis
-// data streams, and AWS Step Functions state machines, EventBridge relies on
-// IAM roles that you specify in the RoleARN argument in PutTargets. For more
-// information, see Authentication and Access Control (https://docs.aws.amazon.com/eventbridge/latest/userguide/auth-and-access-control-eventbridge.html)
+// To be able to make API calls against the resources that you own, Amazon EventBridge
+// (CloudWatch Events) needs the appropriate permissions. For AWS Lambda and
+// Amazon SNS resources, EventBridge relies on resource-based policies. For
+// EC2 instances, Kinesis data streams, AWS Step Functions state machines and
+// API Gateway REST APIs, EventBridge relies on IAM roles that you specify in
+// the RoleARN argument in PutTargets. For more information, see Authentication
+// and Access Control (https://docs.aws.amazon.com/eventbridge/latest/userguide/auth-and-access-control-eventbridge.html)
 // in the Amazon EventBridge User Guide.
 //
 // If another AWS account is in the same region and has granted you permission
@@ -2408,7 +3825,8 @@ func (c *CloudWatchEvents) PutTargetsRequest(input *PutTargetsInput) (req *reque
 // you run PutTargets. If your account sends events to another account, your
 // account is charged for each sent event. Each event sent to another account
 // is charged as a custom event. The account receiving the event is not charged.
-// For more information, see Amazon CloudWatch Pricing (https://aws.amazon.com/cloudwatch/pricing/).
+// For more information, see Amazon EventBridge (CloudWatch Events) Pricing
+// (https://aws.amazon.com/eventbridge/pricing/).
 //
 // Input, InputPath, and InputTransformer are not available with PutTarget if
 // the target is an event bus of a different AWS account.
@@ -2465,10 +3883,11 @@ func (c *CloudWatchEvents) PutTargetsRequest(input *PutTargetsInput) (req *reque
 //   An entity that you specified does not exist.
 //
 //   * ConcurrentModificationException
-//   There is concurrent modification on a rule or target.
+//   There is concurrent modification on a rule, target, archive, or replay.
 //
 //   * LimitExceededException
-//   You tried to create more rules or add more targets to a rule than is allowed.
+//   The request failed because it attempted to create resource beyond the allowed
+//   service quota.
 //
 //   * ManagedRuleException
 //   This rule was created by an AWS service on behalf of your account. It is
@@ -2568,7 +3987,10 @@ func (c *CloudWatchEvents) RemovePermissionRequest(input *RemovePermissionInput)
 //   This exception occurs due to unexpected causes.
 //
 //   * ConcurrentModificationException
-//   There is concurrent modification on a rule or target.
+//   There is concurrent modification on a rule, target, archive, or replay.
+//
+//   * OperationDisabledException
+//   The operation you are attempting is not available in this region.
 //
 // See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/RemovePermission
 func (c *CloudWatchEvents) RemovePermission(input *RemovePermissionInput) (*RemovePermissionOutput, error) {
@@ -2660,7 +4082,7 @@ func (c *CloudWatchEvents) RemoveTargetsRequest(input *RemoveTargetsInput) (req 
 //   An entity that you specified does not exist.
 //
 //   * ConcurrentModificationException
-//   There is concurrent modification on a rule or target.
+//   There is concurrent modification on a rule, target, archive, or replay.
 //
 //   * ManagedRuleException
 //   This rule was created by an AWS service on behalf of your account. It is
@@ -2690,6 +4112,106 @@ func (c *CloudWatchEvents) RemoveTargets(input *RemoveTargetsInput) (*RemoveTarg
 // for more information on using Contexts.
 func (c *CloudWatchEvents) RemoveTargetsWithContext(ctx aws.Context, input *RemoveTargetsInput, opts ...request.Option) (*RemoveTargetsOutput, error) {
 	req, out := c.RemoveTargetsRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opStartReplay = "StartReplay"
+
+// StartReplayRequest generates a "aws/request.Request" representing the
+// client's request for the StartReplay operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See StartReplay for more information on using the StartReplay
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the StartReplayRequest method.
+//    req, resp := client.StartReplayRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/StartReplay
+func (c *CloudWatchEvents) StartReplayRequest(input *StartReplayInput) (req *request.Request, output *StartReplayOutput) {
+	op := &request.Operation{
+		Name:       opStartReplay,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &StartReplayInput{}
+	}
+
+	output = &StartReplayOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// StartReplay API operation for Amazon CloudWatch Events.
+//
+// Starts the specified replay. Events are not necessarily replayed in the exact
+// same order that they were added to the archive. A replay processes events
+// to replay based on the time in the event, and replays them using 1 minute
+// intervals. If you specify an EventStartTime and an EventEndTime that covers
+// a 20 minute time range, the events are replayed from the first minute of
+// that 20 minute range first. Then the events from the second minute are replayed.
+// You can use DescribeReplay to determine the progress of a replay. The value
+// returned for EventLastReplayedTime indicates the time within the specified
+// time range associated with the last event replayed.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation StartReplay for usage and error information.
+//
+// Returned Error Types:
+//   * ResourceNotFoundException
+//   An entity that you specified does not exist.
+//
+//   * ResourceAlreadyExistsException
+//   The resource you are trying to create already exists.
+//
+//   * InvalidEventPatternException
+//   The event pattern is not valid.
+//
+//   * LimitExceededException
+//   The request failed because it attempted to create resource beyond the allowed
+//   service quota.
+//
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/StartReplay
+func (c *CloudWatchEvents) StartReplay(input *StartReplayInput) (*StartReplayOutput, error) {
+	req, out := c.StartReplayRequest(input)
+	return out, req.Send()
+}
+
+// StartReplayWithContext is the same as StartReplay with the addition of
+// the ability to pass a context and additional request options.
+//
+// See StartReplay for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) StartReplayWithContext(ctx aws.Context, input *StartReplayInput, opts ...request.Option) (*StartReplayOutput, error) {
+	req, out := c.StartReplayRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -2769,7 +4291,7 @@ func (c *CloudWatchEvents) TagResourceRequest(input *TagResourceInput) (req *req
 //   An entity that you specified does not exist.
 //
 //   * ConcurrentModificationException
-//   There is concurrent modification on a rule or target.
+//   There is concurrent modification on a rule, target, archive, or replay.
 //
 //   * InternalException
 //   This exception occurs due to unexpected causes.
@@ -2936,8 +4458,8 @@ func (c *CloudWatchEvents) UntagResourceRequest(input *UntagResourceInput) (req 
 
 // UntagResource API operation for Amazon CloudWatch Events.
 //
-// Removes one or more tags from the specified EventBridge resource. In CloudWatch
-// Events, rules and event buses can be tagged.
+// Removes one or more tags from the specified EventBridge resource. In Amazon
+// EventBridge (CloudWatch Events, rules and event buses can be tagged.
 //
 // Returns awserr.Error for service API and SDK errors. Use runtime type assertions
 // with awserr.Error's Code and Message methods to get detailed information about
@@ -2954,7 +4476,7 @@ func (c *CloudWatchEvents) UntagResourceRequest(input *UntagResourceInput) (req 
 //   This exception occurs due to unexpected causes.
 //
 //   * ConcurrentModificationException
-//   There is concurrent modification on a rule or target.
+//   There is concurrent modification on a rule, target, archive, or replay.
 //
 //   * ManagedRuleException
 //   This rule was created by an AWS service on behalf of your account. It is
@@ -2981,6 +4503,276 @@ func (c *CloudWatchEvents) UntagResource(input *UntagResourceInput) (*UntagResou
 // for more information on using Contexts.
 func (c *CloudWatchEvents) UntagResourceWithContext(ctx aws.Context, input *UntagResourceInput, opts ...request.Option) (*UntagResourceOutput, error) {
 	req, out := c.UntagResourceRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opUpdateApiDestination = "UpdateApiDestination"
+
+// UpdateApiDestinationRequest generates a "aws/request.Request" representing the
+// client's request for the UpdateApiDestination operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See UpdateApiDestination for more information on using the UpdateApiDestination
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the UpdateApiDestinationRequest method.
+//    req, resp := client.UpdateApiDestinationRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/UpdateApiDestination
+func (c *CloudWatchEvents) UpdateApiDestinationRequest(input *UpdateApiDestinationInput) (req *request.Request, output *UpdateApiDestinationOutput) {
+	op := &request.Operation{
+		Name:       opUpdateApiDestination,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &UpdateApiDestinationInput{}
+	}
+
+	output = &UpdateApiDestinationOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// UpdateApiDestination API operation for Amazon CloudWatch Events.
+//
+// Updates an API destination.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation UpdateApiDestination for usage and error information.
+//
+// Returned Error Types:
+//   * ConcurrentModificationException
+//   There is concurrent modification on a rule, target, archive, or replay.
+//
+//   * ResourceNotFoundException
+//   An entity that you specified does not exist.
+//
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+//   * LimitExceededException
+//   The request failed because it attempted to create resource beyond the allowed
+//   service quota.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/UpdateApiDestination
+func (c *CloudWatchEvents) UpdateApiDestination(input *UpdateApiDestinationInput) (*UpdateApiDestinationOutput, error) {
+	req, out := c.UpdateApiDestinationRequest(input)
+	return out, req.Send()
+}
+
+// UpdateApiDestinationWithContext is the same as UpdateApiDestination with the addition of
+// the ability to pass a context and additional request options.
+//
+// See UpdateApiDestination for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) UpdateApiDestinationWithContext(ctx aws.Context, input *UpdateApiDestinationInput, opts ...request.Option) (*UpdateApiDestinationOutput, error) {
+	req, out := c.UpdateApiDestinationRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opUpdateArchive = "UpdateArchive"
+
+// UpdateArchiveRequest generates a "aws/request.Request" representing the
+// client's request for the UpdateArchive operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See UpdateArchive for more information on using the UpdateArchive
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the UpdateArchiveRequest method.
+//    req, resp := client.UpdateArchiveRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/UpdateArchive
+func (c *CloudWatchEvents) UpdateArchiveRequest(input *UpdateArchiveInput) (req *request.Request, output *UpdateArchiveOutput) {
+	op := &request.Operation{
+		Name:       opUpdateArchive,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &UpdateArchiveInput{}
+	}
+
+	output = &UpdateArchiveOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// UpdateArchive API operation for Amazon CloudWatch Events.
+//
+// Updates the specified archive.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation UpdateArchive for usage and error information.
+//
+// Returned Error Types:
+//   * ConcurrentModificationException
+//   There is concurrent modification on a rule, target, archive, or replay.
+//
+//   * ResourceNotFoundException
+//   An entity that you specified does not exist.
+//
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+//   * LimitExceededException
+//   The request failed because it attempted to create resource beyond the allowed
+//   service quota.
+//
+//   * InvalidEventPatternException
+//   The event pattern is not valid.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/UpdateArchive
+func (c *CloudWatchEvents) UpdateArchive(input *UpdateArchiveInput) (*UpdateArchiveOutput, error) {
+	req, out := c.UpdateArchiveRequest(input)
+	return out, req.Send()
+}
+
+// UpdateArchiveWithContext is the same as UpdateArchive with the addition of
+// the ability to pass a context and additional request options.
+//
+// See UpdateArchive for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) UpdateArchiveWithContext(ctx aws.Context, input *UpdateArchiveInput, opts ...request.Option) (*UpdateArchiveOutput, error) {
+	req, out := c.UpdateArchiveRequest(input)
+	req.SetContext(ctx)
+	req.ApplyOptions(opts...)
+	return out, req.Send()
+}
+
+const opUpdateConnection = "UpdateConnection"
+
+// UpdateConnectionRequest generates a "aws/request.Request" representing the
+// client's request for the UpdateConnection operation. The "output" return
+// value will be populated with the request's response once the request completes
+// successfully.
+//
+// Use "Send" method on the returned Request to send the API call to the service.
+// the "output" return value is not valid until after Send returns without error.
+//
+// See UpdateConnection for more information on using the UpdateConnection
+// API call, and error handling.
+//
+// This method is useful when you want to inject custom logic or configuration
+// into the SDK's request lifecycle. Such as custom headers, or retry logic.
+//
+//
+//    // Example sending a request using the UpdateConnectionRequest method.
+//    req, resp := client.UpdateConnectionRequest(params)
+//
+//    err := req.Send()
+//    if err == nil { // resp is now filled
+//        fmt.Println(resp)
+//    }
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/UpdateConnection
+func (c *CloudWatchEvents) UpdateConnectionRequest(input *UpdateConnectionInput) (req *request.Request, output *UpdateConnectionOutput) {
+	op := &request.Operation{
+		Name:       opUpdateConnection,
+		HTTPMethod: "POST",
+		HTTPPath:   "/",
+	}
+
+	if input == nil {
+		input = &UpdateConnectionInput{}
+	}
+
+	output = &UpdateConnectionOutput{}
+	req = c.newRequest(op, input, output)
+	return
+}
+
+// UpdateConnection API operation for Amazon CloudWatch Events.
+//
+// Updates settings for a connection.
+//
+// Returns awserr.Error for service API and SDK errors. Use runtime type assertions
+// with awserr.Error's Code and Message methods to get detailed information about
+// the error.
+//
+// See the AWS API reference guide for Amazon CloudWatch Events's
+// API operation UpdateConnection for usage and error information.
+//
+// Returned Error Types:
+//   * ConcurrentModificationException
+//   There is concurrent modification on a rule, target, archive, or replay.
+//
+//   * ResourceNotFoundException
+//   An entity that you specified does not exist.
+//
+//   * InternalException
+//   This exception occurs due to unexpected causes.
+//
+//   * LimitExceededException
+//   The request failed because it attempted to create resource beyond the allowed
+//   service quota.
+//
+// See also, https://docs.aws.amazon.com/goto/WebAPI/events-2015-10-07/UpdateConnection
+func (c *CloudWatchEvents) UpdateConnection(input *UpdateConnectionInput) (*UpdateConnectionOutput, error) {
+	req, out := c.UpdateConnectionRequest(input)
+	return out, req.Send()
+}
+
+// UpdateConnectionWithContext is the same as UpdateConnection with the addition of
+// the ability to pass a context and additional request options.
+//
+// See UpdateConnection for details on how to use this API operation.
+//
+// The context must be non-nil and will be used for request cancellation. If
+// the context is nil a panic will occur. In the future the SDK may create
+// sub-contexts for http.Requests. See https://golang.org/pkg/context/
+// for more information on using Contexts.
+func (c *CloudWatchEvents) UpdateConnectionWithContext(ctx aws.Context, input *UpdateConnectionInput, opts ...request.Option) (*UpdateConnectionOutput, error) {
+	req, out := c.UpdateConnectionRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 	return out, req.Send()
@@ -3039,6 +4831,190 @@ func (s ActivateEventSourceOutput) String() string {
 // GoString returns the string representation
 func (s ActivateEventSourceOutput) GoString() string {
 	return s.String()
+}
+
+// Contains details about an API destination.
+type ApiDestination struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the API destination.
+	ApiDestinationArn *string `min:"1" type:"string"`
+
+	// The state of the API destination.
+	ApiDestinationState *string `type:"string" enum:"ApiDestinationState"`
+
+	// The ARN of the connection specified for the API destination.
+	ConnectionArn *string `min:"1" type:"string"`
+
+	// A time stamp for the time that the API destination was created.
+	CreationTime *time.Time `type:"timestamp"`
+
+	// The method to use to connect to the HTTP endpoint.
+	HttpMethod *string `type:"string" enum:"ApiDestinationHttpMethod"`
+
+	// The URL to the endpoint for the API destination.
+	InvocationEndpoint *string `min:"1" type:"string"`
+
+	// The maximum number of invocations per second to send to the HTTP endpoint.
+	InvocationRateLimitPerSecond *int64 `min:"1" type:"integer"`
+
+	// A time stamp for the time that the API destination was last modified.
+	LastModifiedTime *time.Time `type:"timestamp"`
+
+	// The name of the API destination.
+	Name *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s ApiDestination) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ApiDestination) GoString() string {
+	return s.String()
+}
+
+// SetApiDestinationArn sets the ApiDestinationArn field's value.
+func (s *ApiDestination) SetApiDestinationArn(v string) *ApiDestination {
+	s.ApiDestinationArn = &v
+	return s
+}
+
+// SetApiDestinationState sets the ApiDestinationState field's value.
+func (s *ApiDestination) SetApiDestinationState(v string) *ApiDestination {
+	s.ApiDestinationState = &v
+	return s
+}
+
+// SetConnectionArn sets the ConnectionArn field's value.
+func (s *ApiDestination) SetConnectionArn(v string) *ApiDestination {
+	s.ConnectionArn = &v
+	return s
+}
+
+// SetCreationTime sets the CreationTime field's value.
+func (s *ApiDestination) SetCreationTime(v time.Time) *ApiDestination {
+	s.CreationTime = &v
+	return s
+}
+
+// SetHttpMethod sets the HttpMethod field's value.
+func (s *ApiDestination) SetHttpMethod(v string) *ApiDestination {
+	s.HttpMethod = &v
+	return s
+}
+
+// SetInvocationEndpoint sets the InvocationEndpoint field's value.
+func (s *ApiDestination) SetInvocationEndpoint(v string) *ApiDestination {
+	s.InvocationEndpoint = &v
+	return s
+}
+
+// SetInvocationRateLimitPerSecond sets the InvocationRateLimitPerSecond field's value.
+func (s *ApiDestination) SetInvocationRateLimitPerSecond(v int64) *ApiDestination {
+	s.InvocationRateLimitPerSecond = &v
+	return s
+}
+
+// SetLastModifiedTime sets the LastModifiedTime field's value.
+func (s *ApiDestination) SetLastModifiedTime(v time.Time) *ApiDestination {
+	s.LastModifiedTime = &v
+	return s
+}
+
+// SetName sets the Name field's value.
+func (s *ApiDestination) SetName(v string) *ApiDestination {
+	s.Name = &v
+	return s
+}
+
+// An Archive object that contains details about an archive.
+type Archive struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the archive.
+	ArchiveName *string `min:"1" type:"string"`
+
+	// The time stamp for the time that the archive was created.
+	CreationTime *time.Time `type:"timestamp"`
+
+	// The number of events in the archive.
+	EventCount *int64 `type:"long"`
+
+	// The ARN of the event bus associated with the archive. Only events from this
+	// event bus are sent to the archive.
+	EventSourceArn *string `min:"1" type:"string"`
+
+	// The number of days to retain events in the archive before they are deleted.
+	RetentionDays *int64 `type:"integer"`
+
+	// The size of the archive, in bytes.
+	SizeBytes *int64 `type:"long"`
+
+	// The current state of the archive.
+	State *string `type:"string" enum:"ArchiveState"`
+
+	// A description for the reason that the archive is in the current state.
+	StateReason *string `type:"string"`
+}
+
+// String returns the string representation
+func (s Archive) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s Archive) GoString() string {
+	return s.String()
+}
+
+// SetArchiveName sets the ArchiveName field's value.
+func (s *Archive) SetArchiveName(v string) *Archive {
+	s.ArchiveName = &v
+	return s
+}
+
+// SetCreationTime sets the CreationTime field's value.
+func (s *Archive) SetCreationTime(v time.Time) *Archive {
+	s.CreationTime = &v
+	return s
+}
+
+// SetEventCount sets the EventCount field's value.
+func (s *Archive) SetEventCount(v int64) *Archive {
+	s.EventCount = &v
+	return s
+}
+
+// SetEventSourceArn sets the EventSourceArn field's value.
+func (s *Archive) SetEventSourceArn(v string) *Archive {
+	s.EventSourceArn = &v
+	return s
+}
+
+// SetRetentionDays sets the RetentionDays field's value.
+func (s *Archive) SetRetentionDays(v int64) *Archive {
+	s.RetentionDays = &v
+	return s
+}
+
+// SetSizeBytes sets the SizeBytes field's value.
+func (s *Archive) SetSizeBytes(v int64) *Archive {
+	s.SizeBytes = &v
+	return s
+}
+
+// SetState sets the State field's value.
+func (s *Archive) SetState(v string) *Archive {
+	s.State = &v
+	return s
+}
+
+// SetStateReason sets the StateReason field's value.
+func (s *Archive) SetStateReason(v string) *Archive {
+	s.StateReason = &v
+	return s
 }
 
 // This structure specifies the VPC subnets and security groups for the task,
@@ -3240,7 +5216,89 @@ func (s *BatchRetryStrategy) SetAttempts(v int64) *BatchRetryStrategy {
 	return s
 }
 
-// There is concurrent modification on a rule or target.
+type CancelReplayInput struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the replay to cancel.
+	//
+	// ReplayName is a required field
+	ReplayName *string `min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s CancelReplayInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CancelReplayInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *CancelReplayInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "CancelReplayInput"}
+	if s.ReplayName == nil {
+		invalidParams.Add(request.NewErrParamRequired("ReplayName"))
+	}
+	if s.ReplayName != nil && len(*s.ReplayName) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ReplayName", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetReplayName sets the ReplayName field's value.
+func (s *CancelReplayInput) SetReplayName(v string) *CancelReplayInput {
+	s.ReplayName = &v
+	return s
+}
+
+type CancelReplayOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the replay to cancel.
+	ReplayArn *string `min:"1" type:"string"`
+
+	// The current state of the replay.
+	State *string `type:"string" enum:"ReplayState"`
+
+	// The reason that the replay is in the current state.
+	StateReason *string `type:"string"`
+}
+
+// String returns the string representation
+func (s CancelReplayOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CancelReplayOutput) GoString() string {
+	return s.String()
+}
+
+// SetReplayArn sets the ReplayArn field's value.
+func (s *CancelReplayOutput) SetReplayArn(v string) *CancelReplayOutput {
+	s.ReplayArn = &v
+	return s
+}
+
+// SetState sets the State field's value.
+func (s *CancelReplayOutput) SetState(v string) *CancelReplayOutput {
+	s.State = &v
+	return s
+}
+
+// SetStateReason sets the StateReason field's value.
+func (s *CancelReplayOutput) SetStateReason(v string) *CancelReplayOutput {
+	s.StateReason = &v
+	return s
+}
+
+// There is concurrent modification on a rule, target, archive, or replay.
 type ConcurrentModificationException struct {
 	_            struct{}                  `type:"structure"`
 	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
@@ -3367,6 +5425,1225 @@ func (s *Condition) SetType(v string) *Condition {
 // SetValue sets the Value field's value.
 func (s *Condition) SetValue(v string) *Condition {
 	s.Value = &v
+	return s
+}
+
+// Contains information about a connection.
+type Connection struct {
+	_ struct{} `type:"structure"`
+
+	// The authorization type specified for the connection.
+	AuthorizationType *string `type:"string" enum:"ConnectionAuthorizationType"`
+
+	// The ARN of the connection.
+	ConnectionArn *string `min:"1" type:"string"`
+
+	// The state of the connection.
+	ConnectionState *string `type:"string" enum:"ConnectionState"`
+
+	// A time stamp for the time that the connection was created.
+	CreationTime *time.Time `type:"timestamp"`
+
+	// A time stamp for the time that the connection was last authorized.
+	LastAuthorizedTime *time.Time `type:"timestamp"`
+
+	// A time stamp for the time that the connection was last modified.
+	LastModifiedTime *time.Time `type:"timestamp"`
+
+	// The name of the connection.
+	Name *string `min:"1" type:"string"`
+
+	// The reason that the connection is in the connection state.
+	StateReason *string `type:"string"`
+}
+
+// String returns the string representation
+func (s Connection) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s Connection) GoString() string {
+	return s.String()
+}
+
+// SetAuthorizationType sets the AuthorizationType field's value.
+func (s *Connection) SetAuthorizationType(v string) *Connection {
+	s.AuthorizationType = &v
+	return s
+}
+
+// SetConnectionArn sets the ConnectionArn field's value.
+func (s *Connection) SetConnectionArn(v string) *Connection {
+	s.ConnectionArn = &v
+	return s
+}
+
+// SetConnectionState sets the ConnectionState field's value.
+func (s *Connection) SetConnectionState(v string) *Connection {
+	s.ConnectionState = &v
+	return s
+}
+
+// SetCreationTime sets the CreationTime field's value.
+func (s *Connection) SetCreationTime(v time.Time) *Connection {
+	s.CreationTime = &v
+	return s
+}
+
+// SetLastAuthorizedTime sets the LastAuthorizedTime field's value.
+func (s *Connection) SetLastAuthorizedTime(v time.Time) *Connection {
+	s.LastAuthorizedTime = &v
+	return s
+}
+
+// SetLastModifiedTime sets the LastModifiedTime field's value.
+func (s *Connection) SetLastModifiedTime(v time.Time) *Connection {
+	s.LastModifiedTime = &v
+	return s
+}
+
+// SetName sets the Name field's value.
+func (s *Connection) SetName(v string) *Connection {
+	s.Name = &v
+	return s
+}
+
+// SetStateReason sets the StateReason field's value.
+func (s *Connection) SetStateReason(v string) *Connection {
+	s.StateReason = &v
+	return s
+}
+
+// Contains the authorization parameters for the connection if API Key is specified
+// as the authorization type.
+type ConnectionApiKeyAuthResponseParameters struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the header to use for the APIKeyValue used for authorization.
+	ApiKeyName *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s ConnectionApiKeyAuthResponseParameters) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ConnectionApiKeyAuthResponseParameters) GoString() string {
+	return s.String()
+}
+
+// SetApiKeyName sets the ApiKeyName field's value.
+func (s *ConnectionApiKeyAuthResponseParameters) SetApiKeyName(v string) *ConnectionApiKeyAuthResponseParameters {
+	s.ApiKeyName = &v
+	return s
+}
+
+// Contains the authorization parameters to use for the connection.
+type ConnectionAuthResponseParameters struct {
+	_ struct{} `type:"structure"`
+
+	// The API Key parameters to use for authorization.
+	ApiKeyAuthParameters *ConnectionApiKeyAuthResponseParameters `type:"structure"`
+
+	// The authorization parameters for Basic authorization.
+	BasicAuthParameters *ConnectionBasicAuthResponseParameters `type:"structure"`
+
+	// Additional parameters for the connection that are passed through with every
+	// invocation to the HTTP endpoint.
+	InvocationHttpParameters *ConnectionHttpParameters `type:"structure"`
+
+	// The OAuth parameters to use for authorization.
+	OAuthParameters *ConnectionOAuthResponseParameters `type:"structure"`
+}
+
+// String returns the string representation
+func (s ConnectionAuthResponseParameters) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ConnectionAuthResponseParameters) GoString() string {
+	return s.String()
+}
+
+// SetApiKeyAuthParameters sets the ApiKeyAuthParameters field's value.
+func (s *ConnectionAuthResponseParameters) SetApiKeyAuthParameters(v *ConnectionApiKeyAuthResponseParameters) *ConnectionAuthResponseParameters {
+	s.ApiKeyAuthParameters = v
+	return s
+}
+
+// SetBasicAuthParameters sets the BasicAuthParameters field's value.
+func (s *ConnectionAuthResponseParameters) SetBasicAuthParameters(v *ConnectionBasicAuthResponseParameters) *ConnectionAuthResponseParameters {
+	s.BasicAuthParameters = v
+	return s
+}
+
+// SetInvocationHttpParameters sets the InvocationHttpParameters field's value.
+func (s *ConnectionAuthResponseParameters) SetInvocationHttpParameters(v *ConnectionHttpParameters) *ConnectionAuthResponseParameters {
+	s.InvocationHttpParameters = v
+	return s
+}
+
+// SetOAuthParameters sets the OAuthParameters field's value.
+func (s *ConnectionAuthResponseParameters) SetOAuthParameters(v *ConnectionOAuthResponseParameters) *ConnectionAuthResponseParameters {
+	s.OAuthParameters = v
+	return s
+}
+
+// Contains the authorization parameters for the connection if Basic is specified
+// as the authorization type.
+type ConnectionBasicAuthResponseParameters struct {
+	_ struct{} `type:"structure"`
+
+	// The user name to use for Basic authorization.
+	Username *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s ConnectionBasicAuthResponseParameters) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ConnectionBasicAuthResponseParameters) GoString() string {
+	return s.String()
+}
+
+// SetUsername sets the Username field's value.
+func (s *ConnectionBasicAuthResponseParameters) SetUsername(v string) *ConnectionBasicAuthResponseParameters {
+	s.Username = &v
+	return s
+}
+
+// Additional parameter included in the body. You can include up to 100 additional
+// body parameters per request. An event payload cannot exceed 64 KB.
+type ConnectionBodyParameter struct {
+	_ struct{} `type:"structure"`
+
+	// Specified whether the value is secret.
+	IsValueSecret *bool `type:"boolean"`
+
+	// The key for the parameter.
+	Key *string `type:"string"`
+
+	// The value associated with the key.
+	Value *string `type:"string"`
+}
+
+// String returns the string representation
+func (s ConnectionBodyParameter) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ConnectionBodyParameter) GoString() string {
+	return s.String()
+}
+
+// SetIsValueSecret sets the IsValueSecret field's value.
+func (s *ConnectionBodyParameter) SetIsValueSecret(v bool) *ConnectionBodyParameter {
+	s.IsValueSecret = &v
+	return s
+}
+
+// SetKey sets the Key field's value.
+func (s *ConnectionBodyParameter) SetKey(v string) *ConnectionBodyParameter {
+	s.Key = &v
+	return s
+}
+
+// SetValue sets the Value field's value.
+func (s *ConnectionBodyParameter) SetValue(v string) *ConnectionBodyParameter {
+	s.Value = &v
+	return s
+}
+
+// Additional parameter included in the header. You can include up to 100 additional
+// header parameters per request. An event payload cannot exceed 64 KB.
+type ConnectionHeaderParameter struct {
+	_ struct{} `type:"structure"`
+
+	// Specified whether the value is a secret.
+	IsValueSecret *bool `type:"boolean"`
+
+	// The key for the parameter.
+	Key *string `type:"string"`
+
+	// The value associated with the key.
+	Value *string `type:"string"`
+}
+
+// String returns the string representation
+func (s ConnectionHeaderParameter) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ConnectionHeaderParameter) GoString() string {
+	return s.String()
+}
+
+// SetIsValueSecret sets the IsValueSecret field's value.
+func (s *ConnectionHeaderParameter) SetIsValueSecret(v bool) *ConnectionHeaderParameter {
+	s.IsValueSecret = &v
+	return s
+}
+
+// SetKey sets the Key field's value.
+func (s *ConnectionHeaderParameter) SetKey(v string) *ConnectionHeaderParameter {
+	s.Key = &v
+	return s
+}
+
+// SetValue sets the Value field's value.
+func (s *ConnectionHeaderParameter) SetValue(v string) *ConnectionHeaderParameter {
+	s.Value = &v
+	return s
+}
+
+// Contains additional parameters for the connection.
+type ConnectionHttpParameters struct {
+	_ struct{} `type:"structure"`
+
+	// Contains additional body string parameters for the connection.
+	BodyParameters []*ConnectionBodyParameter `type:"list"`
+
+	// Contains additional header parameters for the connection.
+	HeaderParameters []*ConnectionHeaderParameter `type:"list"`
+
+	// Contains additional query string parameters for the connection.
+	QueryStringParameters []*ConnectionQueryStringParameter `type:"list"`
+}
+
+// String returns the string representation
+func (s ConnectionHttpParameters) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ConnectionHttpParameters) GoString() string {
+	return s.String()
+}
+
+// SetBodyParameters sets the BodyParameters field's value.
+func (s *ConnectionHttpParameters) SetBodyParameters(v []*ConnectionBodyParameter) *ConnectionHttpParameters {
+	s.BodyParameters = v
+	return s
+}
+
+// SetHeaderParameters sets the HeaderParameters field's value.
+func (s *ConnectionHttpParameters) SetHeaderParameters(v []*ConnectionHeaderParameter) *ConnectionHttpParameters {
+	s.HeaderParameters = v
+	return s
+}
+
+// SetQueryStringParameters sets the QueryStringParameters field's value.
+func (s *ConnectionHttpParameters) SetQueryStringParameters(v []*ConnectionQueryStringParameter) *ConnectionHttpParameters {
+	s.QueryStringParameters = v
+	return s
+}
+
+// Contains the client response parameters for the connection when OAuth is
+// specified as the authorization type.
+type ConnectionOAuthClientResponseParameters struct {
+	_ struct{} `type:"structure"`
+
+	// The client ID associated with the response to the connection request.
+	ClientID *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s ConnectionOAuthClientResponseParameters) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ConnectionOAuthClientResponseParameters) GoString() string {
+	return s.String()
+}
+
+// SetClientID sets the ClientID field's value.
+func (s *ConnectionOAuthClientResponseParameters) SetClientID(v string) *ConnectionOAuthClientResponseParameters {
+	s.ClientID = &v
+	return s
+}
+
+// Contains the response parameters when OAuth is specified as the authorization
+// type.
+type ConnectionOAuthResponseParameters struct {
+	_ struct{} `type:"structure"`
+
+	// The URL to the HTTP endpoint that authorized the request.
+	AuthorizationEndpoint *string `min:"1" type:"string"`
+
+	// A ConnectionOAuthClientResponseParameters object that contains details about
+	// the client parameters returned when OAuth is specified as the authorization
+	// type.
+	ClientParameters *ConnectionOAuthClientResponseParameters `type:"structure"`
+
+	// The method used to connect to the HTTP endpoint.
+	HttpMethod *string `type:"string" enum:"ConnectionOAuthHttpMethod"`
+
+	// The additional HTTP parameters used for the OAuth authorization request.
+	OAuthHttpParameters *ConnectionHttpParameters `type:"structure"`
+}
+
+// String returns the string representation
+func (s ConnectionOAuthResponseParameters) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ConnectionOAuthResponseParameters) GoString() string {
+	return s.String()
+}
+
+// SetAuthorizationEndpoint sets the AuthorizationEndpoint field's value.
+func (s *ConnectionOAuthResponseParameters) SetAuthorizationEndpoint(v string) *ConnectionOAuthResponseParameters {
+	s.AuthorizationEndpoint = &v
+	return s
+}
+
+// SetClientParameters sets the ClientParameters field's value.
+func (s *ConnectionOAuthResponseParameters) SetClientParameters(v *ConnectionOAuthClientResponseParameters) *ConnectionOAuthResponseParameters {
+	s.ClientParameters = v
+	return s
+}
+
+// SetHttpMethod sets the HttpMethod field's value.
+func (s *ConnectionOAuthResponseParameters) SetHttpMethod(v string) *ConnectionOAuthResponseParameters {
+	s.HttpMethod = &v
+	return s
+}
+
+// SetOAuthHttpParameters sets the OAuthHttpParameters field's value.
+func (s *ConnectionOAuthResponseParameters) SetOAuthHttpParameters(v *ConnectionHttpParameters) *ConnectionOAuthResponseParameters {
+	s.OAuthHttpParameters = v
+	return s
+}
+
+// Additional query string parameter for the connection. You can include up
+// to 100 additional query string parameters per request. Each additional parameter
+// counts towards the event payload size, which cannot exceed 64 KB.
+type ConnectionQueryStringParameter struct {
+	_ struct{} `type:"structure"`
+
+	// Specifies whether the value is secret.
+	IsValueSecret *bool `type:"boolean"`
+
+	// The key for a query string parameter.
+	Key *string `type:"string"`
+
+	// The value associated with the key for the query string parameter.
+	Value *string `type:"string"`
+}
+
+// String returns the string representation
+func (s ConnectionQueryStringParameter) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ConnectionQueryStringParameter) GoString() string {
+	return s.String()
+}
+
+// SetIsValueSecret sets the IsValueSecret field's value.
+func (s *ConnectionQueryStringParameter) SetIsValueSecret(v bool) *ConnectionQueryStringParameter {
+	s.IsValueSecret = &v
+	return s
+}
+
+// SetKey sets the Key field's value.
+func (s *ConnectionQueryStringParameter) SetKey(v string) *ConnectionQueryStringParameter {
+	s.Key = &v
+	return s
+}
+
+// SetValue sets the Value field's value.
+func (s *ConnectionQueryStringParameter) SetValue(v string) *ConnectionQueryStringParameter {
+	s.Value = &v
+	return s
+}
+
+type CreateApiDestinationInput struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the connection to use for the API destination. The destination
+	// endpoint must support the authorization type specified for the connection.
+	//
+	// ConnectionArn is a required field
+	ConnectionArn *string `min:"1" type:"string" required:"true"`
+
+	// A description for the API destination to create.
+	Description *string `type:"string"`
+
+	// The method to use for the request to the HTTP invocation endpoint.
+	//
+	// HttpMethod is a required field
+	HttpMethod *string `type:"string" required:"true" enum:"ApiDestinationHttpMethod"`
+
+	// The URL to the HTTP invocation endpoint for the API destination.
+	//
+	// InvocationEndpoint is a required field
+	InvocationEndpoint *string `min:"1" type:"string" required:"true"`
+
+	// The maximum number of requests per second to send to the HTTP invocation
+	// endpoint.
+	InvocationRateLimitPerSecond *int64 `min:"1" type:"integer"`
+
+	// The name for the API destination to create.
+	//
+	// Name is a required field
+	Name *string `min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s CreateApiDestinationInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CreateApiDestinationInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *CreateApiDestinationInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "CreateApiDestinationInput"}
+	if s.ConnectionArn == nil {
+		invalidParams.Add(request.NewErrParamRequired("ConnectionArn"))
+	}
+	if s.ConnectionArn != nil && len(*s.ConnectionArn) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ConnectionArn", 1))
+	}
+	if s.HttpMethod == nil {
+		invalidParams.Add(request.NewErrParamRequired("HttpMethod"))
+	}
+	if s.InvocationEndpoint == nil {
+		invalidParams.Add(request.NewErrParamRequired("InvocationEndpoint"))
+	}
+	if s.InvocationEndpoint != nil && len(*s.InvocationEndpoint) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("InvocationEndpoint", 1))
+	}
+	if s.InvocationRateLimitPerSecond != nil && *s.InvocationRateLimitPerSecond < 1 {
+		invalidParams.Add(request.NewErrParamMinValue("InvocationRateLimitPerSecond", 1))
+	}
+	if s.Name == nil {
+		invalidParams.Add(request.NewErrParamRequired("Name"))
+	}
+	if s.Name != nil && len(*s.Name) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Name", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetConnectionArn sets the ConnectionArn field's value.
+func (s *CreateApiDestinationInput) SetConnectionArn(v string) *CreateApiDestinationInput {
+	s.ConnectionArn = &v
+	return s
+}
+
+// SetDescription sets the Description field's value.
+func (s *CreateApiDestinationInput) SetDescription(v string) *CreateApiDestinationInput {
+	s.Description = &v
+	return s
+}
+
+// SetHttpMethod sets the HttpMethod field's value.
+func (s *CreateApiDestinationInput) SetHttpMethod(v string) *CreateApiDestinationInput {
+	s.HttpMethod = &v
+	return s
+}
+
+// SetInvocationEndpoint sets the InvocationEndpoint field's value.
+func (s *CreateApiDestinationInput) SetInvocationEndpoint(v string) *CreateApiDestinationInput {
+	s.InvocationEndpoint = &v
+	return s
+}
+
+// SetInvocationRateLimitPerSecond sets the InvocationRateLimitPerSecond field's value.
+func (s *CreateApiDestinationInput) SetInvocationRateLimitPerSecond(v int64) *CreateApiDestinationInput {
+	s.InvocationRateLimitPerSecond = &v
+	return s
+}
+
+// SetName sets the Name field's value.
+func (s *CreateApiDestinationInput) SetName(v string) *CreateApiDestinationInput {
+	s.Name = &v
+	return s
+}
+
+type CreateApiDestinationOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the API destination that was created by the request.
+	ApiDestinationArn *string `min:"1" type:"string"`
+
+	// The state of the API destination that was created by the request.
+	ApiDestinationState *string `type:"string" enum:"ApiDestinationState"`
+
+	// A time stamp indicating the time that the API destination was created.
+	CreationTime *time.Time `type:"timestamp"`
+
+	// A time stamp indicating the time that the API destination was last modified.
+	LastModifiedTime *time.Time `type:"timestamp"`
+}
+
+// String returns the string representation
+func (s CreateApiDestinationOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CreateApiDestinationOutput) GoString() string {
+	return s.String()
+}
+
+// SetApiDestinationArn sets the ApiDestinationArn field's value.
+func (s *CreateApiDestinationOutput) SetApiDestinationArn(v string) *CreateApiDestinationOutput {
+	s.ApiDestinationArn = &v
+	return s
+}
+
+// SetApiDestinationState sets the ApiDestinationState field's value.
+func (s *CreateApiDestinationOutput) SetApiDestinationState(v string) *CreateApiDestinationOutput {
+	s.ApiDestinationState = &v
+	return s
+}
+
+// SetCreationTime sets the CreationTime field's value.
+func (s *CreateApiDestinationOutput) SetCreationTime(v time.Time) *CreateApiDestinationOutput {
+	s.CreationTime = &v
+	return s
+}
+
+// SetLastModifiedTime sets the LastModifiedTime field's value.
+func (s *CreateApiDestinationOutput) SetLastModifiedTime(v time.Time) *CreateApiDestinationOutput {
+	s.LastModifiedTime = &v
+	return s
+}
+
+type CreateArchiveInput struct {
+	_ struct{} `type:"structure"`
+
+	// The name for the archive to create.
+	//
+	// ArchiveName is a required field
+	ArchiveName *string `min:"1" type:"string" required:"true"`
+
+	// A description for the archive.
+	Description *string `type:"string"`
+
+	// An event pattern to use to filter events sent to the archive.
+	EventPattern *string `type:"string"`
+
+	// The ARN of the event source associated with the archive.
+	//
+	// EventSourceArn is a required field
+	EventSourceArn *string `min:"1" type:"string" required:"true"`
+
+	// The number of days to retain events for. Default value is 0. If set to 0,
+	// events are retained indefinitely
+	RetentionDays *int64 `type:"integer"`
+}
+
+// String returns the string representation
+func (s CreateArchiveInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CreateArchiveInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *CreateArchiveInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "CreateArchiveInput"}
+	if s.ArchiveName == nil {
+		invalidParams.Add(request.NewErrParamRequired("ArchiveName"))
+	}
+	if s.ArchiveName != nil && len(*s.ArchiveName) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ArchiveName", 1))
+	}
+	if s.EventSourceArn == nil {
+		invalidParams.Add(request.NewErrParamRequired("EventSourceArn"))
+	}
+	if s.EventSourceArn != nil && len(*s.EventSourceArn) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("EventSourceArn", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetArchiveName sets the ArchiveName field's value.
+func (s *CreateArchiveInput) SetArchiveName(v string) *CreateArchiveInput {
+	s.ArchiveName = &v
+	return s
+}
+
+// SetDescription sets the Description field's value.
+func (s *CreateArchiveInput) SetDescription(v string) *CreateArchiveInput {
+	s.Description = &v
+	return s
+}
+
+// SetEventPattern sets the EventPattern field's value.
+func (s *CreateArchiveInput) SetEventPattern(v string) *CreateArchiveInput {
+	s.EventPattern = &v
+	return s
+}
+
+// SetEventSourceArn sets the EventSourceArn field's value.
+func (s *CreateArchiveInput) SetEventSourceArn(v string) *CreateArchiveInput {
+	s.EventSourceArn = &v
+	return s
+}
+
+// SetRetentionDays sets the RetentionDays field's value.
+func (s *CreateArchiveInput) SetRetentionDays(v int64) *CreateArchiveInput {
+	s.RetentionDays = &v
+	return s
+}
+
+type CreateArchiveOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the archive that was created.
+	ArchiveArn *string `min:"1" type:"string"`
+
+	// The time at which the archive was created.
+	CreationTime *time.Time `type:"timestamp"`
+
+	// The state of the archive that was created.
+	State *string `type:"string" enum:"ArchiveState"`
+
+	// The reason that the archive is in the state.
+	StateReason *string `type:"string"`
+}
+
+// String returns the string representation
+func (s CreateArchiveOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CreateArchiveOutput) GoString() string {
+	return s.String()
+}
+
+// SetArchiveArn sets the ArchiveArn field's value.
+func (s *CreateArchiveOutput) SetArchiveArn(v string) *CreateArchiveOutput {
+	s.ArchiveArn = &v
+	return s
+}
+
+// SetCreationTime sets the CreationTime field's value.
+func (s *CreateArchiveOutput) SetCreationTime(v time.Time) *CreateArchiveOutput {
+	s.CreationTime = &v
+	return s
+}
+
+// SetState sets the State field's value.
+func (s *CreateArchiveOutput) SetState(v string) *CreateArchiveOutput {
+	s.State = &v
+	return s
+}
+
+// SetStateReason sets the StateReason field's value.
+func (s *CreateArchiveOutput) SetStateReason(v string) *CreateArchiveOutput {
+	s.StateReason = &v
+	return s
+}
+
+// Contains the API key authorization parameters for the connection.
+type CreateConnectionApiKeyAuthRequestParameters struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the API key to use for authorization.
+	//
+	// ApiKeyName is a required field
+	ApiKeyName *string `min:"1" type:"string" required:"true"`
+
+	// The value for the API key to use for authorization.
+	//
+	// ApiKeyValue is a required field
+	ApiKeyValue *string `min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s CreateConnectionApiKeyAuthRequestParameters) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CreateConnectionApiKeyAuthRequestParameters) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *CreateConnectionApiKeyAuthRequestParameters) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "CreateConnectionApiKeyAuthRequestParameters"}
+	if s.ApiKeyName == nil {
+		invalidParams.Add(request.NewErrParamRequired("ApiKeyName"))
+	}
+	if s.ApiKeyName != nil && len(*s.ApiKeyName) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ApiKeyName", 1))
+	}
+	if s.ApiKeyValue == nil {
+		invalidParams.Add(request.NewErrParamRequired("ApiKeyValue"))
+	}
+	if s.ApiKeyValue != nil && len(*s.ApiKeyValue) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ApiKeyValue", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetApiKeyName sets the ApiKeyName field's value.
+func (s *CreateConnectionApiKeyAuthRequestParameters) SetApiKeyName(v string) *CreateConnectionApiKeyAuthRequestParameters {
+	s.ApiKeyName = &v
+	return s
+}
+
+// SetApiKeyValue sets the ApiKeyValue field's value.
+func (s *CreateConnectionApiKeyAuthRequestParameters) SetApiKeyValue(v string) *CreateConnectionApiKeyAuthRequestParameters {
+	s.ApiKeyValue = &v
+	return s
+}
+
+// Contains the authorization parameters for the connection.
+type CreateConnectionAuthRequestParameters struct {
+	_ struct{} `type:"structure"`
+
+	// A CreateConnectionApiKeyAuthRequestParameters object that contains the API
+	// key authorization parameters to use for the connection.
+	ApiKeyAuthParameters *CreateConnectionApiKeyAuthRequestParameters `type:"structure"`
+
+	// A CreateConnectionBasicAuthRequestParameters object that contains the Basic
+	// authorization parameters to use for the connection.
+	BasicAuthParameters *CreateConnectionBasicAuthRequestParameters `type:"structure"`
+
+	// A ConnectionHttpParameters object that contains the API key authorization
+	// parameters to use for the connection. Note that if you include additional
+	// parameters for the target of a rule via HttpParameters, including query strings,
+	// the parameters added for the connection take precedence.
+	InvocationHttpParameters *ConnectionHttpParameters `type:"structure"`
+
+	// A CreateConnectionOAuthRequestParameters object that contains the OAuth authorization
+	// parameters to use for the connection.
+	OAuthParameters *CreateConnectionOAuthRequestParameters `type:"structure"`
+}
+
+// String returns the string representation
+func (s CreateConnectionAuthRequestParameters) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CreateConnectionAuthRequestParameters) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *CreateConnectionAuthRequestParameters) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "CreateConnectionAuthRequestParameters"}
+	if s.ApiKeyAuthParameters != nil {
+		if err := s.ApiKeyAuthParameters.Validate(); err != nil {
+			invalidParams.AddNested("ApiKeyAuthParameters", err.(request.ErrInvalidParams))
+		}
+	}
+	if s.BasicAuthParameters != nil {
+		if err := s.BasicAuthParameters.Validate(); err != nil {
+			invalidParams.AddNested("BasicAuthParameters", err.(request.ErrInvalidParams))
+		}
+	}
+	if s.OAuthParameters != nil {
+		if err := s.OAuthParameters.Validate(); err != nil {
+			invalidParams.AddNested("OAuthParameters", err.(request.ErrInvalidParams))
+		}
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetApiKeyAuthParameters sets the ApiKeyAuthParameters field's value.
+func (s *CreateConnectionAuthRequestParameters) SetApiKeyAuthParameters(v *CreateConnectionApiKeyAuthRequestParameters) *CreateConnectionAuthRequestParameters {
+	s.ApiKeyAuthParameters = v
+	return s
+}
+
+// SetBasicAuthParameters sets the BasicAuthParameters field's value.
+func (s *CreateConnectionAuthRequestParameters) SetBasicAuthParameters(v *CreateConnectionBasicAuthRequestParameters) *CreateConnectionAuthRequestParameters {
+	s.BasicAuthParameters = v
+	return s
+}
+
+// SetInvocationHttpParameters sets the InvocationHttpParameters field's value.
+func (s *CreateConnectionAuthRequestParameters) SetInvocationHttpParameters(v *ConnectionHttpParameters) *CreateConnectionAuthRequestParameters {
+	s.InvocationHttpParameters = v
+	return s
+}
+
+// SetOAuthParameters sets the OAuthParameters field's value.
+func (s *CreateConnectionAuthRequestParameters) SetOAuthParameters(v *CreateConnectionOAuthRequestParameters) *CreateConnectionAuthRequestParameters {
+	s.OAuthParameters = v
+	return s
+}
+
+// Contains the Basic authorization parameters to use for the connection.
+type CreateConnectionBasicAuthRequestParameters struct {
+	_ struct{} `type:"structure"`
+
+	// The password associated with the user name to use for Basic authorization.
+	//
+	// Password is a required field
+	Password *string `min:"1" type:"string" required:"true"`
+
+	// The user name to use for Basic authorization.
+	//
+	// Username is a required field
+	Username *string `min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s CreateConnectionBasicAuthRequestParameters) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CreateConnectionBasicAuthRequestParameters) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *CreateConnectionBasicAuthRequestParameters) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "CreateConnectionBasicAuthRequestParameters"}
+	if s.Password == nil {
+		invalidParams.Add(request.NewErrParamRequired("Password"))
+	}
+	if s.Password != nil && len(*s.Password) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Password", 1))
+	}
+	if s.Username == nil {
+		invalidParams.Add(request.NewErrParamRequired("Username"))
+	}
+	if s.Username != nil && len(*s.Username) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Username", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetPassword sets the Password field's value.
+func (s *CreateConnectionBasicAuthRequestParameters) SetPassword(v string) *CreateConnectionBasicAuthRequestParameters {
+	s.Password = &v
+	return s
+}
+
+// SetUsername sets the Username field's value.
+func (s *CreateConnectionBasicAuthRequestParameters) SetUsername(v string) *CreateConnectionBasicAuthRequestParameters {
+	s.Username = &v
+	return s
+}
+
+type CreateConnectionInput struct {
+	_ struct{} `type:"structure"`
+
+	// A CreateConnectionAuthRequestParameters object that contains the authorization
+	// parameters to use to authorize with the endpoint.
+	//
+	// AuthParameters is a required field
+	AuthParameters *CreateConnectionAuthRequestParameters `type:"structure" required:"true"`
+
+	// The type of authorization to use for the connection.
+	//
+	// AuthorizationType is a required field
+	AuthorizationType *string `type:"string" required:"true" enum:"ConnectionAuthorizationType"`
+
+	// A description for the connection to create.
+	Description *string `type:"string"`
+
+	// The name for the connection to create.
+	//
+	// Name is a required field
+	Name *string `min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s CreateConnectionInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CreateConnectionInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *CreateConnectionInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "CreateConnectionInput"}
+	if s.AuthParameters == nil {
+		invalidParams.Add(request.NewErrParamRequired("AuthParameters"))
+	}
+	if s.AuthorizationType == nil {
+		invalidParams.Add(request.NewErrParamRequired("AuthorizationType"))
+	}
+	if s.Name == nil {
+		invalidParams.Add(request.NewErrParamRequired("Name"))
+	}
+	if s.Name != nil && len(*s.Name) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Name", 1))
+	}
+	if s.AuthParameters != nil {
+		if err := s.AuthParameters.Validate(); err != nil {
+			invalidParams.AddNested("AuthParameters", err.(request.ErrInvalidParams))
+		}
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetAuthParameters sets the AuthParameters field's value.
+func (s *CreateConnectionInput) SetAuthParameters(v *CreateConnectionAuthRequestParameters) *CreateConnectionInput {
+	s.AuthParameters = v
+	return s
+}
+
+// SetAuthorizationType sets the AuthorizationType field's value.
+func (s *CreateConnectionInput) SetAuthorizationType(v string) *CreateConnectionInput {
+	s.AuthorizationType = &v
+	return s
+}
+
+// SetDescription sets the Description field's value.
+func (s *CreateConnectionInput) SetDescription(v string) *CreateConnectionInput {
+	s.Description = &v
+	return s
+}
+
+// SetName sets the Name field's value.
+func (s *CreateConnectionInput) SetName(v string) *CreateConnectionInput {
+	s.Name = &v
+	return s
+}
+
+// Contains the Basic authorization parameters to use for the connection.
+type CreateConnectionOAuthClientRequestParameters struct {
+	_ struct{} `type:"structure"`
+
+	// The client ID to use for OAuth authorization for the connection.
+	//
+	// ClientID is a required field
+	ClientID *string `min:"1" type:"string" required:"true"`
+
+	// The client secret associated with the client ID to use for OAuth authorization
+	// for the connection.
+	//
+	// ClientSecret is a required field
+	ClientSecret *string `min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s CreateConnectionOAuthClientRequestParameters) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CreateConnectionOAuthClientRequestParameters) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *CreateConnectionOAuthClientRequestParameters) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "CreateConnectionOAuthClientRequestParameters"}
+	if s.ClientID == nil {
+		invalidParams.Add(request.NewErrParamRequired("ClientID"))
+	}
+	if s.ClientID != nil && len(*s.ClientID) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ClientID", 1))
+	}
+	if s.ClientSecret == nil {
+		invalidParams.Add(request.NewErrParamRequired("ClientSecret"))
+	}
+	if s.ClientSecret != nil && len(*s.ClientSecret) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ClientSecret", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetClientID sets the ClientID field's value.
+func (s *CreateConnectionOAuthClientRequestParameters) SetClientID(v string) *CreateConnectionOAuthClientRequestParameters {
+	s.ClientID = &v
+	return s
+}
+
+// SetClientSecret sets the ClientSecret field's value.
+func (s *CreateConnectionOAuthClientRequestParameters) SetClientSecret(v string) *CreateConnectionOAuthClientRequestParameters {
+	s.ClientSecret = &v
+	return s
+}
+
+// Contains the OAuth authorization parameters to use for the connection.
+type CreateConnectionOAuthRequestParameters struct {
+	_ struct{} `type:"structure"`
+
+	// The URL to the authorization endpoint when OAuth is specified as the authorization
+	// type.
+	//
+	// AuthorizationEndpoint is a required field
+	AuthorizationEndpoint *string `min:"1" type:"string" required:"true"`
+
+	// A CreateConnectionOAuthClientRequestParameters object that contains the client
+	// parameters for OAuth authorization.
+	//
+	// ClientParameters is a required field
+	ClientParameters *CreateConnectionOAuthClientRequestParameters `type:"structure" required:"true"`
+
+	// The method to use for the authorization request.
+	//
+	// HttpMethod is a required field
+	HttpMethod *string `type:"string" required:"true" enum:"ConnectionOAuthHttpMethod"`
+
+	// A ConnectionHttpParameters object that contains details about the additional
+	// parameters to use for the connection.
+	OAuthHttpParameters *ConnectionHttpParameters `type:"structure"`
+}
+
+// String returns the string representation
+func (s CreateConnectionOAuthRequestParameters) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CreateConnectionOAuthRequestParameters) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *CreateConnectionOAuthRequestParameters) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "CreateConnectionOAuthRequestParameters"}
+	if s.AuthorizationEndpoint == nil {
+		invalidParams.Add(request.NewErrParamRequired("AuthorizationEndpoint"))
+	}
+	if s.AuthorizationEndpoint != nil && len(*s.AuthorizationEndpoint) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("AuthorizationEndpoint", 1))
+	}
+	if s.ClientParameters == nil {
+		invalidParams.Add(request.NewErrParamRequired("ClientParameters"))
+	}
+	if s.HttpMethod == nil {
+		invalidParams.Add(request.NewErrParamRequired("HttpMethod"))
+	}
+	if s.ClientParameters != nil {
+		if err := s.ClientParameters.Validate(); err != nil {
+			invalidParams.AddNested("ClientParameters", err.(request.ErrInvalidParams))
+		}
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetAuthorizationEndpoint sets the AuthorizationEndpoint field's value.
+func (s *CreateConnectionOAuthRequestParameters) SetAuthorizationEndpoint(v string) *CreateConnectionOAuthRequestParameters {
+	s.AuthorizationEndpoint = &v
+	return s
+}
+
+// SetClientParameters sets the ClientParameters field's value.
+func (s *CreateConnectionOAuthRequestParameters) SetClientParameters(v *CreateConnectionOAuthClientRequestParameters) *CreateConnectionOAuthRequestParameters {
+	s.ClientParameters = v
+	return s
+}
+
+// SetHttpMethod sets the HttpMethod field's value.
+func (s *CreateConnectionOAuthRequestParameters) SetHttpMethod(v string) *CreateConnectionOAuthRequestParameters {
+	s.HttpMethod = &v
+	return s
+}
+
+// SetOAuthHttpParameters sets the OAuthHttpParameters field's value.
+func (s *CreateConnectionOAuthRequestParameters) SetOAuthHttpParameters(v *ConnectionHttpParameters) *CreateConnectionOAuthRequestParameters {
+	s.OAuthHttpParameters = v
+	return s
+}
+
+type CreateConnectionOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the connection that was created by the request.
+	ConnectionArn *string `min:"1" type:"string"`
+
+	// The state of the connection that was created by the request.
+	ConnectionState *string `type:"string" enum:"ConnectionState"`
+
+	// A time stamp for the time that the connection was created.
+	CreationTime *time.Time `type:"timestamp"`
+
+	// A time stamp for the time that the connection was last updated.
+	LastModifiedTime *time.Time `type:"timestamp"`
+}
+
+// String returns the string representation
+func (s CreateConnectionOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s CreateConnectionOutput) GoString() string {
+	return s.String()
+}
+
+// SetConnectionArn sets the ConnectionArn field's value.
+func (s *CreateConnectionOutput) SetConnectionArn(v string) *CreateConnectionOutput {
+	s.ConnectionArn = &v
+	return s
+}
+
+// SetConnectionState sets the ConnectionState field's value.
+func (s *CreateConnectionOutput) SetConnectionState(v string) *CreateConnectionOutput {
+	s.ConnectionState = &v
+	return s
+}
+
+// SetCreationTime sets the CreationTime field's value.
+func (s *CreateConnectionOutput) SetCreationTime(v time.Time) *CreateConnectionOutput {
+	s.CreationTime = &v
+	return s
+}
+
+// SetLastModifiedTime sets the LastModifiedTime field's value.
+func (s *CreateConnectionOutput) SetLastModifiedTime(v time.Time) *CreateConnectionOutput {
+	s.LastModifiedTime = &v
 	return s
 }
 
@@ -3613,6 +6890,356 @@ func (s DeactivateEventSourceOutput) GoString() string {
 	return s.String()
 }
 
+// A DeadLetterConfig object that contains information about a dead-letter queue
+// configuration.
+type DeadLetterConfig struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the SQS queue specified as the target for the dead-letter queue.
+	Arn *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s DeadLetterConfig) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DeadLetterConfig) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *DeadLetterConfig) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "DeadLetterConfig"}
+	if s.Arn != nil && len(*s.Arn) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Arn", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetArn sets the Arn field's value.
+func (s *DeadLetterConfig) SetArn(v string) *DeadLetterConfig {
+	s.Arn = &v
+	return s
+}
+
+type DeauthorizeConnectionInput struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the connection to remove authorization from.
+	//
+	// Name is a required field
+	Name *string `min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s DeauthorizeConnectionInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DeauthorizeConnectionInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *DeauthorizeConnectionInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "DeauthorizeConnectionInput"}
+	if s.Name == nil {
+		invalidParams.Add(request.NewErrParamRequired("Name"))
+	}
+	if s.Name != nil && len(*s.Name) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Name", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetName sets the Name field's value.
+func (s *DeauthorizeConnectionInput) SetName(v string) *DeauthorizeConnectionInput {
+	s.Name = &v
+	return s
+}
+
+type DeauthorizeConnectionOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the connection that authorization was removed from.
+	ConnectionArn *string `min:"1" type:"string"`
+
+	// The state of the connection.
+	ConnectionState *string `type:"string" enum:"ConnectionState"`
+
+	// A time stamp for the time that the connection was created.
+	CreationTime *time.Time `type:"timestamp"`
+
+	// A time stamp for the time that the connection was last authorized.
+	LastAuthorizedTime *time.Time `type:"timestamp"`
+
+	// A time stamp for the time that the connection was last updated.
+	LastModifiedTime *time.Time `type:"timestamp"`
+}
+
+// String returns the string representation
+func (s DeauthorizeConnectionOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DeauthorizeConnectionOutput) GoString() string {
+	return s.String()
+}
+
+// SetConnectionArn sets the ConnectionArn field's value.
+func (s *DeauthorizeConnectionOutput) SetConnectionArn(v string) *DeauthorizeConnectionOutput {
+	s.ConnectionArn = &v
+	return s
+}
+
+// SetConnectionState sets the ConnectionState field's value.
+func (s *DeauthorizeConnectionOutput) SetConnectionState(v string) *DeauthorizeConnectionOutput {
+	s.ConnectionState = &v
+	return s
+}
+
+// SetCreationTime sets the CreationTime field's value.
+func (s *DeauthorizeConnectionOutput) SetCreationTime(v time.Time) *DeauthorizeConnectionOutput {
+	s.CreationTime = &v
+	return s
+}
+
+// SetLastAuthorizedTime sets the LastAuthorizedTime field's value.
+func (s *DeauthorizeConnectionOutput) SetLastAuthorizedTime(v time.Time) *DeauthorizeConnectionOutput {
+	s.LastAuthorizedTime = &v
+	return s
+}
+
+// SetLastModifiedTime sets the LastModifiedTime field's value.
+func (s *DeauthorizeConnectionOutput) SetLastModifiedTime(v time.Time) *DeauthorizeConnectionOutput {
+	s.LastModifiedTime = &v
+	return s
+}
+
+type DeleteApiDestinationInput struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the destination to delete.
+	//
+	// Name is a required field
+	Name *string `min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s DeleteApiDestinationInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DeleteApiDestinationInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *DeleteApiDestinationInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "DeleteApiDestinationInput"}
+	if s.Name == nil {
+		invalidParams.Add(request.NewErrParamRequired("Name"))
+	}
+	if s.Name != nil && len(*s.Name) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Name", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetName sets the Name field's value.
+func (s *DeleteApiDestinationInput) SetName(v string) *DeleteApiDestinationInput {
+	s.Name = &v
+	return s
+}
+
+type DeleteApiDestinationOutput struct {
+	_ struct{} `type:"structure"`
+}
+
+// String returns the string representation
+func (s DeleteApiDestinationOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DeleteApiDestinationOutput) GoString() string {
+	return s.String()
+}
+
+type DeleteArchiveInput struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the archive to delete.
+	//
+	// ArchiveName is a required field
+	ArchiveName *string `min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s DeleteArchiveInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DeleteArchiveInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *DeleteArchiveInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "DeleteArchiveInput"}
+	if s.ArchiveName == nil {
+		invalidParams.Add(request.NewErrParamRequired("ArchiveName"))
+	}
+	if s.ArchiveName != nil && len(*s.ArchiveName) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ArchiveName", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetArchiveName sets the ArchiveName field's value.
+func (s *DeleteArchiveInput) SetArchiveName(v string) *DeleteArchiveInput {
+	s.ArchiveName = &v
+	return s
+}
+
+type DeleteArchiveOutput struct {
+	_ struct{} `type:"structure"`
+}
+
+// String returns the string representation
+func (s DeleteArchiveOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DeleteArchiveOutput) GoString() string {
+	return s.String()
+}
+
+type DeleteConnectionInput struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the connection to delete.
+	//
+	// Name is a required field
+	Name *string `min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s DeleteConnectionInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DeleteConnectionInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *DeleteConnectionInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "DeleteConnectionInput"}
+	if s.Name == nil {
+		invalidParams.Add(request.NewErrParamRequired("Name"))
+	}
+	if s.Name != nil && len(*s.Name) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Name", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetName sets the Name field's value.
+func (s *DeleteConnectionInput) SetName(v string) *DeleteConnectionInput {
+	s.Name = &v
+	return s
+}
+
+type DeleteConnectionOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the connection that was deleted.
+	ConnectionArn *string `min:"1" type:"string"`
+
+	// The state of the connection before it was deleted.
+	ConnectionState *string `type:"string" enum:"ConnectionState"`
+
+	// A time stamp for the time that the connection was created.
+	CreationTime *time.Time `type:"timestamp"`
+
+	// A time stamp for the time that the connection was last authorized before
+	// it wa deleted.
+	LastAuthorizedTime *time.Time `type:"timestamp"`
+
+	// A time stamp for the time that the connection was last modified before it
+	// was deleted.
+	LastModifiedTime *time.Time `type:"timestamp"`
+}
+
+// String returns the string representation
+func (s DeleteConnectionOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DeleteConnectionOutput) GoString() string {
+	return s.String()
+}
+
+// SetConnectionArn sets the ConnectionArn field's value.
+func (s *DeleteConnectionOutput) SetConnectionArn(v string) *DeleteConnectionOutput {
+	s.ConnectionArn = &v
+	return s
+}
+
+// SetConnectionState sets the ConnectionState field's value.
+func (s *DeleteConnectionOutput) SetConnectionState(v string) *DeleteConnectionOutput {
+	s.ConnectionState = &v
+	return s
+}
+
+// SetCreationTime sets the CreationTime field's value.
+func (s *DeleteConnectionOutput) SetCreationTime(v time.Time) *DeleteConnectionOutput {
+	s.CreationTime = &v
+	return s
+}
+
+// SetLastAuthorizedTime sets the LastAuthorizedTime field's value.
+func (s *DeleteConnectionOutput) SetLastAuthorizedTime(v time.Time) *DeleteConnectionOutput {
+	s.LastAuthorizedTime = &v
+	return s
+}
+
+// SetLastModifiedTime sets the LastModifiedTime field's value.
+func (s *DeleteConnectionOutput) SetLastModifiedTime(v time.Time) *DeleteConnectionOutput {
+	s.LastModifiedTime = &v
+	return s
+}
+
 type DeleteEventBusInput struct {
 	_ struct{} `type:"structure"`
 
@@ -3744,8 +7371,8 @@ func (s DeletePartnerEventSourceOutput) GoString() string {
 type DeleteRuleInput struct {
 	_ struct{} `type:"structure"`
 
-	// The event bus associated with the rule. If you omit this, the default event
-	// bus is used.
+	// The name or ARN of the event bus associated with the rule. If you omit this,
+	// the default event bus is used.
 	EventBusName *string `min:"1" type:"string"`
 
 	// If this is a managed rule, created by an AWS service on your behalf, you
@@ -3822,11 +7449,471 @@ func (s DeleteRuleOutput) GoString() string {
 	return s.String()
 }
 
+type DescribeApiDestinationInput struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the API destination to retrieve.
+	//
+	// Name is a required field
+	Name *string `min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s DescribeApiDestinationInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DescribeApiDestinationInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *DescribeApiDestinationInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "DescribeApiDestinationInput"}
+	if s.Name == nil {
+		invalidParams.Add(request.NewErrParamRequired("Name"))
+	}
+	if s.Name != nil && len(*s.Name) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Name", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetName sets the Name field's value.
+func (s *DescribeApiDestinationInput) SetName(v string) *DescribeApiDestinationInput {
+	s.Name = &v
+	return s
+}
+
+type DescribeApiDestinationOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the API destination retrieved.
+	ApiDestinationArn *string `min:"1" type:"string"`
+
+	// The state of the API destination retrieved.
+	ApiDestinationState *string `type:"string" enum:"ApiDestinationState"`
+
+	// The ARN of the connection specified for the API destination retrieved.
+	ConnectionArn *string `min:"1" type:"string"`
+
+	// A time stamp for the time that the API destination was created.
+	CreationTime *time.Time `type:"timestamp"`
+
+	// The description for the API destination retrieved.
+	Description *string `type:"string"`
+
+	// The method to use to connect to the HTTP endpoint.
+	HttpMethod *string `type:"string" enum:"ApiDestinationHttpMethod"`
+
+	// The URL to use to connect to the HTTP endpoint.
+	InvocationEndpoint *string `min:"1" type:"string"`
+
+	// The maximum number of invocations per second to specified for the API destination.
+	// Note that if you set the invocation rate maximum to a value lower the rate
+	// necessary to send all events received on to the destination HTTP endpoint,
+	// some events may not be delivered within the 24-hour retry window. If you
+	// plan to set the rate lower than the rate necessary to deliver all events,
+	// consider using a dead-letter queue to catch events that are not delivered
+	// within 24 hours.
+	InvocationRateLimitPerSecond *int64 `min:"1" type:"integer"`
+
+	// A time stamp for the time that the API destination was last modified.
+	LastModifiedTime *time.Time `type:"timestamp"`
+
+	// The name of the API destination retrieved.
+	Name *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s DescribeApiDestinationOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DescribeApiDestinationOutput) GoString() string {
+	return s.String()
+}
+
+// SetApiDestinationArn sets the ApiDestinationArn field's value.
+func (s *DescribeApiDestinationOutput) SetApiDestinationArn(v string) *DescribeApiDestinationOutput {
+	s.ApiDestinationArn = &v
+	return s
+}
+
+// SetApiDestinationState sets the ApiDestinationState field's value.
+func (s *DescribeApiDestinationOutput) SetApiDestinationState(v string) *DescribeApiDestinationOutput {
+	s.ApiDestinationState = &v
+	return s
+}
+
+// SetConnectionArn sets the ConnectionArn field's value.
+func (s *DescribeApiDestinationOutput) SetConnectionArn(v string) *DescribeApiDestinationOutput {
+	s.ConnectionArn = &v
+	return s
+}
+
+// SetCreationTime sets the CreationTime field's value.
+func (s *DescribeApiDestinationOutput) SetCreationTime(v time.Time) *DescribeApiDestinationOutput {
+	s.CreationTime = &v
+	return s
+}
+
+// SetDescription sets the Description field's value.
+func (s *DescribeApiDestinationOutput) SetDescription(v string) *DescribeApiDestinationOutput {
+	s.Description = &v
+	return s
+}
+
+// SetHttpMethod sets the HttpMethod field's value.
+func (s *DescribeApiDestinationOutput) SetHttpMethod(v string) *DescribeApiDestinationOutput {
+	s.HttpMethod = &v
+	return s
+}
+
+// SetInvocationEndpoint sets the InvocationEndpoint field's value.
+func (s *DescribeApiDestinationOutput) SetInvocationEndpoint(v string) *DescribeApiDestinationOutput {
+	s.InvocationEndpoint = &v
+	return s
+}
+
+// SetInvocationRateLimitPerSecond sets the InvocationRateLimitPerSecond field's value.
+func (s *DescribeApiDestinationOutput) SetInvocationRateLimitPerSecond(v int64) *DescribeApiDestinationOutput {
+	s.InvocationRateLimitPerSecond = &v
+	return s
+}
+
+// SetLastModifiedTime sets the LastModifiedTime field's value.
+func (s *DescribeApiDestinationOutput) SetLastModifiedTime(v time.Time) *DescribeApiDestinationOutput {
+	s.LastModifiedTime = &v
+	return s
+}
+
+// SetName sets the Name field's value.
+func (s *DescribeApiDestinationOutput) SetName(v string) *DescribeApiDestinationOutput {
+	s.Name = &v
+	return s
+}
+
+type DescribeArchiveInput struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the archive to retrieve.
+	//
+	// ArchiveName is a required field
+	ArchiveName *string `min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s DescribeArchiveInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DescribeArchiveInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *DescribeArchiveInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "DescribeArchiveInput"}
+	if s.ArchiveName == nil {
+		invalidParams.Add(request.NewErrParamRequired("ArchiveName"))
+	}
+	if s.ArchiveName != nil && len(*s.ArchiveName) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ArchiveName", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetArchiveName sets the ArchiveName field's value.
+func (s *DescribeArchiveInput) SetArchiveName(v string) *DescribeArchiveInput {
+	s.ArchiveName = &v
+	return s
+}
+
+type DescribeArchiveOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the archive.
+	ArchiveArn *string `min:"1" type:"string"`
+
+	// The name of the archive.
+	ArchiveName *string `min:"1" type:"string"`
+
+	// The time at which the archive was created.
+	CreationTime *time.Time `type:"timestamp"`
+
+	// The description of the archive.
+	Description *string `type:"string"`
+
+	// The number of events in the archive.
+	EventCount *int64 `type:"long"`
+
+	// The event pattern used to filter events sent to the archive.
+	EventPattern *string `type:"string"`
+
+	// The ARN of the event source associated with the archive.
+	EventSourceArn *string `min:"1" type:"string"`
+
+	// The number of days to retain events for in the archive.
+	RetentionDays *int64 `type:"integer"`
+
+	// The size of the archive in bytes.
+	SizeBytes *int64 `type:"long"`
+
+	// The state of the archive.
+	State *string `type:"string" enum:"ArchiveState"`
+
+	// The reason that the archive is in the state.
+	StateReason *string `type:"string"`
+}
+
+// String returns the string representation
+func (s DescribeArchiveOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DescribeArchiveOutput) GoString() string {
+	return s.String()
+}
+
+// SetArchiveArn sets the ArchiveArn field's value.
+func (s *DescribeArchiveOutput) SetArchiveArn(v string) *DescribeArchiveOutput {
+	s.ArchiveArn = &v
+	return s
+}
+
+// SetArchiveName sets the ArchiveName field's value.
+func (s *DescribeArchiveOutput) SetArchiveName(v string) *DescribeArchiveOutput {
+	s.ArchiveName = &v
+	return s
+}
+
+// SetCreationTime sets the CreationTime field's value.
+func (s *DescribeArchiveOutput) SetCreationTime(v time.Time) *DescribeArchiveOutput {
+	s.CreationTime = &v
+	return s
+}
+
+// SetDescription sets the Description field's value.
+func (s *DescribeArchiveOutput) SetDescription(v string) *DescribeArchiveOutput {
+	s.Description = &v
+	return s
+}
+
+// SetEventCount sets the EventCount field's value.
+func (s *DescribeArchiveOutput) SetEventCount(v int64) *DescribeArchiveOutput {
+	s.EventCount = &v
+	return s
+}
+
+// SetEventPattern sets the EventPattern field's value.
+func (s *DescribeArchiveOutput) SetEventPattern(v string) *DescribeArchiveOutput {
+	s.EventPattern = &v
+	return s
+}
+
+// SetEventSourceArn sets the EventSourceArn field's value.
+func (s *DescribeArchiveOutput) SetEventSourceArn(v string) *DescribeArchiveOutput {
+	s.EventSourceArn = &v
+	return s
+}
+
+// SetRetentionDays sets the RetentionDays field's value.
+func (s *DescribeArchiveOutput) SetRetentionDays(v int64) *DescribeArchiveOutput {
+	s.RetentionDays = &v
+	return s
+}
+
+// SetSizeBytes sets the SizeBytes field's value.
+func (s *DescribeArchiveOutput) SetSizeBytes(v int64) *DescribeArchiveOutput {
+	s.SizeBytes = &v
+	return s
+}
+
+// SetState sets the State field's value.
+func (s *DescribeArchiveOutput) SetState(v string) *DescribeArchiveOutput {
+	s.State = &v
+	return s
+}
+
+// SetStateReason sets the StateReason field's value.
+func (s *DescribeArchiveOutput) SetStateReason(v string) *DescribeArchiveOutput {
+	s.StateReason = &v
+	return s
+}
+
+type DescribeConnectionInput struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the connection to retrieve.
+	//
+	// Name is a required field
+	Name *string `min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s DescribeConnectionInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DescribeConnectionInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *DescribeConnectionInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "DescribeConnectionInput"}
+	if s.Name == nil {
+		invalidParams.Add(request.NewErrParamRequired("Name"))
+	}
+	if s.Name != nil && len(*s.Name) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Name", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetName sets the Name field's value.
+func (s *DescribeConnectionInput) SetName(v string) *DescribeConnectionInput {
+	s.Name = &v
+	return s
+}
+
+type DescribeConnectionOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The parameters to use for authorization for the connection.
+	AuthParameters *ConnectionAuthResponseParameters `type:"structure"`
+
+	// The type of authorization specified for the connection.
+	AuthorizationType *string `type:"string" enum:"ConnectionAuthorizationType"`
+
+	// The ARN of the connection retrieved.
+	ConnectionArn *string `min:"1" type:"string"`
+
+	// The state of the connection retrieved.
+	ConnectionState *string `type:"string" enum:"ConnectionState"`
+
+	// A time stamp for the time that the connection was created.
+	CreationTime *time.Time `type:"timestamp"`
+
+	// The description for the connection retrieved.
+	Description *string `type:"string"`
+
+	// A time stamp for the time that the connection was last authorized.
+	LastAuthorizedTime *time.Time `type:"timestamp"`
+
+	// A time stamp for the time that the connection was last modified.
+	LastModifiedTime *time.Time `type:"timestamp"`
+
+	// The name of the connection retrieved.
+	Name *string `min:"1" type:"string"`
+
+	// The ARN of the secret created from the authorization parameters specified
+	// for the connection.
+	SecretArn *string `min:"20" type:"string"`
+
+	// The reason that the connection is in the current connection state.
+	StateReason *string `type:"string"`
+}
+
+// String returns the string representation
+func (s DescribeConnectionOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DescribeConnectionOutput) GoString() string {
+	return s.String()
+}
+
+// SetAuthParameters sets the AuthParameters field's value.
+func (s *DescribeConnectionOutput) SetAuthParameters(v *ConnectionAuthResponseParameters) *DescribeConnectionOutput {
+	s.AuthParameters = v
+	return s
+}
+
+// SetAuthorizationType sets the AuthorizationType field's value.
+func (s *DescribeConnectionOutput) SetAuthorizationType(v string) *DescribeConnectionOutput {
+	s.AuthorizationType = &v
+	return s
+}
+
+// SetConnectionArn sets the ConnectionArn field's value.
+func (s *DescribeConnectionOutput) SetConnectionArn(v string) *DescribeConnectionOutput {
+	s.ConnectionArn = &v
+	return s
+}
+
+// SetConnectionState sets the ConnectionState field's value.
+func (s *DescribeConnectionOutput) SetConnectionState(v string) *DescribeConnectionOutput {
+	s.ConnectionState = &v
+	return s
+}
+
+// SetCreationTime sets the CreationTime field's value.
+func (s *DescribeConnectionOutput) SetCreationTime(v time.Time) *DescribeConnectionOutput {
+	s.CreationTime = &v
+	return s
+}
+
+// SetDescription sets the Description field's value.
+func (s *DescribeConnectionOutput) SetDescription(v string) *DescribeConnectionOutput {
+	s.Description = &v
+	return s
+}
+
+// SetLastAuthorizedTime sets the LastAuthorizedTime field's value.
+func (s *DescribeConnectionOutput) SetLastAuthorizedTime(v time.Time) *DescribeConnectionOutput {
+	s.LastAuthorizedTime = &v
+	return s
+}
+
+// SetLastModifiedTime sets the LastModifiedTime field's value.
+func (s *DescribeConnectionOutput) SetLastModifiedTime(v time.Time) *DescribeConnectionOutput {
+	s.LastModifiedTime = &v
+	return s
+}
+
+// SetName sets the Name field's value.
+func (s *DescribeConnectionOutput) SetName(v string) *DescribeConnectionOutput {
+	s.Name = &v
+	return s
+}
+
+// SetSecretArn sets the SecretArn field's value.
+func (s *DescribeConnectionOutput) SetSecretArn(v string) *DescribeConnectionOutput {
+	s.SecretArn = &v
+	return s
+}
+
+// SetStateReason sets the StateReason field's value.
+func (s *DescribeConnectionOutput) SetStateReason(v string) *DescribeConnectionOutput {
+	s.StateReason = &v
+	return s
+}
+
 type DescribeEventBusInput struct {
 	_ struct{} `type:"structure"`
 
-	// The name of the event bus to show details for. If you omit this, the default
-	// event bus is displayed.
+	// The name or ARN of the event bus to show details for. If you omit this, the
+	// default event bus is displayed.
 	Name *string `min:"1" type:"string"`
 }
 
@@ -4088,11 +8175,174 @@ func (s *DescribePartnerEventSourceOutput) SetName(v string) *DescribePartnerEve
 	return s
 }
 
+type DescribeReplayInput struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the replay to retrieve.
+	//
+	// ReplayName is a required field
+	ReplayName *string `min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s DescribeReplayInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DescribeReplayInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *DescribeReplayInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "DescribeReplayInput"}
+	if s.ReplayName == nil {
+		invalidParams.Add(request.NewErrParamRequired("ReplayName"))
+	}
+	if s.ReplayName != nil && len(*s.ReplayName) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ReplayName", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetReplayName sets the ReplayName field's value.
+func (s *DescribeReplayInput) SetReplayName(v string) *DescribeReplayInput {
+	s.ReplayName = &v
+	return s
+}
+
+type DescribeReplayOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The description of the replay.
+	Description *string `type:"string"`
+
+	// A ReplayDestination object that contains details about the replay.
+	Destination *ReplayDestination `type:"structure"`
+
+	// The time stamp for the last event that was replayed from the archive.
+	EventEndTime *time.Time `type:"timestamp"`
+
+	// The time that the event was last replayed.
+	EventLastReplayedTime *time.Time `type:"timestamp"`
+
+	// The ARN of the archive events were replayed from.
+	EventSourceArn *string `min:"1" type:"string"`
+
+	// The time stamp of the first event that was last replayed from the archive.
+	EventStartTime *time.Time `type:"timestamp"`
+
+	// The ARN of the replay.
+	ReplayArn *string `min:"1" type:"string"`
+
+	// A time stamp for the time that the replay stopped.
+	ReplayEndTime *time.Time `type:"timestamp"`
+
+	// The name of the replay.
+	ReplayName *string `min:"1" type:"string"`
+
+	// A time stamp for the time that the replay started.
+	ReplayStartTime *time.Time `type:"timestamp"`
+
+	// The current state of the replay.
+	State *string `type:"string" enum:"ReplayState"`
+
+	// The reason that the replay is in the current state.
+	StateReason *string `type:"string"`
+}
+
+// String returns the string representation
+func (s DescribeReplayOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s DescribeReplayOutput) GoString() string {
+	return s.String()
+}
+
+// SetDescription sets the Description field's value.
+func (s *DescribeReplayOutput) SetDescription(v string) *DescribeReplayOutput {
+	s.Description = &v
+	return s
+}
+
+// SetDestination sets the Destination field's value.
+func (s *DescribeReplayOutput) SetDestination(v *ReplayDestination) *DescribeReplayOutput {
+	s.Destination = v
+	return s
+}
+
+// SetEventEndTime sets the EventEndTime field's value.
+func (s *DescribeReplayOutput) SetEventEndTime(v time.Time) *DescribeReplayOutput {
+	s.EventEndTime = &v
+	return s
+}
+
+// SetEventLastReplayedTime sets the EventLastReplayedTime field's value.
+func (s *DescribeReplayOutput) SetEventLastReplayedTime(v time.Time) *DescribeReplayOutput {
+	s.EventLastReplayedTime = &v
+	return s
+}
+
+// SetEventSourceArn sets the EventSourceArn field's value.
+func (s *DescribeReplayOutput) SetEventSourceArn(v string) *DescribeReplayOutput {
+	s.EventSourceArn = &v
+	return s
+}
+
+// SetEventStartTime sets the EventStartTime field's value.
+func (s *DescribeReplayOutput) SetEventStartTime(v time.Time) *DescribeReplayOutput {
+	s.EventStartTime = &v
+	return s
+}
+
+// SetReplayArn sets the ReplayArn field's value.
+func (s *DescribeReplayOutput) SetReplayArn(v string) *DescribeReplayOutput {
+	s.ReplayArn = &v
+	return s
+}
+
+// SetReplayEndTime sets the ReplayEndTime field's value.
+func (s *DescribeReplayOutput) SetReplayEndTime(v time.Time) *DescribeReplayOutput {
+	s.ReplayEndTime = &v
+	return s
+}
+
+// SetReplayName sets the ReplayName field's value.
+func (s *DescribeReplayOutput) SetReplayName(v string) *DescribeReplayOutput {
+	s.ReplayName = &v
+	return s
+}
+
+// SetReplayStartTime sets the ReplayStartTime field's value.
+func (s *DescribeReplayOutput) SetReplayStartTime(v time.Time) *DescribeReplayOutput {
+	s.ReplayStartTime = &v
+	return s
+}
+
+// SetState sets the State field's value.
+func (s *DescribeReplayOutput) SetState(v string) *DescribeReplayOutput {
+	s.State = &v
+	return s
+}
+
+// SetStateReason sets the StateReason field's value.
+func (s *DescribeReplayOutput) SetStateReason(v string) *DescribeReplayOutput {
+	s.StateReason = &v
+	return s
+}
+
 type DescribeRuleInput struct {
 	_ struct{} `type:"structure"`
 
-	// The event bus associated with the rule. If you omit this, the default event
-	// bus is used.
+	// The name or ARN of the event bus associated with the rule. If you omit this,
+	// the default event bus is used.
 	EventBusName *string `min:"1" type:"string"`
 
 	// The name of the rule.
@@ -4148,10 +8398,17 @@ type DescribeRuleOutput struct {
 	// The Amazon Resource Name (ARN) of the rule.
 	Arn *string `min:"1" type:"string"`
 
+	// The account ID of the user that created the rule. If you use PutRule to put
+	// a rule on an event bus in another account, the other account is the owner
+	// of the rule, and the rule ARN includes the account ID for that account. However,
+	// the value for CreatedBy is the account ID as the account that created the
+	// rule in the other account.
+	CreatedBy *string `min:"1" type:"string"`
+
 	// The description of the rule.
 	Description *string `type:"string"`
 
-	// The event bus associated with the rule.
+	// The name of the event bus associated with the rule.
 	EventBusName *string `min:"1" type:"string"`
 
 	// The event pattern. For more information, see Events and Event Patterns (https://docs.aws.amazon.com/eventbridge/latest/userguide/eventbridge-and-event-patterns.html)
@@ -4188,6 +8445,12 @@ func (s DescribeRuleOutput) GoString() string {
 // SetArn sets the Arn field's value.
 func (s *DescribeRuleOutput) SetArn(v string) *DescribeRuleOutput {
 	s.Arn = &v
+	return s
+}
+
+// SetCreatedBy sets the CreatedBy field's value.
+func (s *DescribeRuleOutput) SetCreatedBy(v string) *DescribeRuleOutput {
+	s.CreatedBy = &v
 	return s
 }
 
@@ -4242,8 +8505,8 @@ func (s *DescribeRuleOutput) SetState(v string) *DescribeRuleOutput {
 type DisableRuleInput struct {
 	_ struct{} `type:"structure"`
 
-	// The event bus associated with the rule. If you omit this, the default event
-	// bus is used.
+	// The name or ARN of the event bus associated with the rule. If you omit this,
+	// the default event bus is used.
 	EventBusName *string `min:"1" type:"string"`
 
 	// The name of the rule.
@@ -4422,8 +8685,8 @@ func (s *EcsParameters) SetTaskDefinitionArn(v string) *EcsParameters {
 type EnableRuleInput struct {
 	_ struct{} `type:"structure"`
 
-	// The event bus associated with the rule. If you omit this, the default event
-	// bus is used.
+	// The name or ARN of the event bus associated with the rule. If you omit this,
+	// the default event bus is used.
 	EventBusName *string `min:"1" type:"string"`
 
 	// The name of the rule.
@@ -4611,6 +8874,111 @@ func (s *EventSource) SetState(v string) *EventSource {
 	return s
 }
 
+// These are custom parameter to be used when the target is an API Gateway REST
+// APIs or EventBridge ApiDestinations. In the latter case, these are merged
+// with any InvocationParameters specified on the Connection, with any values
+// from the Connection taking precedence.
+type HttpParameters struct {
+	_ struct{} `type:"structure"`
+
+	// The headers that need to be sent as part of request invoking the API Gateway
+	// REST API or EventBridge ApiDestination.
+	HeaderParameters map[string]*string `type:"map"`
+
+	// The path parameter values to be used to populate API Gateway REST API or
+	// EventBridge ApiDestination path wildcards ("*").
+	PathParameterValues []*string `type:"list"`
+
+	// The query string keys/values that need to be sent as part of request invoking
+	// the API Gateway REST API or EventBridge ApiDestination.
+	QueryStringParameters map[string]*string `type:"map"`
+}
+
+// String returns the string representation
+func (s HttpParameters) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s HttpParameters) GoString() string {
+	return s.String()
+}
+
+// SetHeaderParameters sets the HeaderParameters field's value.
+func (s *HttpParameters) SetHeaderParameters(v map[string]*string) *HttpParameters {
+	s.HeaderParameters = v
+	return s
+}
+
+// SetPathParameterValues sets the PathParameterValues field's value.
+func (s *HttpParameters) SetPathParameterValues(v []*string) *HttpParameters {
+	s.PathParameterValues = v
+	return s
+}
+
+// SetQueryStringParameters sets the QueryStringParameters field's value.
+func (s *HttpParameters) SetQueryStringParameters(v map[string]*string) *HttpParameters {
+	s.QueryStringParameters = v
+	return s
+}
+
+// An error occurred because a replay can be canceled only when the state is
+// Running or Starting.
+type IllegalStatusException struct {
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
+
+	Message_ *string `locationName:"message" type:"string"`
+}
+
+// String returns the string representation
+func (s IllegalStatusException) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s IllegalStatusException) GoString() string {
+	return s.String()
+}
+
+func newErrorIllegalStatusException(v protocol.ResponseMetadata) error {
+	return &IllegalStatusException{
+		RespMetadata: v,
+	}
+}
+
+// Code returns the exception type name.
+func (s *IllegalStatusException) Code() string {
+	return "IllegalStatusException"
+}
+
+// Message returns the exception's message.
+func (s *IllegalStatusException) Message() string {
+	if s.Message_ != nil {
+		return *s.Message_
+	}
+	return ""
+}
+
+// OrigErr always returns nil, satisfies awserr.Error interface.
+func (s *IllegalStatusException) OrigErr() error {
+	return nil
+}
+
+func (s *IllegalStatusException) Error() string {
+	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
+}
+
+// Status code returns the HTTP status code for the request's response error.
+func (s *IllegalStatusException) StatusCode() int {
+	return s.RespMetadata.StatusCode
+}
+
+// RequestID returns the service's response RequestID for request.
+func (s *IllegalStatusException) RequestID() string {
+	return s.RespMetadata.RequestID
+}
+
 // Contains the parameters needed for you to provide custom input to a target
 // based on one or more pieces of data extracted from the event.
 type InputTransformer struct {
@@ -4621,8 +8989,8 @@ type InputTransformer struct {
 	// to the target.
 	//
 	// InputPathsMap is an array key-value pairs, where each value is a valid JSON
-	// path. You can have as many as 10 key-value pairs. You must use JSON dot notation,
-	// not bracket notation.
+	// path. You can have as many as 100 key-value pairs. You must use JSON dot
+	// notation, not bracket notation.
 	//
 	// The keys cannot start with "AWS."
 	InputPathsMap map[string]*string `type:"map"`
@@ -4636,8 +9004,6 @@ type InputTransformer struct {
 	// restrictions apply:
 	//
 	//    * The placeholder cannot be used as an object key.
-	//
-	//    * Object values cannot include quote marks.
 	//
 	// The following example shows the syntax for using InputPathsMap and InputTemplate.
 	//
@@ -4661,6 +9027,20 @@ type InputTransformer struct {
 	// "InputPathsMap": {"instance": "$.detail.instance","status": "$.detail.status"},
 	//
 	// "InputTemplate": "<instance> is in state \"<status>\""
+	//
+	// }
+	//
+	// The InputTemplate can also be valid JSON with varibles in quotes or out,
+	// as in the following example:
+	//
+	// "InputTransformer":
+	//
+	// {
+	//
+	// "InputPathsMap": {"instance": "$.detail.instance","status": "$.detail.status"},
+	//
+	// "InputTemplate": '{"myInstance": <instance>,"myStatus": "<instance> is in
+	// state \"<status>\""}'
 	//
 	// }
 	//
@@ -4918,7 +9298,8 @@ func (s *KinesisParameters) SetPartitionKeyPath(v string) *KinesisParameters {
 	return s
 }
 
-// You tried to create more rules or add more targets to a rule than is allowed.
+// The request failed because it attempted to create resource beyond the allowed
+// service quota.
 type LimitExceededException struct {
 	_            struct{}                  `type:"structure"`
 	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
@@ -4972,6 +9353,328 @@ func (s *LimitExceededException) StatusCode() int {
 // RequestID returns the service's response RequestID for request.
 func (s *LimitExceededException) RequestID() string {
 	return s.RespMetadata.RequestID
+}
+
+type ListApiDestinationsInput struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the connection specified for the API destination.
+	ConnectionArn *string `min:"1" type:"string"`
+
+	// The maximum number of API destinations to include in the response.
+	Limit *int64 `min:"1" type:"integer"`
+
+	// A name prefix to filter results returned. Only API destinations with a name
+	// that starts with the prefix are returned.
+	NamePrefix *string `min:"1" type:"string"`
+
+	// The token returned by a previous call to retrieve the next set of results.
+	NextToken *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s ListApiDestinationsInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ListApiDestinationsInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *ListApiDestinationsInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "ListApiDestinationsInput"}
+	if s.ConnectionArn != nil && len(*s.ConnectionArn) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ConnectionArn", 1))
+	}
+	if s.Limit != nil && *s.Limit < 1 {
+		invalidParams.Add(request.NewErrParamMinValue("Limit", 1))
+	}
+	if s.NamePrefix != nil && len(*s.NamePrefix) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("NamePrefix", 1))
+	}
+	if s.NextToken != nil && len(*s.NextToken) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("NextToken", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetConnectionArn sets the ConnectionArn field's value.
+func (s *ListApiDestinationsInput) SetConnectionArn(v string) *ListApiDestinationsInput {
+	s.ConnectionArn = &v
+	return s
+}
+
+// SetLimit sets the Limit field's value.
+func (s *ListApiDestinationsInput) SetLimit(v int64) *ListApiDestinationsInput {
+	s.Limit = &v
+	return s
+}
+
+// SetNamePrefix sets the NamePrefix field's value.
+func (s *ListApiDestinationsInput) SetNamePrefix(v string) *ListApiDestinationsInput {
+	s.NamePrefix = &v
+	return s
+}
+
+// SetNextToken sets the NextToken field's value.
+func (s *ListApiDestinationsInput) SetNextToken(v string) *ListApiDestinationsInput {
+	s.NextToken = &v
+	return s
+}
+
+type ListApiDestinationsOutput struct {
+	_ struct{} `type:"structure"`
+
+	// An array of ApiDestination objects that include information about an API
+	// destination.
+	ApiDestinations []*ApiDestination `type:"list"`
+
+	// A token you can use in a subsequent request to retrieve the next set of results.
+	NextToken *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s ListApiDestinationsOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ListApiDestinationsOutput) GoString() string {
+	return s.String()
+}
+
+// SetApiDestinations sets the ApiDestinations field's value.
+func (s *ListApiDestinationsOutput) SetApiDestinations(v []*ApiDestination) *ListApiDestinationsOutput {
+	s.ApiDestinations = v
+	return s
+}
+
+// SetNextToken sets the NextToken field's value.
+func (s *ListApiDestinationsOutput) SetNextToken(v string) *ListApiDestinationsOutput {
+	s.NextToken = &v
+	return s
+}
+
+type ListArchivesInput struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the event source associated with the archive.
+	EventSourceArn *string `min:"1" type:"string"`
+
+	// The maximum number of results to return.
+	Limit *int64 `min:"1" type:"integer"`
+
+	// A name prefix to filter the archives returned. Only archives with name that
+	// match the prefix are returned.
+	NamePrefix *string `min:"1" type:"string"`
+
+	// The token returned by a previous call to retrieve the next set of results.
+	NextToken *string `min:"1" type:"string"`
+
+	// The state of the archive.
+	State *string `type:"string" enum:"ArchiveState"`
+}
+
+// String returns the string representation
+func (s ListArchivesInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ListArchivesInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *ListArchivesInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "ListArchivesInput"}
+	if s.EventSourceArn != nil && len(*s.EventSourceArn) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("EventSourceArn", 1))
+	}
+	if s.Limit != nil && *s.Limit < 1 {
+		invalidParams.Add(request.NewErrParamMinValue("Limit", 1))
+	}
+	if s.NamePrefix != nil && len(*s.NamePrefix) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("NamePrefix", 1))
+	}
+	if s.NextToken != nil && len(*s.NextToken) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("NextToken", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetEventSourceArn sets the EventSourceArn field's value.
+func (s *ListArchivesInput) SetEventSourceArn(v string) *ListArchivesInput {
+	s.EventSourceArn = &v
+	return s
+}
+
+// SetLimit sets the Limit field's value.
+func (s *ListArchivesInput) SetLimit(v int64) *ListArchivesInput {
+	s.Limit = &v
+	return s
+}
+
+// SetNamePrefix sets the NamePrefix field's value.
+func (s *ListArchivesInput) SetNamePrefix(v string) *ListArchivesInput {
+	s.NamePrefix = &v
+	return s
+}
+
+// SetNextToken sets the NextToken field's value.
+func (s *ListArchivesInput) SetNextToken(v string) *ListArchivesInput {
+	s.NextToken = &v
+	return s
+}
+
+// SetState sets the State field's value.
+func (s *ListArchivesInput) SetState(v string) *ListArchivesInput {
+	s.State = &v
+	return s
+}
+
+type ListArchivesOutput struct {
+	_ struct{} `type:"structure"`
+
+	// An array of Archive objects that include details about an archive.
+	Archives []*Archive `type:"list"`
+
+	// The token returned by a previous call to retrieve the next set of results.
+	NextToken *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s ListArchivesOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ListArchivesOutput) GoString() string {
+	return s.String()
+}
+
+// SetArchives sets the Archives field's value.
+func (s *ListArchivesOutput) SetArchives(v []*Archive) *ListArchivesOutput {
+	s.Archives = v
+	return s
+}
+
+// SetNextToken sets the NextToken field's value.
+func (s *ListArchivesOutput) SetNextToken(v string) *ListArchivesOutput {
+	s.NextToken = &v
+	return s
+}
+
+type ListConnectionsInput struct {
+	_ struct{} `type:"structure"`
+
+	// The state of the connection.
+	ConnectionState *string `type:"string" enum:"ConnectionState"`
+
+	// The maximum number of connections to return.
+	Limit *int64 `min:"1" type:"integer"`
+
+	// A name prefix to filter results returned. Only connections with a name that
+	// starts with the prefix are returned.
+	NamePrefix *string `min:"1" type:"string"`
+
+	// The token returned by a previous call to retrieve the next set of results.
+	NextToken *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s ListConnectionsInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ListConnectionsInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *ListConnectionsInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "ListConnectionsInput"}
+	if s.Limit != nil && *s.Limit < 1 {
+		invalidParams.Add(request.NewErrParamMinValue("Limit", 1))
+	}
+	if s.NamePrefix != nil && len(*s.NamePrefix) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("NamePrefix", 1))
+	}
+	if s.NextToken != nil && len(*s.NextToken) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("NextToken", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetConnectionState sets the ConnectionState field's value.
+func (s *ListConnectionsInput) SetConnectionState(v string) *ListConnectionsInput {
+	s.ConnectionState = &v
+	return s
+}
+
+// SetLimit sets the Limit field's value.
+func (s *ListConnectionsInput) SetLimit(v int64) *ListConnectionsInput {
+	s.Limit = &v
+	return s
+}
+
+// SetNamePrefix sets the NamePrefix field's value.
+func (s *ListConnectionsInput) SetNamePrefix(v string) *ListConnectionsInput {
+	s.NamePrefix = &v
+	return s
+}
+
+// SetNextToken sets the NextToken field's value.
+func (s *ListConnectionsInput) SetNextToken(v string) *ListConnectionsInput {
+	s.NextToken = &v
+	return s
+}
+
+type ListConnectionsOutput struct {
+	_ struct{} `type:"structure"`
+
+	// An array of connections objects that include details about the connections.
+	Connections []*Connection `type:"list"`
+
+	// A token you can use in a subsequent request to retrieve the next set of results.
+	NextToken *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s ListConnectionsOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ListConnectionsOutput) GoString() string {
+	return s.String()
+}
+
+// SetConnections sets the Connections field's value.
+func (s *ListConnectionsOutput) SetConnections(v []*Connection) *ListConnectionsOutput {
+	s.Connections = v
+	return s
+}
+
+// SetNextToken sets the NextToken field's value.
+func (s *ListConnectionsOutput) SetNextToken(v string) *ListConnectionsOutput {
+	s.NextToken = &v
+	return s
 }
 
 type ListEventBusesInput struct {
@@ -5369,11 +10072,125 @@ func (s *ListPartnerEventSourcesOutput) SetPartnerEventSources(v []*PartnerEvent
 	return s
 }
 
+type ListReplaysInput struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the event source associated with the replay.
+	EventSourceArn *string `min:"1" type:"string"`
+
+	// The maximum number of replays to retrieve.
+	Limit *int64 `min:"1" type:"integer"`
+
+	// A name prefix to filter the replays returned. Only replays with name that
+	// match the prefix are returned.
+	NamePrefix *string `min:"1" type:"string"`
+
+	// The token returned by a previous call to retrieve the next set of results.
+	NextToken *string `min:"1" type:"string"`
+
+	// The state of the replay.
+	State *string `type:"string" enum:"ReplayState"`
+}
+
+// String returns the string representation
+func (s ListReplaysInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ListReplaysInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *ListReplaysInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "ListReplaysInput"}
+	if s.EventSourceArn != nil && len(*s.EventSourceArn) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("EventSourceArn", 1))
+	}
+	if s.Limit != nil && *s.Limit < 1 {
+		invalidParams.Add(request.NewErrParamMinValue("Limit", 1))
+	}
+	if s.NamePrefix != nil && len(*s.NamePrefix) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("NamePrefix", 1))
+	}
+	if s.NextToken != nil && len(*s.NextToken) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("NextToken", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetEventSourceArn sets the EventSourceArn field's value.
+func (s *ListReplaysInput) SetEventSourceArn(v string) *ListReplaysInput {
+	s.EventSourceArn = &v
+	return s
+}
+
+// SetLimit sets the Limit field's value.
+func (s *ListReplaysInput) SetLimit(v int64) *ListReplaysInput {
+	s.Limit = &v
+	return s
+}
+
+// SetNamePrefix sets the NamePrefix field's value.
+func (s *ListReplaysInput) SetNamePrefix(v string) *ListReplaysInput {
+	s.NamePrefix = &v
+	return s
+}
+
+// SetNextToken sets the NextToken field's value.
+func (s *ListReplaysInput) SetNextToken(v string) *ListReplaysInput {
+	s.NextToken = &v
+	return s
+}
+
+// SetState sets the State field's value.
+func (s *ListReplaysInput) SetState(v string) *ListReplaysInput {
+	s.State = &v
+	return s
+}
+
+type ListReplaysOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The token returned by a previous call to retrieve the next set of results.
+	NextToken *string `min:"1" type:"string"`
+
+	// An array of Replay objects that contain information about the replay.
+	Replays []*Replay `type:"list"`
+}
+
+// String returns the string representation
+func (s ListReplaysOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ListReplaysOutput) GoString() string {
+	return s.String()
+}
+
+// SetNextToken sets the NextToken field's value.
+func (s *ListReplaysOutput) SetNextToken(v string) *ListReplaysOutput {
+	s.NextToken = &v
+	return s
+}
+
+// SetReplays sets the Replays field's value.
+func (s *ListReplaysOutput) SetReplays(v []*Replay) *ListReplaysOutput {
+	s.Replays = v
+	return s
+}
+
 type ListRuleNamesByTargetInput struct {
 	_ struct{} `type:"structure"`
 
-	// Limits the results to show only the rules associated with the specified event
-	// bus.
+	// The name or ARN of the event bus to list rules for. If you omit this, the
+	// default event bus is used.
 	EventBusName *string `min:"1" type:"string"`
 
 	// The maximum number of results to return.
@@ -5483,8 +10300,8 @@ func (s *ListRuleNamesByTargetOutput) SetRuleNames(v []*string) *ListRuleNamesBy
 type ListRulesInput struct {
 	_ struct{} `type:"structure"`
 
-	// Limits the results to show only the rules associated with the specified event
-	// bus.
+	// The name or ARN of the event bus to list the rules for. If you omit this,
+	// the default event bus is used.
 	EventBusName *string `min:"1" type:"string"`
 
 	// The maximum number of results to return.
@@ -5653,8 +10470,8 @@ func (s *ListTagsForResourceOutput) SetTags(v []*Tag) *ListTagsForResourceOutput
 type ListTargetsByRuleInput struct {
 	_ struct{} `type:"structure"`
 
-	// The event bus associated with the rule. If you omit this, the default event
-	// bus is used.
+	// The name or ARN of the event bus associated with the rule. If you omit this,
+	// the default event bus is used.
 	EventBusName *string `min:"1" type:"string"`
 
 	// The maximum number of results to return.
@@ -5861,6 +10678,62 @@ func (s *NetworkConfiguration) Validate() error {
 func (s *NetworkConfiguration) SetAwsvpcConfiguration(v *AwsVpcConfiguration) *NetworkConfiguration {
 	s.AwsvpcConfiguration = v
 	return s
+}
+
+// The operation you are attempting is not available in this region.
+type OperationDisabledException struct {
+	_            struct{}                  `type:"structure"`
+	RespMetadata protocol.ResponseMetadata `json:"-" xml:"-"`
+
+	Message_ *string `locationName:"message" type:"string"`
+}
+
+// String returns the string representation
+func (s OperationDisabledException) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s OperationDisabledException) GoString() string {
+	return s.String()
+}
+
+func newErrorOperationDisabledException(v protocol.ResponseMetadata) error {
+	return &OperationDisabledException{
+		RespMetadata: v,
+	}
+}
+
+// Code returns the exception type name.
+func (s *OperationDisabledException) Code() string {
+	return "OperationDisabledException"
+}
+
+// Message returns the exception's message.
+func (s *OperationDisabledException) Message() string {
+	if s.Message_ != nil {
+		return *s.Message_
+	}
+	return ""
+}
+
+// OrigErr always returns nil, satisfies awserr.Error interface.
+func (s *OperationDisabledException) OrigErr() error {
+	return nil
+}
+
+func (s *OperationDisabledException) Error() string {
+	return fmt.Sprintf("%s: %s", s.Code(), s.Message())
+}
+
+// Status code returns the HTTP status code for the request's response error.
+func (s *OperationDisabledException) StatusCode() int {
+	return s.RespMetadata.StatusCode
+}
+
+// RequestID returns the service's response RequestID for request.
+func (s *OperationDisabledException) RequestID() string {
+	return s.RespMetadata.RequestID
 }
 
 // A partner event source is created by an SaaS partner. If a customer creates
@@ -6108,8 +10981,9 @@ type PutEventsRequestEntry struct {
 	// Free-form string used to decide what fields to expect in the event detail.
 	DetailType *string `type:"string"`
 
-	// The event bus that will receive the event. Only the rules that are associated
-	// with this event bus will be able to match the event.
+	// The name or ARN of the event bus to receive the event. Only the rules that
+	// are associated with this event bus are used to match the event. If you omit
+	// this, the default event bus is used.
 	EventBusName *string `min:"1" type:"string"`
 
 	// AWS resources, identified by Amazon Resource Name (ARN), which the event
@@ -6122,6 +10996,13 @@ type PutEventsRequestEntry struct {
 	// The time stamp of the event, per RFC3339 (https://www.rfc-editor.org/rfc/rfc3339.txt).
 	// If no time stamp is provided, the time stamp of the PutEvents call is used.
 	Time *time.Time `type:"timestamp"`
+
+	// An AWS X-Ray trade header, which is an http header (X-Amzn-Trace-Id) that
+	// contains the trace-id associated with the event.
+	//
+	// To learn more about X-Ray trace headers, see Tracing header (https://docs.aws.amazon.com/xray/latest/devguide/xray-concepts.html#xray-concepts-tracingheader)
+	// in the AWS X-Ray Developer Guide.
+	TraceHeader *string `min:"1" type:"string"`
 }
 
 // String returns the string representation
@@ -6139,6 +11020,9 @@ func (s *PutEventsRequestEntry) Validate() error {
 	invalidParams := request.ErrInvalidParams{Context: "PutEventsRequestEntry"}
 	if s.EventBusName != nil && len(*s.EventBusName) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("EventBusName", 1))
+	}
+	if s.TraceHeader != nil && len(*s.TraceHeader) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("TraceHeader", 1))
 	}
 
 	if invalidParams.Len() > 0 {
@@ -6180,6 +11064,12 @@ func (s *PutEventsRequestEntry) SetSource(v string) *PutEventsRequestEntry {
 // SetTime sets the Time field's value.
 func (s *PutEventsRequestEntry) SetTime(v time.Time) *PutEventsRequestEntry {
 	s.Time = &v
+	return s
+}
+
+// SetTraceHeader sets the TraceHeader field's value.
+func (s *PutEventsRequestEntry) SetTraceHeader(v string) *PutEventsRequestEntry {
+	s.TraceHeader = &v
 	return s
 }
 
@@ -6432,9 +11322,7 @@ type PutPermissionInput struct {
 
 	// The action that you are enabling the other account to perform. Currently,
 	// this must be events:PutEvents.
-	//
-	// Action is a required field
-	Action *string `min:"1" type:"string" required:"true"`
+	Action *string `min:"1" type:"string"`
 
 	// This parameter enables you to limit the permission to accounts that fulfill
 	// a certain condition, such as being a member of a certain AWS organization.
@@ -6449,9 +11337,14 @@ type PutPermissionInput struct {
 	// The Condition is a JSON string which must contain Type, Key, and Value fields.
 	Condition *Condition `type:"structure"`
 
-	// The event bus associated with the rule. If you omit this, the default event
-	// bus is used.
+	// The name of the event bus associated with the rule. If you omit this, the
+	// default event bus is used.
 	EventBusName *string `min:"1" type:"string"`
+
+	// A JSON string that describes the permission policy statement. You can include
+	// a Policy parameter in the request instead of using the StatementId, Action,
+	// Principal, or Condition parameters.
+	Policy *string `type:"string"`
 
 	// The 12-digit AWS account ID that you are permitting to put events to your
 	// default event bus. Specify "*" to permit any account to put events to your
@@ -6462,16 +11355,12 @@ type PutPermissionInput struct {
 	// the event pattern for each rule contains an account field with a specific
 	// account ID from which to receive events. Rules with an account field do not
 	// match any events sent from other accounts.
-	//
-	// Principal is a required field
-	Principal *string `min:"1" type:"string" required:"true"`
+	Principal *string `min:"1" type:"string"`
 
 	// An identifier string for the external account that you are granting permissions
 	// to. If you later want to revoke the permission for this external account,
 	// specify this StatementId when you run RemovePermission.
-	//
-	// StatementId is a required field
-	StatementId *string `min:"1" type:"string" required:"true"`
+	StatementId *string `min:"1" type:"string"`
 }
 
 // String returns the string representation
@@ -6487,23 +11376,14 @@ func (s PutPermissionInput) GoString() string {
 // Validate inspects the fields of the type to determine if they are valid.
 func (s *PutPermissionInput) Validate() error {
 	invalidParams := request.ErrInvalidParams{Context: "PutPermissionInput"}
-	if s.Action == nil {
-		invalidParams.Add(request.NewErrParamRequired("Action"))
-	}
 	if s.Action != nil && len(*s.Action) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("Action", 1))
 	}
 	if s.EventBusName != nil && len(*s.EventBusName) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("EventBusName", 1))
 	}
-	if s.Principal == nil {
-		invalidParams.Add(request.NewErrParamRequired("Principal"))
-	}
 	if s.Principal != nil && len(*s.Principal) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("Principal", 1))
-	}
-	if s.StatementId == nil {
-		invalidParams.Add(request.NewErrParamRequired("StatementId"))
 	}
 	if s.StatementId != nil && len(*s.StatementId) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("StatementId", 1))
@@ -6535,6 +11415,12 @@ func (s *PutPermissionInput) SetCondition(v *Condition) *PutPermissionInput {
 // SetEventBusName sets the EventBusName field's value.
 func (s *PutPermissionInput) SetEventBusName(v string) *PutPermissionInput {
 	s.EventBusName = &v
+	return s
+}
+
+// SetPolicy sets the Policy field's value.
+func (s *PutPermissionInput) SetPolicy(v string) *PutPermissionInput {
+	s.Policy = &v
 	return s
 }
 
@@ -6570,8 +11456,8 @@ type PutRuleInput struct {
 	// A description of the rule.
 	Description *string `type:"string"`
 
-	// The event bus to associate with this rule. If you omit this, the default
-	// event bus is used.
+	// The name or ARN of the event bus to associate with this rule. If you omit
+	// this, the default event bus is used.
 	EventBusName *string `min:"1" type:"string"`
 
 	// The event pattern. For more information, see Events and Event Patterns (https://docs.aws.amazon.com/eventbridge/latest/userguide/eventbridge-and-event-patterns.html)
@@ -6712,8 +11598,8 @@ func (s *PutRuleOutput) SetRuleArn(v string) *PutRuleOutput {
 type PutTargetsInput struct {
 	_ struct{} `type:"structure"`
 
-	// The name of the event bus associated with the rule. If you omit this, the
-	// default event bus is used.
+	// The name or ARN of the event bus associated with the rule. If you omit this,
+	// the default event bus is used.
 	EventBusName *string `min:"1" type:"string"`
 
 	// The name of the rule.
@@ -6866,6 +11752,114 @@ func (s *PutTargetsResultEntry) SetTargetId(v string) *PutTargetsResultEntry {
 	return s
 }
 
+// These are custom parameters to be used when the target is a Redshift cluster
+// to invoke the Redshift Data API ExecuteStatement based on EventBridge events.
+type RedshiftDataParameters struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the database. Required when authenticating using temporary credentials.
+	//
+	// Database is a required field
+	Database *string `min:"1" type:"string" required:"true"`
+
+	// The database user name. Required when authenticating using temporary credentials.
+	DbUser *string `min:"1" type:"string"`
+
+	// The name or ARN of the secret that enables access to the database. Required
+	// when authenticating using AWS Secrets Manager.
+	SecretManagerArn *string `min:"1" type:"string"`
+
+	// The SQL statement text to run.
+	//
+	// Sql is a required field
+	Sql *string `min:"1" type:"string" required:"true"`
+
+	// The name of the SQL statement. You can name the SQL statement when you create
+	// it to identify the query.
+	StatementName *string `min:"1" type:"string"`
+
+	// Indicates whether to send an event back to EventBridge after the SQL statement
+	// runs.
+	WithEvent *bool `type:"boolean"`
+}
+
+// String returns the string representation
+func (s RedshiftDataParameters) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s RedshiftDataParameters) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *RedshiftDataParameters) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "RedshiftDataParameters"}
+	if s.Database == nil {
+		invalidParams.Add(request.NewErrParamRequired("Database"))
+	}
+	if s.Database != nil && len(*s.Database) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Database", 1))
+	}
+	if s.DbUser != nil && len(*s.DbUser) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("DbUser", 1))
+	}
+	if s.SecretManagerArn != nil && len(*s.SecretManagerArn) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("SecretManagerArn", 1))
+	}
+	if s.Sql == nil {
+		invalidParams.Add(request.NewErrParamRequired("Sql"))
+	}
+	if s.Sql != nil && len(*s.Sql) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Sql", 1))
+	}
+	if s.StatementName != nil && len(*s.StatementName) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("StatementName", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetDatabase sets the Database field's value.
+func (s *RedshiftDataParameters) SetDatabase(v string) *RedshiftDataParameters {
+	s.Database = &v
+	return s
+}
+
+// SetDbUser sets the DbUser field's value.
+func (s *RedshiftDataParameters) SetDbUser(v string) *RedshiftDataParameters {
+	s.DbUser = &v
+	return s
+}
+
+// SetSecretManagerArn sets the SecretManagerArn field's value.
+func (s *RedshiftDataParameters) SetSecretManagerArn(v string) *RedshiftDataParameters {
+	s.SecretManagerArn = &v
+	return s
+}
+
+// SetSql sets the Sql field's value.
+func (s *RedshiftDataParameters) SetSql(v string) *RedshiftDataParameters {
+	s.Sql = &v
+	return s
+}
+
+// SetStatementName sets the StatementName field's value.
+func (s *RedshiftDataParameters) SetStatementName(v string) *RedshiftDataParameters {
+	s.StatementName = &v
+	return s
+}
+
+// SetWithEvent sets the WithEvent field's value.
+func (s *RedshiftDataParameters) SetWithEvent(v bool) *RedshiftDataParameters {
+	s.WithEvent = &v
+	return s
+}
+
 type RemovePermissionInput struct {
 	_ struct{} `type:"structure"`
 
@@ -6873,11 +11867,12 @@ type RemovePermissionInput struct {
 	// default event bus is used.
 	EventBusName *string `min:"1" type:"string"`
 
+	// Specifies whether to remove all permissions.
+	RemoveAllPermissions *bool `type:"boolean"`
+
 	// The statement ID corresponding to the account that is no longer allowed to
 	// put events to the default event bus.
-	//
-	// StatementId is a required field
-	StatementId *string `min:"1" type:"string" required:"true"`
+	StatementId *string `min:"1" type:"string"`
 }
 
 // String returns the string representation
@@ -6896,9 +11891,6 @@ func (s *RemovePermissionInput) Validate() error {
 	if s.EventBusName != nil && len(*s.EventBusName) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("EventBusName", 1))
 	}
-	if s.StatementId == nil {
-		invalidParams.Add(request.NewErrParamRequired("StatementId"))
-	}
 	if s.StatementId != nil && len(*s.StatementId) < 1 {
 		invalidParams.Add(request.NewErrParamMinLen("StatementId", 1))
 	}
@@ -6912,6 +11904,12 @@ func (s *RemovePermissionInput) Validate() error {
 // SetEventBusName sets the EventBusName field's value.
 func (s *RemovePermissionInput) SetEventBusName(v string) *RemovePermissionInput {
 	s.EventBusName = &v
+	return s
+}
+
+// SetRemoveAllPermissions sets the RemoveAllPermissions field's value.
+func (s *RemovePermissionInput) SetRemoveAllPermissions(v bool) *RemovePermissionInput {
+	s.RemoveAllPermissions = &v
 	return s
 }
 
@@ -6938,7 +11936,8 @@ func (s RemovePermissionOutput) GoString() string {
 type RemoveTargetsInput struct {
 	_ struct{} `type:"structure"`
 
-	// The name of the event bus associated with the rule.
+	// The name or ARN of the event bus associated with the rule. If you omit this,
+	// the default event bus is used.
 	EventBusName *string `min:"1" type:"string"`
 
 	// If this is a managed rule, created by an AWS service on your behalf, you
@@ -7094,6 +12093,156 @@ func (s *RemoveTargetsResultEntry) SetTargetId(v string) *RemoveTargetsResultEnt
 	return s
 }
 
+// A Replay object that contains details about a replay.
+type Replay struct {
+	_ struct{} `type:"structure"`
+
+	// A time stamp for the time to start replaying events. Any event with a creation
+	// time prior to the EventEndTime specified is replayed.
+	EventEndTime *time.Time `type:"timestamp"`
+
+	// A time stamp for the time that the last event was replayed.
+	EventLastReplayedTime *time.Time `type:"timestamp"`
+
+	// The ARN of the archive to replay event from.
+	EventSourceArn *string `min:"1" type:"string"`
+
+	// A time stamp for the time to start replaying events. This is determined by
+	// the time in the event as described in Time (https://docs.aws.amazon.com/eventbridge/latest/APIReference/API_PutEventsRequestEntry.html#eventbridge-Type-PutEventsRequestEntry-Time).
+	EventStartTime *time.Time `type:"timestamp"`
+
+	// A time stamp for the time that the replay completed.
+	ReplayEndTime *time.Time `type:"timestamp"`
+
+	// The name of the replay.
+	ReplayName *string `min:"1" type:"string"`
+
+	// A time stamp for the time that the replay started.
+	ReplayStartTime *time.Time `type:"timestamp"`
+
+	// The current state of the replay.
+	State *string `type:"string" enum:"ReplayState"`
+
+	// A description of why the replay is in the current state.
+	StateReason *string `type:"string"`
+}
+
+// String returns the string representation
+func (s Replay) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s Replay) GoString() string {
+	return s.String()
+}
+
+// SetEventEndTime sets the EventEndTime field's value.
+func (s *Replay) SetEventEndTime(v time.Time) *Replay {
+	s.EventEndTime = &v
+	return s
+}
+
+// SetEventLastReplayedTime sets the EventLastReplayedTime field's value.
+func (s *Replay) SetEventLastReplayedTime(v time.Time) *Replay {
+	s.EventLastReplayedTime = &v
+	return s
+}
+
+// SetEventSourceArn sets the EventSourceArn field's value.
+func (s *Replay) SetEventSourceArn(v string) *Replay {
+	s.EventSourceArn = &v
+	return s
+}
+
+// SetEventStartTime sets the EventStartTime field's value.
+func (s *Replay) SetEventStartTime(v time.Time) *Replay {
+	s.EventStartTime = &v
+	return s
+}
+
+// SetReplayEndTime sets the ReplayEndTime field's value.
+func (s *Replay) SetReplayEndTime(v time.Time) *Replay {
+	s.ReplayEndTime = &v
+	return s
+}
+
+// SetReplayName sets the ReplayName field's value.
+func (s *Replay) SetReplayName(v string) *Replay {
+	s.ReplayName = &v
+	return s
+}
+
+// SetReplayStartTime sets the ReplayStartTime field's value.
+func (s *Replay) SetReplayStartTime(v time.Time) *Replay {
+	s.ReplayStartTime = &v
+	return s
+}
+
+// SetState sets the State field's value.
+func (s *Replay) SetState(v string) *Replay {
+	s.State = &v
+	return s
+}
+
+// SetStateReason sets the StateReason field's value.
+func (s *Replay) SetStateReason(v string) *Replay {
+	s.StateReason = &v
+	return s
+}
+
+// A ReplayDestination object that contains details about a replay.
+type ReplayDestination struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the event bus to replay event to. You can replay events only to
+	// the event bus specified to create the archive.
+	//
+	// Arn is a required field
+	Arn *string `min:"1" type:"string" required:"true"`
+
+	// A list of ARNs for rules to replay events to.
+	FilterArns []*string `type:"list"`
+}
+
+// String returns the string representation
+func (s ReplayDestination) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s ReplayDestination) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *ReplayDestination) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "ReplayDestination"}
+	if s.Arn == nil {
+		invalidParams.Add(request.NewErrParamRequired("Arn"))
+	}
+	if s.Arn != nil && len(*s.Arn) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Arn", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetArn sets the Arn field's value.
+func (s *ReplayDestination) SetArn(v string) *ReplayDestination {
+	s.Arn = &v
+	return s
+}
+
+// SetFilterArns sets the FilterArns field's value.
+func (s *ReplayDestination) SetFilterArns(v []*string) *ReplayDestination {
+	s.FilterArns = v
+	return s
+}
+
 // The resource you are trying to create already exists.
 type ResourceAlreadyExistsException struct {
 	_            struct{}                  `type:"structure"`
@@ -7206,6 +12355,54 @@ func (s *ResourceNotFoundException) RequestID() string {
 	return s.RespMetadata.RequestID
 }
 
+// A RetryPolicy object that includes information about the retry policy settings.
+type RetryPolicy struct {
+	_ struct{} `type:"structure"`
+
+	// The maximum amount of time, in seconds, to continue to make retry attempts.
+	MaximumEventAgeInSeconds *int64 `min:"60" type:"integer"`
+
+	// The maximum number of retry attempts to make before the request fails. Retry
+	// attempts continue until either the maximum number of attempts is made or
+	// until the duration of the MaximumEventAgeInSeconds is met.
+	MaximumRetryAttempts *int64 `type:"integer"`
+}
+
+// String returns the string representation
+func (s RetryPolicy) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s RetryPolicy) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *RetryPolicy) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "RetryPolicy"}
+	if s.MaximumEventAgeInSeconds != nil && *s.MaximumEventAgeInSeconds < 60 {
+		invalidParams.Add(request.NewErrParamMinValue("MaximumEventAgeInSeconds", 60))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetMaximumEventAgeInSeconds sets the MaximumEventAgeInSeconds field's value.
+func (s *RetryPolicy) SetMaximumEventAgeInSeconds(v int64) *RetryPolicy {
+	s.MaximumEventAgeInSeconds = &v
+	return s
+}
+
+// SetMaximumRetryAttempts sets the MaximumRetryAttempts field's value.
+func (s *RetryPolicy) SetMaximumRetryAttempts(v int64) *RetryPolicy {
+	s.MaximumRetryAttempts = &v
+	return s
+}
+
 // Contains information about a rule in Amazon EventBridge.
 type Rule struct {
 	_ struct{} `type:"structure"`
@@ -7216,7 +12413,8 @@ type Rule struct {
 	// The description of the rule.
 	Description *string `type:"string"`
 
-	// The event bus associated with the rule.
+	// The name or ARN of the event bus associated with the rule. If you omit this,
+	// the default event bus is used.
 	EventBusName *string `min:"1" type:"string"`
 
 	// The event pattern of the rule. For more information, see Events and Event
@@ -7446,6 +12644,173 @@ func (s *SqsParameters) SetMessageGroupId(v string) *SqsParameters {
 	return s
 }
 
+type StartReplayInput struct {
+	_ struct{} `type:"structure"`
+
+	// A description for the replay to start.
+	Description *string `type:"string"`
+
+	// A ReplayDestination object that includes details about the destination for
+	// the replay.
+	//
+	// Destination is a required field
+	Destination *ReplayDestination `type:"structure" required:"true"`
+
+	// A time stamp for the time to stop replaying events. Only events that occurred
+	// between the EventStartTime and EventEndTime are replayed.
+	//
+	// EventEndTime is a required field
+	EventEndTime *time.Time `type:"timestamp" required:"true"`
+
+	// The ARN of the archive to replay events from.
+	//
+	// EventSourceArn is a required field
+	EventSourceArn *string `min:"1" type:"string" required:"true"`
+
+	// A time stamp for the time to start replaying events. Only events that occurred
+	// between the EventStartTime and EventEndTime are replayed.
+	//
+	// EventStartTime is a required field
+	EventStartTime *time.Time `type:"timestamp" required:"true"`
+
+	// The name of the replay to start.
+	//
+	// ReplayName is a required field
+	ReplayName *string `min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s StartReplayInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s StartReplayInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *StartReplayInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "StartReplayInput"}
+	if s.Destination == nil {
+		invalidParams.Add(request.NewErrParamRequired("Destination"))
+	}
+	if s.EventEndTime == nil {
+		invalidParams.Add(request.NewErrParamRequired("EventEndTime"))
+	}
+	if s.EventSourceArn == nil {
+		invalidParams.Add(request.NewErrParamRequired("EventSourceArn"))
+	}
+	if s.EventSourceArn != nil && len(*s.EventSourceArn) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("EventSourceArn", 1))
+	}
+	if s.EventStartTime == nil {
+		invalidParams.Add(request.NewErrParamRequired("EventStartTime"))
+	}
+	if s.ReplayName == nil {
+		invalidParams.Add(request.NewErrParamRequired("ReplayName"))
+	}
+	if s.ReplayName != nil && len(*s.ReplayName) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ReplayName", 1))
+	}
+	if s.Destination != nil {
+		if err := s.Destination.Validate(); err != nil {
+			invalidParams.AddNested("Destination", err.(request.ErrInvalidParams))
+		}
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetDescription sets the Description field's value.
+func (s *StartReplayInput) SetDescription(v string) *StartReplayInput {
+	s.Description = &v
+	return s
+}
+
+// SetDestination sets the Destination field's value.
+func (s *StartReplayInput) SetDestination(v *ReplayDestination) *StartReplayInput {
+	s.Destination = v
+	return s
+}
+
+// SetEventEndTime sets the EventEndTime field's value.
+func (s *StartReplayInput) SetEventEndTime(v time.Time) *StartReplayInput {
+	s.EventEndTime = &v
+	return s
+}
+
+// SetEventSourceArn sets the EventSourceArn field's value.
+func (s *StartReplayInput) SetEventSourceArn(v string) *StartReplayInput {
+	s.EventSourceArn = &v
+	return s
+}
+
+// SetEventStartTime sets the EventStartTime field's value.
+func (s *StartReplayInput) SetEventStartTime(v time.Time) *StartReplayInput {
+	s.EventStartTime = &v
+	return s
+}
+
+// SetReplayName sets the ReplayName field's value.
+func (s *StartReplayInput) SetReplayName(v string) *StartReplayInput {
+	s.ReplayName = &v
+	return s
+}
+
+type StartReplayOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the replay.
+	ReplayArn *string `min:"1" type:"string"`
+
+	// The time at which the replay started.
+	ReplayStartTime *time.Time `type:"timestamp"`
+
+	// The state of the replay.
+	State *string `type:"string" enum:"ReplayState"`
+
+	// The reason that the replay is in the state.
+	StateReason *string `type:"string"`
+}
+
+// String returns the string representation
+func (s StartReplayOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s StartReplayOutput) GoString() string {
+	return s.String()
+}
+
+// SetReplayArn sets the ReplayArn field's value.
+func (s *StartReplayOutput) SetReplayArn(v string) *StartReplayOutput {
+	s.ReplayArn = &v
+	return s
+}
+
+// SetReplayStartTime sets the ReplayStartTime field's value.
+func (s *StartReplayOutput) SetReplayStartTime(v time.Time) *StartReplayOutput {
+	s.ReplayStartTime = &v
+	return s
+}
+
+// SetState sets the State field's value.
+func (s *StartReplayOutput) SetState(v string) *StartReplayOutput {
+	s.State = &v
+	return s
+}
+
+// SetStateReason sets the StateReason field's value.
+func (s *StartReplayOutput) SetStateReason(v string) *StartReplayOutput {
+	s.StateReason = &v
+	return s
+}
+
 // A key-value pair associated with an AWS resource. In EventBridge, rules and
 // event buses support tagging.
 type Tag struct {
@@ -7605,11 +12970,26 @@ type Target struct {
 	// in the AWS Batch User Guide.
 	BatchParameters *BatchParameters `type:"structure"`
 
+	// The DeadLetterConfig that defines the target queue to send dead-letter queue
+	// events to.
+	DeadLetterConfig *DeadLetterConfig `type:"structure"`
+
 	// Contains the Amazon ECS task definition and task count to be used, if the
 	// event target is an Amazon ECS task. For more information about Amazon ECS
 	// tasks, see Task Definitions (https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_defintions.html)
 	// in the Amazon EC2 Container Service Developer Guide.
 	EcsParameters *EcsParameters `type:"structure"`
+
+	// Contains the HTTP parameters to use when the target is a API Gateway REST
+	// endpoint or EventBridge ApiDestination.
+	//
+	// If you specify an API Gateway REST API or EventBridge ApiDestination as a
+	// target, you can use this parameter to specify headers, path parameters, and
+	// query string keys/values as part of your target invoking request. If you're
+	// using ApiDestinations, the corresponding Connection can also have these values
+	// configured. In case of any conflicting keys, values from the Connection take
+	// precedence.
+	HttpParameters *HttpParameters `type:"structure"`
 
 	// The ID of the target.
 	//
@@ -7635,6 +13015,18 @@ type Target struct {
 	// target is a Kinesis data stream. If you do not include this parameter, the
 	// default is to use the eventId as the partition key.
 	KinesisParameters *KinesisParameters `type:"structure"`
+
+	// Contains the Redshift Data API parameters to use when the target is a Redshift
+	// cluster.
+	//
+	// If you specify a Redshift Cluster as a Target, you can use this to specify
+	// parameters to invoke the Redshift Data API ExecuteStatement based on EventBridge
+	// events.
+	RedshiftDataParameters *RedshiftDataParameters `type:"structure"`
+
+	// The RetryPolicy object that contains the retry policy configuration to use
+	// for the dead-letter queue.
+	RetryPolicy *RetryPolicy `type:"structure"`
 
 	// The Amazon Resource Name (ARN) of the IAM role to be used for this target
 	// when the rule is triggered. If one rule triggers multiple targets, you can
@@ -7684,6 +13076,11 @@ func (s *Target) Validate() error {
 			invalidParams.AddNested("BatchParameters", err.(request.ErrInvalidParams))
 		}
 	}
+	if s.DeadLetterConfig != nil {
+		if err := s.DeadLetterConfig.Validate(); err != nil {
+			invalidParams.AddNested("DeadLetterConfig", err.(request.ErrInvalidParams))
+		}
+	}
 	if s.EcsParameters != nil {
 		if err := s.EcsParameters.Validate(); err != nil {
 			invalidParams.AddNested("EcsParameters", err.(request.ErrInvalidParams))
@@ -7697,6 +13094,16 @@ func (s *Target) Validate() error {
 	if s.KinesisParameters != nil {
 		if err := s.KinesisParameters.Validate(); err != nil {
 			invalidParams.AddNested("KinesisParameters", err.(request.ErrInvalidParams))
+		}
+	}
+	if s.RedshiftDataParameters != nil {
+		if err := s.RedshiftDataParameters.Validate(); err != nil {
+			invalidParams.AddNested("RedshiftDataParameters", err.(request.ErrInvalidParams))
+		}
+	}
+	if s.RetryPolicy != nil {
+		if err := s.RetryPolicy.Validate(); err != nil {
+			invalidParams.AddNested("RetryPolicy", err.(request.ErrInvalidParams))
 		}
 	}
 	if s.RunCommandParameters != nil {
@@ -7723,9 +13130,21 @@ func (s *Target) SetBatchParameters(v *BatchParameters) *Target {
 	return s
 }
 
+// SetDeadLetterConfig sets the DeadLetterConfig field's value.
+func (s *Target) SetDeadLetterConfig(v *DeadLetterConfig) *Target {
+	s.DeadLetterConfig = v
+	return s
+}
+
 // SetEcsParameters sets the EcsParameters field's value.
 func (s *Target) SetEcsParameters(v *EcsParameters) *Target {
 	s.EcsParameters = v
+	return s
+}
+
+// SetHttpParameters sets the HttpParameters field's value.
+func (s *Target) SetHttpParameters(v *HttpParameters) *Target {
+	s.HttpParameters = v
 	return s
 }
 
@@ -7759,6 +13178,18 @@ func (s *Target) SetKinesisParameters(v *KinesisParameters) *Target {
 	return s
 }
 
+// SetRedshiftDataParameters sets the RedshiftDataParameters field's value.
+func (s *Target) SetRedshiftDataParameters(v *RedshiftDataParameters) *Target {
+	s.RedshiftDataParameters = v
+	return s
+}
+
+// SetRetryPolicy sets the RetryPolicy field's value.
+func (s *Target) SetRetryPolicy(v *RetryPolicy) *Target {
+	s.RetryPolicy = v
+	return s
+}
+
 // SetRoleArn sets the RoleArn field's value.
 func (s *Target) SetRoleArn(v string) *Target {
 	s.RoleArn = &v
@@ -7780,7 +13211,23 @@ func (s *Target) SetSqsParameters(v *SqsParameters) *Target {
 type TestEventPatternInput struct {
 	_ struct{} `type:"structure"`
 
-	// The event, in JSON format, to test against the event pattern.
+	// The event, in JSON format, to test against the event pattern. The JSON must
+	// follow the format specified in AWS Events (https://docs.aws.amazon.com/eventbridge/latest/userguide/aws-events.html),
+	// and the following fields are mandatory:
+	//
+	//    * id
+	//
+	//    * account
+	//
+	//    * source
+	//
+	//    * time
+	//
+	//    * region
+	//
+	//    * resources
+	//
+	//    * detail-type
 	//
 	// Event is a required field
 	Event *string `type:"string" required:"true"`
@@ -7922,6 +13369,784 @@ func (s UntagResourceOutput) GoString() string {
 	return s.String()
 }
 
+type UpdateApiDestinationInput struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the connection to use for the API destination.
+	ConnectionArn *string `min:"1" type:"string"`
+
+	// The name of the API destination to update.
+	Description *string `type:"string"`
+
+	// The method to use for the API destination.
+	HttpMethod *string `type:"string" enum:"ApiDestinationHttpMethod"`
+
+	// The URL to the endpoint to use for the API destination.
+	InvocationEndpoint *string `min:"1" type:"string"`
+
+	// The maximum number of invocations per second to send to the API destination.
+	InvocationRateLimitPerSecond *int64 `min:"1" type:"integer"`
+
+	// The name of the API destination to update.
+	//
+	// Name is a required field
+	Name *string `min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s UpdateApiDestinationInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s UpdateApiDestinationInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *UpdateApiDestinationInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "UpdateApiDestinationInput"}
+	if s.ConnectionArn != nil && len(*s.ConnectionArn) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ConnectionArn", 1))
+	}
+	if s.InvocationEndpoint != nil && len(*s.InvocationEndpoint) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("InvocationEndpoint", 1))
+	}
+	if s.InvocationRateLimitPerSecond != nil && *s.InvocationRateLimitPerSecond < 1 {
+		invalidParams.Add(request.NewErrParamMinValue("InvocationRateLimitPerSecond", 1))
+	}
+	if s.Name == nil {
+		invalidParams.Add(request.NewErrParamRequired("Name"))
+	}
+	if s.Name != nil && len(*s.Name) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Name", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetConnectionArn sets the ConnectionArn field's value.
+func (s *UpdateApiDestinationInput) SetConnectionArn(v string) *UpdateApiDestinationInput {
+	s.ConnectionArn = &v
+	return s
+}
+
+// SetDescription sets the Description field's value.
+func (s *UpdateApiDestinationInput) SetDescription(v string) *UpdateApiDestinationInput {
+	s.Description = &v
+	return s
+}
+
+// SetHttpMethod sets the HttpMethod field's value.
+func (s *UpdateApiDestinationInput) SetHttpMethod(v string) *UpdateApiDestinationInput {
+	s.HttpMethod = &v
+	return s
+}
+
+// SetInvocationEndpoint sets the InvocationEndpoint field's value.
+func (s *UpdateApiDestinationInput) SetInvocationEndpoint(v string) *UpdateApiDestinationInput {
+	s.InvocationEndpoint = &v
+	return s
+}
+
+// SetInvocationRateLimitPerSecond sets the InvocationRateLimitPerSecond field's value.
+func (s *UpdateApiDestinationInput) SetInvocationRateLimitPerSecond(v int64) *UpdateApiDestinationInput {
+	s.InvocationRateLimitPerSecond = &v
+	return s
+}
+
+// SetName sets the Name field's value.
+func (s *UpdateApiDestinationInput) SetName(v string) *UpdateApiDestinationInput {
+	s.Name = &v
+	return s
+}
+
+type UpdateApiDestinationOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the API destination that was updated.
+	ApiDestinationArn *string `min:"1" type:"string"`
+
+	// The state of the API destination that was updated.
+	ApiDestinationState *string `type:"string" enum:"ApiDestinationState"`
+
+	// A time stamp for the time that the API destination was created.
+	CreationTime *time.Time `type:"timestamp"`
+
+	// A time stamp for the time that the API destination was last modified.
+	LastModifiedTime *time.Time `type:"timestamp"`
+}
+
+// String returns the string representation
+func (s UpdateApiDestinationOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s UpdateApiDestinationOutput) GoString() string {
+	return s.String()
+}
+
+// SetApiDestinationArn sets the ApiDestinationArn field's value.
+func (s *UpdateApiDestinationOutput) SetApiDestinationArn(v string) *UpdateApiDestinationOutput {
+	s.ApiDestinationArn = &v
+	return s
+}
+
+// SetApiDestinationState sets the ApiDestinationState field's value.
+func (s *UpdateApiDestinationOutput) SetApiDestinationState(v string) *UpdateApiDestinationOutput {
+	s.ApiDestinationState = &v
+	return s
+}
+
+// SetCreationTime sets the CreationTime field's value.
+func (s *UpdateApiDestinationOutput) SetCreationTime(v time.Time) *UpdateApiDestinationOutput {
+	s.CreationTime = &v
+	return s
+}
+
+// SetLastModifiedTime sets the LastModifiedTime field's value.
+func (s *UpdateApiDestinationOutput) SetLastModifiedTime(v time.Time) *UpdateApiDestinationOutput {
+	s.LastModifiedTime = &v
+	return s
+}
+
+type UpdateArchiveInput struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the archive to update.
+	//
+	// ArchiveName is a required field
+	ArchiveName *string `min:"1" type:"string" required:"true"`
+
+	// The description for the archive.
+	Description *string `type:"string"`
+
+	// The event pattern to use to filter events sent to the archive.
+	EventPattern *string `type:"string"`
+
+	// The number of days to retain events in the archive.
+	RetentionDays *int64 `type:"integer"`
+}
+
+// String returns the string representation
+func (s UpdateArchiveInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s UpdateArchiveInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *UpdateArchiveInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "UpdateArchiveInput"}
+	if s.ArchiveName == nil {
+		invalidParams.Add(request.NewErrParamRequired("ArchiveName"))
+	}
+	if s.ArchiveName != nil && len(*s.ArchiveName) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ArchiveName", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetArchiveName sets the ArchiveName field's value.
+func (s *UpdateArchiveInput) SetArchiveName(v string) *UpdateArchiveInput {
+	s.ArchiveName = &v
+	return s
+}
+
+// SetDescription sets the Description field's value.
+func (s *UpdateArchiveInput) SetDescription(v string) *UpdateArchiveInput {
+	s.Description = &v
+	return s
+}
+
+// SetEventPattern sets the EventPattern field's value.
+func (s *UpdateArchiveInput) SetEventPattern(v string) *UpdateArchiveInput {
+	s.EventPattern = &v
+	return s
+}
+
+// SetRetentionDays sets the RetentionDays field's value.
+func (s *UpdateArchiveInput) SetRetentionDays(v int64) *UpdateArchiveInput {
+	s.RetentionDays = &v
+	return s
+}
+
+type UpdateArchiveOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the archive.
+	ArchiveArn *string `min:"1" type:"string"`
+
+	// The time at which the archive was updated.
+	CreationTime *time.Time `type:"timestamp"`
+
+	// The state of the archive.
+	State *string `type:"string" enum:"ArchiveState"`
+
+	// The reason that the archive is in the current state.
+	StateReason *string `type:"string"`
+}
+
+// String returns the string representation
+func (s UpdateArchiveOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s UpdateArchiveOutput) GoString() string {
+	return s.String()
+}
+
+// SetArchiveArn sets the ArchiveArn field's value.
+func (s *UpdateArchiveOutput) SetArchiveArn(v string) *UpdateArchiveOutput {
+	s.ArchiveArn = &v
+	return s
+}
+
+// SetCreationTime sets the CreationTime field's value.
+func (s *UpdateArchiveOutput) SetCreationTime(v time.Time) *UpdateArchiveOutput {
+	s.CreationTime = &v
+	return s
+}
+
+// SetState sets the State field's value.
+func (s *UpdateArchiveOutput) SetState(v string) *UpdateArchiveOutput {
+	s.State = &v
+	return s
+}
+
+// SetStateReason sets the StateReason field's value.
+func (s *UpdateArchiveOutput) SetStateReason(v string) *UpdateArchiveOutput {
+	s.StateReason = &v
+	return s
+}
+
+// Contains the API key authorization parameters to use to update the connection.
+type UpdateConnectionApiKeyAuthRequestParameters struct {
+	_ struct{} `type:"structure"`
+
+	// The name of the API key to use for authorization.
+	ApiKeyName *string `min:"1" type:"string"`
+
+	// The value associated with teh API key to use for authorization.
+	ApiKeyValue *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s UpdateConnectionApiKeyAuthRequestParameters) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s UpdateConnectionApiKeyAuthRequestParameters) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *UpdateConnectionApiKeyAuthRequestParameters) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "UpdateConnectionApiKeyAuthRequestParameters"}
+	if s.ApiKeyName != nil && len(*s.ApiKeyName) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ApiKeyName", 1))
+	}
+	if s.ApiKeyValue != nil && len(*s.ApiKeyValue) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ApiKeyValue", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetApiKeyName sets the ApiKeyName field's value.
+func (s *UpdateConnectionApiKeyAuthRequestParameters) SetApiKeyName(v string) *UpdateConnectionApiKeyAuthRequestParameters {
+	s.ApiKeyName = &v
+	return s
+}
+
+// SetApiKeyValue sets the ApiKeyValue field's value.
+func (s *UpdateConnectionApiKeyAuthRequestParameters) SetApiKeyValue(v string) *UpdateConnectionApiKeyAuthRequestParameters {
+	s.ApiKeyValue = &v
+	return s
+}
+
+// Contains the additional parameters to use for the connection.
+type UpdateConnectionAuthRequestParameters struct {
+	_ struct{} `type:"structure"`
+
+	// A UpdateConnectionApiKeyAuthRequestParameters object that contains the authorization
+	// parameters for API key authorization.
+	ApiKeyAuthParameters *UpdateConnectionApiKeyAuthRequestParameters `type:"structure"`
+
+	// A UpdateConnectionBasicAuthRequestParameters object that contains the authorization
+	// parameters for Basic authorization.
+	BasicAuthParameters *UpdateConnectionBasicAuthRequestParameters `type:"structure"`
+
+	// A ConnectionHttpParameters object that contains the additional parameters
+	// to use for the connection.
+	InvocationHttpParameters *ConnectionHttpParameters `type:"structure"`
+
+	// A UpdateConnectionOAuthRequestParameters object that contains the authorization
+	// parameters for OAuth authorization.
+	OAuthParameters *UpdateConnectionOAuthRequestParameters `type:"structure"`
+}
+
+// String returns the string representation
+func (s UpdateConnectionAuthRequestParameters) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s UpdateConnectionAuthRequestParameters) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *UpdateConnectionAuthRequestParameters) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "UpdateConnectionAuthRequestParameters"}
+	if s.ApiKeyAuthParameters != nil {
+		if err := s.ApiKeyAuthParameters.Validate(); err != nil {
+			invalidParams.AddNested("ApiKeyAuthParameters", err.(request.ErrInvalidParams))
+		}
+	}
+	if s.BasicAuthParameters != nil {
+		if err := s.BasicAuthParameters.Validate(); err != nil {
+			invalidParams.AddNested("BasicAuthParameters", err.(request.ErrInvalidParams))
+		}
+	}
+	if s.OAuthParameters != nil {
+		if err := s.OAuthParameters.Validate(); err != nil {
+			invalidParams.AddNested("OAuthParameters", err.(request.ErrInvalidParams))
+		}
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetApiKeyAuthParameters sets the ApiKeyAuthParameters field's value.
+func (s *UpdateConnectionAuthRequestParameters) SetApiKeyAuthParameters(v *UpdateConnectionApiKeyAuthRequestParameters) *UpdateConnectionAuthRequestParameters {
+	s.ApiKeyAuthParameters = v
+	return s
+}
+
+// SetBasicAuthParameters sets the BasicAuthParameters field's value.
+func (s *UpdateConnectionAuthRequestParameters) SetBasicAuthParameters(v *UpdateConnectionBasicAuthRequestParameters) *UpdateConnectionAuthRequestParameters {
+	s.BasicAuthParameters = v
+	return s
+}
+
+// SetInvocationHttpParameters sets the InvocationHttpParameters field's value.
+func (s *UpdateConnectionAuthRequestParameters) SetInvocationHttpParameters(v *ConnectionHttpParameters) *UpdateConnectionAuthRequestParameters {
+	s.InvocationHttpParameters = v
+	return s
+}
+
+// SetOAuthParameters sets the OAuthParameters field's value.
+func (s *UpdateConnectionAuthRequestParameters) SetOAuthParameters(v *UpdateConnectionOAuthRequestParameters) *UpdateConnectionAuthRequestParameters {
+	s.OAuthParameters = v
+	return s
+}
+
+// Contains the Basic authorization parameters for the connection.
+type UpdateConnectionBasicAuthRequestParameters struct {
+	_ struct{} `type:"structure"`
+
+	// The password associated with the user name to use for Basic authorization.
+	Password *string `min:"1" type:"string"`
+
+	// The user name to use for Basic authorization.
+	Username *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s UpdateConnectionBasicAuthRequestParameters) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s UpdateConnectionBasicAuthRequestParameters) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *UpdateConnectionBasicAuthRequestParameters) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "UpdateConnectionBasicAuthRequestParameters"}
+	if s.Password != nil && len(*s.Password) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Password", 1))
+	}
+	if s.Username != nil && len(*s.Username) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Username", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetPassword sets the Password field's value.
+func (s *UpdateConnectionBasicAuthRequestParameters) SetPassword(v string) *UpdateConnectionBasicAuthRequestParameters {
+	s.Password = &v
+	return s
+}
+
+// SetUsername sets the Username field's value.
+func (s *UpdateConnectionBasicAuthRequestParameters) SetUsername(v string) *UpdateConnectionBasicAuthRequestParameters {
+	s.Username = &v
+	return s
+}
+
+type UpdateConnectionInput struct {
+	_ struct{} `type:"structure"`
+
+	// The authorization parameters to use for the connection.
+	AuthParameters *UpdateConnectionAuthRequestParameters `type:"structure"`
+
+	// The type of authorization to use for the connection.
+	AuthorizationType *string `type:"string" enum:"ConnectionAuthorizationType"`
+
+	// A description for the connection.
+	Description *string `type:"string"`
+
+	// The name of the connection to update.
+	//
+	// Name is a required field
+	Name *string `min:"1" type:"string" required:"true"`
+}
+
+// String returns the string representation
+func (s UpdateConnectionInput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s UpdateConnectionInput) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *UpdateConnectionInput) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "UpdateConnectionInput"}
+	if s.Name == nil {
+		invalidParams.Add(request.NewErrParamRequired("Name"))
+	}
+	if s.Name != nil && len(*s.Name) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("Name", 1))
+	}
+	if s.AuthParameters != nil {
+		if err := s.AuthParameters.Validate(); err != nil {
+			invalidParams.AddNested("AuthParameters", err.(request.ErrInvalidParams))
+		}
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetAuthParameters sets the AuthParameters field's value.
+func (s *UpdateConnectionInput) SetAuthParameters(v *UpdateConnectionAuthRequestParameters) *UpdateConnectionInput {
+	s.AuthParameters = v
+	return s
+}
+
+// SetAuthorizationType sets the AuthorizationType field's value.
+func (s *UpdateConnectionInput) SetAuthorizationType(v string) *UpdateConnectionInput {
+	s.AuthorizationType = &v
+	return s
+}
+
+// SetDescription sets the Description field's value.
+func (s *UpdateConnectionInput) SetDescription(v string) *UpdateConnectionInput {
+	s.Description = &v
+	return s
+}
+
+// SetName sets the Name field's value.
+func (s *UpdateConnectionInput) SetName(v string) *UpdateConnectionInput {
+	s.Name = &v
+	return s
+}
+
+// Contains the OAuth authorization parameters to use for the connection.
+type UpdateConnectionOAuthClientRequestParameters struct {
+	_ struct{} `type:"structure"`
+
+	// The client ID to use for OAuth authorization.
+	ClientID *string `min:"1" type:"string"`
+
+	// The client secret assciated with the client ID to use for OAuth authorization.
+	ClientSecret *string `min:"1" type:"string"`
+}
+
+// String returns the string representation
+func (s UpdateConnectionOAuthClientRequestParameters) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s UpdateConnectionOAuthClientRequestParameters) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *UpdateConnectionOAuthClientRequestParameters) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "UpdateConnectionOAuthClientRequestParameters"}
+	if s.ClientID != nil && len(*s.ClientID) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ClientID", 1))
+	}
+	if s.ClientSecret != nil && len(*s.ClientSecret) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("ClientSecret", 1))
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetClientID sets the ClientID field's value.
+func (s *UpdateConnectionOAuthClientRequestParameters) SetClientID(v string) *UpdateConnectionOAuthClientRequestParameters {
+	s.ClientID = &v
+	return s
+}
+
+// SetClientSecret sets the ClientSecret field's value.
+func (s *UpdateConnectionOAuthClientRequestParameters) SetClientSecret(v string) *UpdateConnectionOAuthClientRequestParameters {
+	s.ClientSecret = &v
+	return s
+}
+
+// Contains the OAuth request parameters to use for the connection.
+type UpdateConnectionOAuthRequestParameters struct {
+	_ struct{} `type:"structure"`
+
+	// The URL to the authorization endpoint when OAuth is specified as the authorization
+	// type.
+	AuthorizationEndpoint *string `min:"1" type:"string"`
+
+	// A UpdateConnectionOAuthClientRequestParameters object that contains the client
+	// parameters to use for the connection when OAuth is specified as the authorization
+	// type.
+	ClientParameters *UpdateConnectionOAuthClientRequestParameters `type:"structure"`
+
+	// The method used to connect to the HTTP endpoint.
+	HttpMethod *string `type:"string" enum:"ConnectionOAuthHttpMethod"`
+
+	// The additional HTTP parameters used for the OAuth authorization request.
+	OAuthHttpParameters *ConnectionHttpParameters `type:"structure"`
+}
+
+// String returns the string representation
+func (s UpdateConnectionOAuthRequestParameters) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s UpdateConnectionOAuthRequestParameters) GoString() string {
+	return s.String()
+}
+
+// Validate inspects the fields of the type to determine if they are valid.
+func (s *UpdateConnectionOAuthRequestParameters) Validate() error {
+	invalidParams := request.ErrInvalidParams{Context: "UpdateConnectionOAuthRequestParameters"}
+	if s.AuthorizationEndpoint != nil && len(*s.AuthorizationEndpoint) < 1 {
+		invalidParams.Add(request.NewErrParamMinLen("AuthorizationEndpoint", 1))
+	}
+	if s.ClientParameters != nil {
+		if err := s.ClientParameters.Validate(); err != nil {
+			invalidParams.AddNested("ClientParameters", err.(request.ErrInvalidParams))
+		}
+	}
+
+	if invalidParams.Len() > 0 {
+		return invalidParams
+	}
+	return nil
+}
+
+// SetAuthorizationEndpoint sets the AuthorizationEndpoint field's value.
+func (s *UpdateConnectionOAuthRequestParameters) SetAuthorizationEndpoint(v string) *UpdateConnectionOAuthRequestParameters {
+	s.AuthorizationEndpoint = &v
+	return s
+}
+
+// SetClientParameters sets the ClientParameters field's value.
+func (s *UpdateConnectionOAuthRequestParameters) SetClientParameters(v *UpdateConnectionOAuthClientRequestParameters) *UpdateConnectionOAuthRequestParameters {
+	s.ClientParameters = v
+	return s
+}
+
+// SetHttpMethod sets the HttpMethod field's value.
+func (s *UpdateConnectionOAuthRequestParameters) SetHttpMethod(v string) *UpdateConnectionOAuthRequestParameters {
+	s.HttpMethod = &v
+	return s
+}
+
+// SetOAuthHttpParameters sets the OAuthHttpParameters field's value.
+func (s *UpdateConnectionOAuthRequestParameters) SetOAuthHttpParameters(v *ConnectionHttpParameters) *UpdateConnectionOAuthRequestParameters {
+	s.OAuthHttpParameters = v
+	return s
+}
+
+type UpdateConnectionOutput struct {
+	_ struct{} `type:"structure"`
+
+	// The ARN of the connection that was updated.
+	ConnectionArn *string `min:"1" type:"string"`
+
+	// The state of the connection that was updated.
+	ConnectionState *string `type:"string" enum:"ConnectionState"`
+
+	// A time stamp for the time that the connection was created.
+	CreationTime *time.Time `type:"timestamp"`
+
+	// A time stamp for the time that the connection was last authorized.
+	LastAuthorizedTime *time.Time `type:"timestamp"`
+
+	// A time stamp for the time that the connection was last modified.
+	LastModifiedTime *time.Time `type:"timestamp"`
+}
+
+// String returns the string representation
+func (s UpdateConnectionOutput) String() string {
+	return awsutil.Prettify(s)
+}
+
+// GoString returns the string representation
+func (s UpdateConnectionOutput) GoString() string {
+	return s.String()
+}
+
+// SetConnectionArn sets the ConnectionArn field's value.
+func (s *UpdateConnectionOutput) SetConnectionArn(v string) *UpdateConnectionOutput {
+	s.ConnectionArn = &v
+	return s
+}
+
+// SetConnectionState sets the ConnectionState field's value.
+func (s *UpdateConnectionOutput) SetConnectionState(v string) *UpdateConnectionOutput {
+	s.ConnectionState = &v
+	return s
+}
+
+// SetCreationTime sets the CreationTime field's value.
+func (s *UpdateConnectionOutput) SetCreationTime(v time.Time) *UpdateConnectionOutput {
+	s.CreationTime = &v
+	return s
+}
+
+// SetLastAuthorizedTime sets the LastAuthorizedTime field's value.
+func (s *UpdateConnectionOutput) SetLastAuthorizedTime(v time.Time) *UpdateConnectionOutput {
+	s.LastAuthorizedTime = &v
+	return s
+}
+
+// SetLastModifiedTime sets the LastModifiedTime field's value.
+func (s *UpdateConnectionOutput) SetLastModifiedTime(v time.Time) *UpdateConnectionOutput {
+	s.LastModifiedTime = &v
+	return s
+}
+
+const (
+	// ApiDestinationHttpMethodPost is a ApiDestinationHttpMethod enum value
+	ApiDestinationHttpMethodPost = "POST"
+
+	// ApiDestinationHttpMethodGet is a ApiDestinationHttpMethod enum value
+	ApiDestinationHttpMethodGet = "GET"
+
+	// ApiDestinationHttpMethodHead is a ApiDestinationHttpMethod enum value
+	ApiDestinationHttpMethodHead = "HEAD"
+
+	// ApiDestinationHttpMethodOptions is a ApiDestinationHttpMethod enum value
+	ApiDestinationHttpMethodOptions = "OPTIONS"
+
+	// ApiDestinationHttpMethodPut is a ApiDestinationHttpMethod enum value
+	ApiDestinationHttpMethodPut = "PUT"
+
+	// ApiDestinationHttpMethodPatch is a ApiDestinationHttpMethod enum value
+	ApiDestinationHttpMethodPatch = "PATCH"
+
+	// ApiDestinationHttpMethodDelete is a ApiDestinationHttpMethod enum value
+	ApiDestinationHttpMethodDelete = "DELETE"
+)
+
+// ApiDestinationHttpMethod_Values returns all elements of the ApiDestinationHttpMethod enum
+func ApiDestinationHttpMethod_Values() []string {
+	return []string{
+		ApiDestinationHttpMethodPost,
+		ApiDestinationHttpMethodGet,
+		ApiDestinationHttpMethodHead,
+		ApiDestinationHttpMethodOptions,
+		ApiDestinationHttpMethodPut,
+		ApiDestinationHttpMethodPatch,
+		ApiDestinationHttpMethodDelete,
+	}
+}
+
+const (
+	// ApiDestinationStateActive is a ApiDestinationState enum value
+	ApiDestinationStateActive = "ACTIVE"
+
+	// ApiDestinationStateInactive is a ApiDestinationState enum value
+	ApiDestinationStateInactive = "INACTIVE"
+)
+
+// ApiDestinationState_Values returns all elements of the ApiDestinationState enum
+func ApiDestinationState_Values() []string {
+	return []string{
+		ApiDestinationStateActive,
+		ApiDestinationStateInactive,
+	}
+}
+
+const (
+	// ArchiveStateEnabled is a ArchiveState enum value
+	ArchiveStateEnabled = "ENABLED"
+
+	// ArchiveStateDisabled is a ArchiveState enum value
+	ArchiveStateDisabled = "DISABLED"
+
+	// ArchiveStateCreating is a ArchiveState enum value
+	ArchiveStateCreating = "CREATING"
+
+	// ArchiveStateUpdating is a ArchiveState enum value
+	ArchiveStateUpdating = "UPDATING"
+
+	// ArchiveStateCreateFailed is a ArchiveState enum value
+	ArchiveStateCreateFailed = "CREATE_FAILED"
+
+	// ArchiveStateUpdateFailed is a ArchiveState enum value
+	ArchiveStateUpdateFailed = "UPDATE_FAILED"
+)
+
+// ArchiveState_Values returns all elements of the ArchiveState enum
+func ArchiveState_Values() []string {
+	return []string{
+		ArchiveStateEnabled,
+		ArchiveStateDisabled,
+		ArchiveStateCreating,
+		ArchiveStateUpdating,
+		ArchiveStateCreateFailed,
+		ArchiveStateUpdateFailed,
+	}
+}
+
 const (
 	// AssignPublicIpEnabled is a AssignPublicIp enum value
 	AssignPublicIpEnabled = "ENABLED"
@@ -7929,6 +14154,90 @@ const (
 	// AssignPublicIpDisabled is a AssignPublicIp enum value
 	AssignPublicIpDisabled = "DISABLED"
 )
+
+// AssignPublicIp_Values returns all elements of the AssignPublicIp enum
+func AssignPublicIp_Values() []string {
+	return []string{
+		AssignPublicIpEnabled,
+		AssignPublicIpDisabled,
+	}
+}
+
+const (
+	// ConnectionAuthorizationTypeBasic is a ConnectionAuthorizationType enum value
+	ConnectionAuthorizationTypeBasic = "BASIC"
+
+	// ConnectionAuthorizationTypeOauthClientCredentials is a ConnectionAuthorizationType enum value
+	ConnectionAuthorizationTypeOauthClientCredentials = "OAUTH_CLIENT_CREDENTIALS"
+
+	// ConnectionAuthorizationTypeApiKey is a ConnectionAuthorizationType enum value
+	ConnectionAuthorizationTypeApiKey = "API_KEY"
+)
+
+// ConnectionAuthorizationType_Values returns all elements of the ConnectionAuthorizationType enum
+func ConnectionAuthorizationType_Values() []string {
+	return []string{
+		ConnectionAuthorizationTypeBasic,
+		ConnectionAuthorizationTypeOauthClientCredentials,
+		ConnectionAuthorizationTypeApiKey,
+	}
+}
+
+const (
+	// ConnectionOAuthHttpMethodGet is a ConnectionOAuthHttpMethod enum value
+	ConnectionOAuthHttpMethodGet = "GET"
+
+	// ConnectionOAuthHttpMethodPost is a ConnectionOAuthHttpMethod enum value
+	ConnectionOAuthHttpMethodPost = "POST"
+
+	// ConnectionOAuthHttpMethodPut is a ConnectionOAuthHttpMethod enum value
+	ConnectionOAuthHttpMethodPut = "PUT"
+)
+
+// ConnectionOAuthHttpMethod_Values returns all elements of the ConnectionOAuthHttpMethod enum
+func ConnectionOAuthHttpMethod_Values() []string {
+	return []string{
+		ConnectionOAuthHttpMethodGet,
+		ConnectionOAuthHttpMethodPost,
+		ConnectionOAuthHttpMethodPut,
+	}
+}
+
+const (
+	// ConnectionStateCreating is a ConnectionState enum value
+	ConnectionStateCreating = "CREATING"
+
+	// ConnectionStateUpdating is a ConnectionState enum value
+	ConnectionStateUpdating = "UPDATING"
+
+	// ConnectionStateDeleting is a ConnectionState enum value
+	ConnectionStateDeleting = "DELETING"
+
+	// ConnectionStateAuthorized is a ConnectionState enum value
+	ConnectionStateAuthorized = "AUTHORIZED"
+
+	// ConnectionStateDeauthorized is a ConnectionState enum value
+	ConnectionStateDeauthorized = "DEAUTHORIZED"
+
+	// ConnectionStateAuthorizing is a ConnectionState enum value
+	ConnectionStateAuthorizing = "AUTHORIZING"
+
+	// ConnectionStateDeauthorizing is a ConnectionState enum value
+	ConnectionStateDeauthorizing = "DEAUTHORIZING"
+)
+
+// ConnectionState_Values returns all elements of the ConnectionState enum
+func ConnectionState_Values() []string {
+	return []string{
+		ConnectionStateCreating,
+		ConnectionStateUpdating,
+		ConnectionStateDeleting,
+		ConnectionStateAuthorized,
+		ConnectionStateDeauthorized,
+		ConnectionStateAuthorizing,
+		ConnectionStateDeauthorizing,
+	}
+}
 
 const (
 	// EventSourceStatePending is a EventSourceState enum value
@@ -7941,6 +14250,15 @@ const (
 	EventSourceStateDeleted = "DELETED"
 )
 
+// EventSourceState_Values returns all elements of the EventSourceState enum
+func EventSourceState_Values() []string {
+	return []string{
+		EventSourceStatePending,
+		EventSourceStateActive,
+		EventSourceStateDeleted,
+	}
+}
+
 const (
 	// LaunchTypeEc2 is a LaunchType enum value
 	LaunchTypeEc2 = "EC2"
@@ -7949,6 +14267,46 @@ const (
 	LaunchTypeFargate = "FARGATE"
 )
 
+// LaunchType_Values returns all elements of the LaunchType enum
+func LaunchType_Values() []string {
+	return []string{
+		LaunchTypeEc2,
+		LaunchTypeFargate,
+	}
+}
+
+const (
+	// ReplayStateStarting is a ReplayState enum value
+	ReplayStateStarting = "STARTING"
+
+	// ReplayStateRunning is a ReplayState enum value
+	ReplayStateRunning = "RUNNING"
+
+	// ReplayStateCancelling is a ReplayState enum value
+	ReplayStateCancelling = "CANCELLING"
+
+	// ReplayStateCompleted is a ReplayState enum value
+	ReplayStateCompleted = "COMPLETED"
+
+	// ReplayStateCancelled is a ReplayState enum value
+	ReplayStateCancelled = "CANCELLED"
+
+	// ReplayStateFailed is a ReplayState enum value
+	ReplayStateFailed = "FAILED"
+)
+
+// ReplayState_Values returns all elements of the ReplayState enum
+func ReplayState_Values() []string {
+	return []string{
+		ReplayStateStarting,
+		ReplayStateRunning,
+		ReplayStateCancelling,
+		ReplayStateCompleted,
+		ReplayStateCancelled,
+		ReplayStateFailed,
+	}
+}
+
 const (
 	// RuleStateEnabled is a RuleState enum value
 	RuleStateEnabled = "ENABLED"
@@ -7956,3 +14314,11 @@ const (
 	// RuleStateDisabled is a RuleState enum value
 	RuleStateDisabled = "DISABLED"
 )
+
+// RuleState_Values returns all elements of the RuleState enum
+func RuleState_Values() []string {
+	return []string{
+		RuleStateEnabled,
+		RuleStateDisabled,
+	}
+}
